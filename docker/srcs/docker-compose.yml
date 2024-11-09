@@ -1,0 +1,43 @@
+name: transcendence
+
+services:
+  backend:
+    depends_on:
+      - postgres
+    container_name: backend
+    build: requirements/backend
+    volumes:
+      - ./requirements/backend/conf:/transcendence/backend
+    restart: on-failure
+    env_file:
+      - .env
+    networks:
+      - transcendence
+    ports:
+      - "8080:8000"
+    secrets:
+      - django_superuser_password
+    
+  postgres:
+    container_name: postgres
+    image: postgres
+    shm_size: 128mb
+    restart: on-failure
+    env_file:
+      - .env
+    # environment:
+    #   POSTGRESQL_PASSWORD_FILE: /run/secrets/postgres_password
+    networks:
+      - transcendence
+    secrets:
+      - postgres_password
+
+networks:
+  transcendence:
+    driver: bridge
+
+secrets:
+  django_superuser_password:
+    file: ../secrets/django_superuser_password.txt
+  postgres_password:
+    file: ../secrets/postgres_password.txt
