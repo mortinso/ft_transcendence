@@ -20,9 +20,9 @@
   </svg>
   <!--#endregion-->
 
-  <div id="app">
+  <div class="wrapper" id="app">
     <!--#region Header-->
-    <header class="p-3 mb-3 border-bottom">
+    <header id="header" class="p-3 mb-3 border-bottom">
       <div class="container">
         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
           <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 link-body-emphasis text-decoration-none">
@@ -48,10 +48,12 @@
             <ul class="dropdown-menu text-small">
               <li><a class="dropdown-item" onclick="changeContent('profile')">Profile</a></li>
               <li><a class="dropdown-item" onclick="changeContent('settings')">Settings</a></li>
+              <li><a class="dropdown-item" onclick="changeContent('signin')">[TEST]Sign In</a></li>
+              <li><a class="dropdown-item" onclick="changeContent('signup')">[TEST]Sign Up</a></li>
               <li>
                 <hr class="dropdown-divider">
               </li>
-              <li><a class="dropdown-item" href="#">Sign out</a></li>
+              <li><a class="dropdown-item">Sign out</a></li>
             </ul>
           </div>
         </div>
@@ -63,7 +65,7 @@
     <main id="content"></main>
 
     <!--#region Footer-->
-    <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+    <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top footer">
       <div class="col-md-4 d-flex align-items-center">
         <a href="/" class="mb-3 me-2 mb-md-0 text-body-secondary text-decoration-none lh-1">
           <svg class="bi" width="30" height="24">

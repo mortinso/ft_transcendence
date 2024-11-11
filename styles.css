@@ -5,3 +5,26 @@
 [data-bs-theme="dark"] .github-icon {
   fill: #fff;
 }
+
+.quick-stat {
+  background-color: transparent;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+#content {
+  flex: 1;
+}
+
+.footer {
+  flex-shrink: 0;
+}
