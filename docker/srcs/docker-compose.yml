@@ -7,7 +7,7 @@ services:
     container_name: backend
     build: requirements/backend
     volumes:
-      - ./requirements/backend/conf:/transcendence/backend
+      - ./requirements/backend/conf:/transcendence
     restart: on-failure
     env_file:
       - .env

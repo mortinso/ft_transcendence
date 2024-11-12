@@ -1,15 +1,17 @@
 from django.shortcuts import render
 from users.models import User
-from .serializers import LoginSerializer
+from .serializers import LoginSerializer, SignUpSerializer
 from rest_framework import generics
 from rest_framework.authentication import BasicAuthentication 
 from rest_framework.response import Response
 from rest_framework.views import APIView 
 from rest_framework import status
 from django.contrib.auth import login, logout
+from rest_framework.permissions import AllowAny
 
 class LoginView(APIView):
     authentication_classes = [BasicAuthentication]
+    permission_classes = [AllowAny]
 
     def post(self, request, format=None):
         serializer = LoginSerializer(data=request.data)
@@ -27,3 +29,7 @@ class LogoutView(APIView):
         response.delete_cookie('sessionid')
 
         return response
+    
+class SignUpView(generics.CreateAPIView):
+    serializer_class = SignUpSerializer
+    permission_classes = [AllowAny]
