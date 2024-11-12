@@ -1,5 +1,4 @@
 let pageState = 'overview'
-let user = getUserData();
 let loggedIn = true;
 
 window.onpopstate = function (event) {
@@ -61,28 +60,20 @@ function changeContent(page, pushState = true) {
         if (pushState && history.state !== pageState) {
             history.pushState(pageState, null, "");
         }
+        switch (page) {
+            case 'overview':
+                updateOverviewPage();
+                break;
+            case 'profile':
+                updateProfilePage();
+                break;
+            case 'signin':
+                break;
+            default:
+                break;
+        }
     }
     xhr.send();
-}
-
-// REST api call to get user data
-function getUserData() {
-    const url = 'http://localhost:8080/api/users/1';
-    fetch(url)
-        .then(response => response.json())
-        .then(data => {
-            console.log(data);
-            return data;
-        });
-}
-
-function updateValues() {
-    console.log(user.username, user);
-    document.getElementById('username').innerText = `Hello ${user.username}`;
-    document.getElementById('games-played').innerText = `Games played: ${user.games_played}`;
-    document.getElementById('wins').innerText = `Wins: ${user.wins}`;
-    document.getElementById('losses').innerText = `Losses: ${user.losses}`;
-    document.getElementById('friends-online').innerText = `Friends online: ${user.friends_online}`;
 }
 
 initialize();

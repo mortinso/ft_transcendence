@@ -28,3 +28,12 @@ html, body {
 .footer {
   flex-shrink: 0;
 }
+
+.stat-chart {
+  width: 100%;
+  max-width: 750px;
+}
+
+.shadow-left{
+  box-shadow: -10px 0 5px -5px rgba(0, 0, 0, 0.2);
+}
