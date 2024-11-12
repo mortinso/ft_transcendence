@@ -30,4 +30,8 @@ class RetrieveUpdateDestroyUserView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = UpdateUserSerializer
 
     def get_queryset(self):
+        pk = self.kwargs.get('pk')
+        if pk != self.request.user.id:
+            return 200
+        # return generics.get_object_or_404(User, pk=self.request.user.id)
         return User.objects.filter(id = self.request.user.id)

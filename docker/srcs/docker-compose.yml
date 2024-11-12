@@ -7,7 +7,7 @@ services:
     container_name: backend
     build: requirements/backend
     volumes:
-      - ./requirements/backend/conf:/transcendence
+      - ./requirements/backend/conf:/transcendence/backend
     restart: on-failure
     env_file:
       - .env
@@ -31,6 +31,19 @@ services:
       - transcendence
     secrets:
       - postgres_password
+
+  nginx:
+    depends_on:
+      - backend
+    container_name: nginx
+    build: requirements/nginx
+    ports:
+      - "8081:80"
+    volumes:
+      - ../../Frontend:/usr/share/nginx/html
+    restart: on-failure
+    networks:
+      - transcendence
 
 networks:
   transcendence:

@@ -18,6 +18,7 @@ clean:
 fclean: clean
 	docker image rm transcendence-backend
 	docker image rm postgres
+	docker image rm transcendence-nginx
 
 re: fclean all
 

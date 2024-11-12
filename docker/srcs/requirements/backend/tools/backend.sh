@@ -1,12 +1,8 @@
 #! /bin/sh
 cd transcendence
-
-# rm -rf transcendence/venv
-# python3 -m venv venv
-# chmod +x ./venv/bin/activate
-# ./venv/bin/activate
-
 pip install -r requirements.txt
+# django-admin startproject backend
+cd backend
 
 # python3 manage.py startapp users
 
