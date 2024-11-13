@@ -1,5 +1,6 @@
 #! /bin/sh
 cd transcendence
+
 pip install -r requirements.txt
 # django-admin startproject backend
 cd backend
@@ -11,6 +12,8 @@ cd backend
 # mv /temp/backend/* backend/
 # mv /temp/users/* users
 # mv /temp/auth/* auth
+
+python3 manage.py makemigrations
 
 python3 manage.py migrate
 

@@ -1,15 +1,18 @@
 from django.shortcuts import render
 from .models import User
-from .serializers import ListUsersSerializer, UpdateUserSerializer
+from .serializers import ListUsersSerializer, UpdateUserSerializer, AddFriendSerializer, RemoveFriendSerializer, AcceptFriendSerializer, RemoveFriendRequestSerializer
 from rest_framework import generics
-from rest_framework.permissions import IsAuthenticated
-from django.contrib import messages
 
 
 class ListUsersView(generics.ListAPIView):
     serializer_class = ListUsersSerializer
-    permission_classes = [IsAuthenticated]
-    queryset = User.objects.all()
+
+    def get_queryset(self):
+        user = self.request.user
+        queryset = User.objects.all()
+        queryset = queryset.exclude(id=user.id)
+        return queryset
+
 
 class UserDetailsView(generics.RetrieveAPIView):
 
@@ -31,7 +34,38 @@ class RetrieveUpdateDestroyUserView(generics.RetrieveUpdateDestroyAPIView):
 
     def get_queryset(self):
         pk = self.kwargs.get('pk')
-        if pk != self.request.user.id:
-            return 200
-        # return generics.get_object_or_404(User, pk=self.request.user.id)
-        return User.objects.filter(id = self.request.user.id)
+        if pk == self.request.user.id:
+            return generics.get_object_or_404(User, pk=self.request.user.id)
+
+class AddFriendView(generics.RetrieveUpdateAPIView):
+    serializer_class = AddFriendSerializer
+
+    def get_queryset(self):
+        pk = self.kwargs.get('pk')
+        if pk == self.request.user.id:
+            return User.objects.filter(pk=pk)
+    
+    
+class AcceptFriendView(generics.RetrieveUpdateAPIView):
+    serializer_class = AcceptFriendSerializer
+
+    def get_queryset(self):
+        pk = self.kwargs.get('pk')
+        if pk == self.request.user.id:
+            return User.objects.filter(pk=pk)
+
+class RemoveFriendView(generics.RetrieveUpdateAPIView):
+    serializer_class = RemoveFriendSerializer
+
+    def get_queryset(self):
+        pk = self.kwargs.get('pk')
+        if pk == self.request.user.id:
+            return User.objects.filter(pk=pk)
+
+class RemoveFriendRequestView(generics.RetrieveUpdateAPIView):
+    serializer_class = RemoveFriendRequestSerializer
+
+    def get_queryset(self):
+        pk = self.kwargs.get('pk')
+        if pk == self.request.user.id:
+            return User.objects.filter(pk=pk)
