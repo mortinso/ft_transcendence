@@ -32,6 +32,19 @@ services:
     secrets:
       - postgres_password
 
+  nginx:
+    depends_on:
+      - backend
+    container_name: nginx
+    build: requirements/nginx
+    ports:
+      - "8081:80"
+    volumes:
+      - ../../Frontend:/usr/share/nginx/html
+    restart: on-failure
+    networks:
+      - transcendence
+
 networks:
   transcendence:
     driver: bridge

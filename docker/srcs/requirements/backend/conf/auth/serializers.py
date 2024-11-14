@@ -4,6 +4,32 @@ from django.core.exceptions import ValidationError
 from users.models import User
 from django.contrib.auth import authenticate
 
+class SignUpSerializer(serializers.ModelSerializer):
+    confirm_password = serializers.CharField(max_length=100, write_only=True)
+
+    class Meta:
+        model = User
+        fields = ('username', 'email', 'password', 'confirm_password')
+        extra_kwargs = {'password': {'write_only': True}, 'confirm_password': {'write_only': True}, 'email': {'required': True}}
+
+    def validate(self, data):
+        if 'email' not in data or not data['email']:
+            raise serializers.ValidationError("Email is required.")
+        if data['password'] != data['confirm_password']:
+            raise serializers.ValidationError("Passwords do not match.")
+        return data
+
+    def create(self, validated_data):
+        validated_data.pop('confirm_password')
+        user = User(
+            email=validated_data['email'],
+            username=validated_data['username']
+        )
+        user.set_password(validated_data['password'])
+        user.save()
+        return user
+    
+
 class LoginSerializer(serializers.Serializer):
     username = serializers.CharField()
     password = serializers.CharField(write_only=True)

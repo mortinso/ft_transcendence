@@ -2,7 +2,8 @@ all:
 	docker compose -f srcs/docker-compose.yml up --build
 
 up:
-	docker compose -f srcs/docker-compose.yml up --detach
+	docker compose -f srcs/docker-compose.yml up
+	# docker compose -f srcs/docker-compose.yml up --detach
 
 stop:
 	docker compose -f srcs/docker-compose.yml stop
@@ -18,6 +19,7 @@ clean:
 fclean: clean
 	docker image rm transcendence-backend
 	docker image rm postgres
+	docker image rm transcendence-nginx
 
 re: fclean all
 
