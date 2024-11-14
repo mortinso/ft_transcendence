@@ -9,3 +9,5 @@ docker/srcs/requirements/backend/conf/auth/__pycache__/*
 docker/srcs/requirements/backend/conf/backend/__pycache__/*
 docker/srcs/requirements/backend/conf/users/__pycache__/*
 docker/srcs/requirements/backend/conf/users/migrations/__pycache__/*
+docker/srcs/requirements/backend/conf/games/__pycache__/*
+docker/srcs/requirements/backend/conf/games/migrations/__pycache__/*
