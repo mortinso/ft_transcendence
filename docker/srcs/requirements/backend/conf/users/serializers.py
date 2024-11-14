@@ -3,35 +3,10 @@ from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 from .models import User
 
-class CreateUserSerializer(serializers.ModelSerializer):
-    confirm_password = serializers.CharField(max_length=100, write_only=True)
-
-    class Meta:
-        model = User
-        fields = ('username', 'email', 'password', 'confirm_password')
-        extra_kwargs = {'password': {'write_only': True}, 'confirm_password': {'write_only': True}, 'email': {'required': True}}
-
-    def validate(self, data):
-        if 'email' not in data or not data['email']:
-            raise serializers.ValidationError("Email is required.")
-        if data['password'] != data['confirm_password']:
-            raise serializers.ValidationError("Passwords do not match.")
-        return data
-
-    def create(self, validated_data):
-        validated_data.pop('confirm_password')
-        user = User(
-            email=validated_data['email'],
-            username=validated_data['username']
-        )
-        user.set_password(validated_data['password'])
-        user.save()
-        return user
-    
 class ListUsersSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'username', 'email', 'games_played', 'wins', 'losses', 'draws')
+        fields = ('id', 'username', 'email', 'friends', 'friend_requests', 'banned', 'muted', 'games_played', 'wins', 'losses', 'draws')
 
 class UpdateUserSerializer(serializers.ModelSerializer):
     old_password = serializers.CharField(max_length=100, write_only=True, required=False)
@@ -74,3 +49,78 @@ class UpdateUserSerializer(serializers.ModelSerializer):
             instance.save()
         return instance
     
+class AddFriendSerializer(serializers.ModelSerializer):
+    add_friend = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), write_only=True)
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'friends', 'friend_requests', 'add_friend')
+        extra_kwargs = {'username': {'read_only': True}, 'friends': {'read_only': True}, 'friend_requests': {'read_only': True}}
+
+    def update(self, instance, validated_data):
+        friend = validated_data.get('add_friend')
+        if friend != instance:
+            if friend not in instance.friends.all() and friend not in instance.friend_requests.all():
+                friend.friend_requests.add(instance)
+                friend.save()
+        else:
+            raise serializers.ValidationError("User not found.")
+        return instance
+    
+class AcceptFriendSerializer(serializers.ModelSerializer):
+    accept_friend = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), write_only=True)
+
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'friends', 'friend_requests', 'accept_friend')
+        extra_kwargs = {'username': {'read_only': True}, 'friends': {'read_only': True}, 'friend_requests': {'read_only': True}}
+
+    def update(self, instance, validated_data):
+        friend = validated_data.get('friend')
+
+        if friend != instance and friend in instance.friend_requests.all():
+            instance.friends.add(friend)
+            instance.friend_requests.remove(friend)
+            friend.friends.add(instance)
+            instance.save()
+            friend.save()
+        else:
+            raise serializers.ValidationError("Friend request not found.")
+        return instance
+
+class RemoveFriendSerializer(serializers.ModelSerializer):
+    remove_friend = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), write_only=True)
+
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'friends', 'remove_friend')
+        extra_kwargs = {'username': {'read_only': True}, 'friends': {'read_only': True}}
+
+    def update(self, instance, validated_data):
+        friend = validated_data.get('remove_friend')
+
+        if friend != instance and friend in instance.friends.all():
+            instance.friends.remove(friend)
+            friend.friends.remove(instance)
+            instance.save()
+        else:
+            raise serializers.ValidationError("Friend not found.")
+        return instance
+    
+
+class RemoveFriendRequestSerializer(serializers.ModelSerializer):
+    remove_friend = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), write_only=True)
+
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'friend_requests', 'remove_friend')
+        extra_kwargs = {'username': {'read_only': True}, 'friend_requests': {'read_only': True}}
+
+    def update(self, instance, validated_data):
+        friend = validated_data.get('remove_friend')
+
+        if friend != instance and friend in instance.friend_requests.all():
+            instance.friend_requests.remove(friend)
+            instance.save()
+        else:
+            raise serializers.ValidationError("Friend request not found.")
+        return instance

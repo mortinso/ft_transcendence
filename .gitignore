@@ -1,4 +1,8 @@
 .vscode
+docker/srcs/requirements/backend/venv/
+docker/srcs/requirements/backend/conf/backend/__pycache__/*
+docker/srcs/requirements/backend/conf/users/__pycache__/*
+docker/srcs/requirements/backend/conf/auth/__pycache__/*
 docker/secrets/django_superuser_password.txt
 docker/secrets/postgres_password.txt
 docker/srcs/requirements/backend/conf/auth/__pycache__/*
