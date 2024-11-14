@@ -35,5 +35,21 @@ html, body {
 }
 
 .shadow-left{
-  box-shadow: -10px 0 5px -5px rgba(0, 0, 0, 0.2);
+  box-shadow: -10px 0 5px -5px rgba(0, 0, 0, 0.1);
+}
+
+.settings-card:hover {
+  cursor: pointer;
+  box-shadow: 0px 15px 30px -5px rgba(0,0,0,0.2);
+}
+
+.settings-icon-container {
+  width: 50px;
+}
+
+.settings-icon {
+  fill: #fff;
+  padding: 0.25rem;
+  width: 50px;
+  height: 50px;
 }

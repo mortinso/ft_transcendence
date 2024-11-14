@@ -1,6 +1,7 @@
 let pageState = 'overview'
 let loggedIn = true;
 
+//Handle back and forward navigation events
 window.onpopstate = function (event) {
     if (event.state !== null) {
         pageState = event.state;
@@ -8,14 +9,63 @@ window.onpopstate = function (event) {
     }
 }
 
-function login() {
-    loggedIn = true;
-    document.getElementById('header').style.display = 'block';
-    history.replaceState(pageState, null, "");
-    changeContent('overview', false);
+//Initliaze the page
+function initialize() {
+    applyColorScheme();
+
+    if (!loggedIn) {
+        changeContent('signin', false);
+        document.getElementById('header').style.display = 'none';
+    }
+    else {
+
+        history.replaceState(pageState, null, "");
+        changeContent(pageState, false);
+    }
 }
 
-function initialize() {
+async function login() {
+    let username = document.getElementById('loginUsername').value;
+    let password = document.getElementById('loginPassword').value;
+
+    const url = 'http://localhost:8080/api/auth/login/';
+    const response = await fetch(url, {
+        method: 'POST',
+        body: JSON.stringify({
+            username: username,
+            password: password
+        }),
+        headers: {
+            'Content-Type': 'application/json; charset=utf-8'
+        }
+    }).then(response => {
+        if (response.status === 200) {
+            return response.json();
+        }
+        else {
+            return null;
+        }
+    }).then(data => {
+        if (data !== null) {
+            alert('Login successful!');
+            console.log(data);
+            loggedIn = true;
+        }
+        else {
+            alert('Login failed!');
+            return;
+        }
+    });
+
+    if (loggedIn) {
+        document.getElementById('header').style.display = 'block';
+        history.replaceState(pageState, null, "");
+        changeContent('overview', false);
+    }
+}
+
+//Set the color scheme based on the user's browser settings
+function applyColorScheme() {
     if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
         document.body.setAttribute('data-bs-theme', 'dark');
     }
@@ -31,18 +81,9 @@ function initialize() {
             document.body.setAttribute('data-bs-theme', 'light');
         }
     });
-
-    if (!loggedIn) {
-        changeContent('signin', false);
-        document.getElementById('header').style.display = 'none';
-    }
-    else {
-
-        history.replaceState(pageState, null, "");
-        changeContent(pageState, false);
-    }
 }
 
+//Change the content of the page
 function changeContent(page, pushState = true) {
     var contentDiv = document.getElementById('content');
 
@@ -66,6 +107,9 @@ function changeContent(page, pushState = true) {
                 break;
             case 'profile':
                 updateProfilePage();
+                break;
+            case 'settings':
+                updateSettingsPage();
                 break;
             case 'signin':
                 break;

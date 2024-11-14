@@ -3,6 +3,7 @@ async function getUserData() {
     const url = 'http://localhost:8080/api/users/1'; //TODO Change to get correct user
     const response = await fetch(url);
     const data = await response.json();
+    //TODO cache data
     return data;
 }
 
