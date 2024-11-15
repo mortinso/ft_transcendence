@@ -14,11 +14,12 @@ class UpdateUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('username', 'email', 'old_password', 'password', 'confirm_password', 'first_name', 'last_name')
+        fields = ('id', 'username', 'email', 'old_password', 'password', 'confirm_password', 'first_name', 'last_name', 'profile_picture')
         extra_kwargs = {
             'password': {'write_only': True, 'required': False},
             'old_password': {'write_only': True},
-            'confirm_password': {'write_only': True}
+            'confirm_password': {'write_only': True},
+            'profile_picture': {'write_only': True}
         }
 
     def validate(self, data):
@@ -51,6 +52,7 @@ class UpdateUserSerializer(serializers.ModelSerializer):
     
 class AddFriendSerializer(serializers.ModelSerializer):
     add_friend = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), write_only=True)
+
     class Meta:
         model = User
         fields = ('id', 'username', 'friends', 'friend_requests', 'add_friend')
@@ -75,7 +77,7 @@ class AcceptFriendSerializer(serializers.ModelSerializer):
         extra_kwargs = {'username': {'read_only': True}, 'friends': {'read_only': True}, 'friend_requests': {'read_only': True}}
 
     def update(self, instance, validated_data):
-        friend = validated_data.get('friend')
+        friend = validated_data.get('accept_friend')
 
         if friend != instance and friend in instance.friend_requests.all():
             instance.friends.add(friend)

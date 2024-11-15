@@ -3,7 +3,7 @@ from .views import ListUsersView, UserDetailsView, RetrieveUpdateDestroyUserView
 
 urlpatterns = [
     path("<int:pk>/edit", RetrieveUpdateDestroyUserView.as_view(), name="user_update"),
-    path("<int:pk>/add_friend", AddFriendView.as_view(), name="add_friend"),
+    path("<int:pk>/invite_friend", AddFriendView.as_view(), name="invite_friend"),
     path("<int:pk>/accept_friend", AcceptFriendView.as_view(), name="accept_friend"),
     path("<int:pk>/remove_friend", RemoveFriendView.as_view(), name="remove_friend"),
     path("<int:pk>/remove_friend_request", RemoveFriendRequestView.as_view(), name="remove_friend_request"),

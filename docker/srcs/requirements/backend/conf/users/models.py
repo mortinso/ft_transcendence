@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 
 class User(AbstractUser):
-    profile_picture = models.CharField(max_length=240,blank=True)
+    profile_picture = models.ImageField(upload_to='profile_pictures')
     friends = models.ManyToManyField('self', symmetrical=False, related_name="friends_set")
     friend_requests = models.ManyToManyField('self', symmetrical=False, related_name="friend_requests_set")
     banned = models.ManyToManyField('self', symmetrical=False, related_name="banned_set")
