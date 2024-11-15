@@ -26,10 +26,10 @@
       <div class="container">
         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
           <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-            <li><a class="nav-link px-2 link-secondary" onclick="changeContent('overview')">Overview</a></li>
-            <li><a class="nav-link px-2 link-body-emphasis" onclick="changeContent('pong')">Pong</a></li>
-            <li><a class="nav-link px-2 link-body-emphasis" onclick="changeContent('game2')">Game 2</a></li>
-            <li><a class="nav-link px-2 link-body-emphasis" onclick="changeContent('livechat')">Live Chat</a>
+            <li><a id="header-overview" class="nav-link px-2 header-button" onclick="changeContent('overview')">Overview</a></li>
+            <li><a id="header-pong" class="nav-link px-2 link-body-emphasis header-button" onclick="changeContent('pong')">Pong</a></li>
+            <li><a id="header-game2" class="nav-link px-2 link-body-emphasis header-button" onclick="changeContent('game2')">Game 2</a></li>
+            <li><a id="header-livechat" class="nav-link px-2 link-body-emphasis header-button" onclick="changeContent('livechat')">Live Chat</a>
             </li>
           </ul>
 
@@ -40,14 +40,14 @@
                 class="rounded-circle">
             </a>
             <ul class="dropdown-menu text-small">
-              <li><a class="dropdown-item" onclick="changeContent('profile')">Profile</a></li>
-              <li><a class="dropdown-item" onclick="changeContent('settings')">Settings</a></li>
-              <li><a class="dropdown-item" onclick="changeContent('signin')">[TEST]Sign In</a></li>
-              <li><a class="dropdown-item" onclick="changeContent('signup')">[TEST]Sign Up</a></li>
+              <li><a class="dropdown-item header-button" onclick="changeContent('profile')">Profile</a></li>
+              <li><a class="dropdown-item header-button" onclick="changeContent('settings')">Settings</a></li>
+              <li><a class="dropdown-item header-button" onclick="changeContent('signin')">[TEST]Sign In</a></li>
+              <li><a class="dropdown-item header-button" onclick="changeContent('signup')">[TEST]Sign Up</a></li>
               <li>
                 <hr class="dropdown-divider">
               </li>
-              <li><a class="dropdown-item">Sign out</a></li>
+              <li><a class="dropdown-item header-button">Sign out</a></li>
             </ul>
           </div>
         </div>

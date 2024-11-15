@@ -116,8 +116,32 @@ function changeContent(page, pushState = true) {
             default:
                 break;
         }
+        updateHeaderButton(page);
     }
     xhr.send();
+}
+
+//Update header buttons based on the current page
+function updateHeaderButton(page) {
+    let overviewButton = document.getElementById('header-overview');
+    let pongButton = document.getElementById('header-pong');
+    let game2Button = document.getElementById('header-game2');
+    let livechatButton = document.getElementById('header-livechat');
+
+    let buttons = {
+        'overview': overviewButton,
+        'pong': pongButton,
+        'game2': game2Button,
+        'livechat': livechatButton
+    };
+
+    for (let key in buttons) {
+        if (key === page) {
+            buttons[key].classList.remove('link-body-emphasis');
+        } else {
+            buttons[key].classList.add('link-body-emphasis');
+        }
+    }
 }
 
 initialize();
