@@ -1,7 +1,9 @@
 django
-psycopg
-psycopg2-binary
-django-cors-headers
-djangorestframework
-django-cors-headers
-environs
+psycopg #talk to Postgres
+psycopg2-binary #talk to Postgres
+djangorestframework #API framework
+django-cors-headers #CORS settings
+environs #import environment variables from .env
+pillow #import images
+django-cleanup #delete previously uploaded images
+djangorestframework-simplejwt #JWT authentication

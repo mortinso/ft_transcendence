@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from .models import User
-from .serializers import ListUsersSerializer, UpdateUserSerializer, AddFriendSerializer, RemoveFriendSerializer, AcceptFriendSerializer, RemoveFriendRequestSerializer
+from .serializers import ListUsersSerializer, UpdateUserSerializer, AddFriendSerializer, RemoveFriendSerializer, AcceptFriendSerializer, RemoveFriendRequestSerializer, BlockUserSerializer, UnblockUserSerializer
 from rest_framework import generics
 
 
@@ -35,7 +35,7 @@ class RetrieveUpdateDestroyUserView(generics.RetrieveUpdateDestroyAPIView):
     def get_queryset(self):
         pk = self.kwargs.get('pk')
         if pk == self.request.user.id:
-            return generics.get_object_or_404(User, pk=self.request.user.id)
+            return User.objects.filter(pk=pk)
 
 class AddFriendView(generics.RetrieveUpdateAPIView):
     serializer_class = AddFriendSerializer
@@ -64,6 +64,22 @@ class RemoveFriendView(generics.RetrieveUpdateAPIView):
 
 class RemoveFriendRequestView(generics.RetrieveUpdateAPIView):
     serializer_class = RemoveFriendRequestSerializer
+
+    def get_queryset(self):
+        pk = self.kwargs.get('pk')
+        if pk == self.request.user.id:
+            return User.objects.filter(pk=pk)
+
+class BlockUserView(generics.RetrieveUpdateAPIView):
+    serializer_class = BlockUserSerializer
+
+    def get_queryset(self):
+        pk = self.kwargs.get('pk')
+        if pk == self.request.user.id:
+            return User.objects.filter(pk=pk)
+
+class UnblockUserView(generics.RetrieveUpdateAPIView):
+    serializer_class = UnblockUserSerializer
 
     def get_queryset(self):
         pk = self.kwargs.get('pk')

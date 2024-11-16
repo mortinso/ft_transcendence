@@ -1,6 +1,6 @@
 
 async function getUserData() {
-    const url = 'http://localhost:8080/api/users/1'; //TODO Change to get correct user
+    const url = 'http://localhost:8080/api/users/1/'; //TODO Change to get correct user
     const response = await fetch(url);
     if (response.status !== 200) {
         console.error('Error fetching user data');

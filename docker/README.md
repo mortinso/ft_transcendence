@@ -22,7 +22,7 @@ http://127.0.0.1:8080/api/users/1/edit (update/destroy user1, if user 1 is curre
 
 ### Friends
 
-http://127.0.0.1:8080/api/users/1/add_friend (add friend request from user 1)
+http://127.0.0.1:8080/api/users/1/invite_friend (send friend request from user 1)
 
 http://127.0.0.1:8080/api/users/1/accept_friend (accept friend requests)
 
@@ -30,7 +30,9 @@ http://127.0.0.1:8080/api/users/1/remove_friend (remove friend)
 
 http://127.0.0.1:8080/api/users/1/remove_friend_request (remove friend request)
 
-http://127.0.0.1:8080/api/users/1/remove_friend (remove friend)
+http://127.0.0.1:8080/api/users/1/block (block user)
+
+http://127.0.0.1:8080/api/users/1/unblock (unblock user)
 
 ## Auth
 

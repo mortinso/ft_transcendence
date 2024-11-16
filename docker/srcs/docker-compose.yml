@@ -25,6 +25,7 @@ services:
     restart: on-failure
     env_file:
       - .env
+    # TODO: POSTGRESQL_PASSWORD_FILE as secret
     # environment:
     #   POSTGRESQL_PASSWORD_FILE: /run/secrets/postgres_password
     networks:
@@ -40,7 +41,7 @@ services:
     ports:
       - "8081:80"
     volumes:
-      - ../../Frontend:/usr/share/nginx/html
+      - ../../:/usr/share/nginx/html
     restart: on-failure
     networks:
       - transcendence
