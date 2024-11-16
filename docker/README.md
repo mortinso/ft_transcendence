@@ -30,6 +30,10 @@ http://127.0.0.1:8080/api/users/1/remove_friend (remove friend)
 
 http://127.0.0.1:8080/api/users/1/remove_friend_request (remove friend request)
 
+http://127.0.0.1:8080/api/users/1/block (block user)
+
+http://127.0.0.1:8080/api/users/1/unblock (unblock user)
+
 ## Auth
 
 http://127.0.0.1:8080/api/auth/login (login)
