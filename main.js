@@ -1,5 +1,5 @@
 let pageState = 'overview'
-let loggedIn = true;
+let loggedIn = false;
 
 //Handle back and forward navigation events
 window.onpopstate = function (event) {
@@ -12,15 +12,26 @@ window.onpopstate = function (event) {
 //Initliaze the page
 function initialize() {
     applyColorScheme();
-
+    
+    loggedIn = checkLogin();
     if (!loggedIn) {
         changeContent('signin', false);
         document.getElementById('header').style.display = 'none';
     }
     else {
-
         history.replaceState(pageState, null, "");
         changeContent(pageState, false);
+    }
+}
+
+function checkLogin() {
+    let jwt = sessionStorage.getItem('jwt');
+    console.log(jwt);
+    if (jwt !== null) {
+        return true;
+    }
+    else {
+        return false;
     }
 }
 
@@ -47,8 +58,8 @@ async function login() {
         }
     }).then(data => {
         if (data !== null) {
-            alert('Login successful!');
-            console.log(data);
+            sessionStorage.setItem('jwt', data.access);
+            sessionStorage.setItem('refresh', data.refresh);
             loggedIn = true;
         }
         else {
@@ -62,6 +73,14 @@ async function login() {
         history.replaceState(pageState, null, "");
         changeContent('overview', false);
     }
+}
+
+function logout() {
+    sessionStorage.removeItem('jwt');
+    sessionStorage.removeItem('refresh');
+    loggedIn = false;
+    document.getElementById('header').style.display = 'none';
+    changeContent('signin', false);
 }
 
 //Set the color scheme based on the user's browser settings

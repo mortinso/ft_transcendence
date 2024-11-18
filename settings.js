@@ -1,4 +1,6 @@
 
+let _user = null;
+
 function updateSettingsPage(){
     getUserData().then(user => {
         console.log(user.username, user);
@@ -6,11 +8,12 @@ function updateSettingsPage(){
         document.getElementById('userEmail').innerText = `${user.email}`;
         return user;
     }).then(user => {
-        loadAccountSettings(user);
+        _user = user;
+        loadAccountSettings(_user);
     });
 }
 
-function loadAccountSettings(user){
+function loadAccountSettings(){
     var contentDiv = document.getElementById('settings-container');
     var xhr = new XMLHttpRequest();
     xhr.open('GET', `/src/pages/settings-account.html`, true);
@@ -22,24 +25,45 @@ function loadAccountSettings(user){
             return;
         }
         contentDiv.innerHTML = this.responseText;
-        document.getElementById('InputUsername')?.setAttribute('placeholder', user?.username);
-        document.getElementById('InputEmail')?.setAttribute('placeholder', user?.email);
+        document.getElementById('InputUsername')?.setAttribute('placeholder', _user?.username);
+        document.getElementById('InputEmail')?.setAttribute('placeholder', _user?.email);
         var form = document.getElementById('accountDetailsForm');
         form.addEventListener('submit', function(e){
             e.preventDefault();
-            updateAccountDetails(user); 
+            updateAccountDetails(); 
         });
     }
     xhr.send();
 }
 
-function updateAccountDetails(user){
+function updateAccountDetails(){
+    let newUser = getUpdatedAccountDetails();
+    console.log(newUser);
+    if (newUser === undefined)
+        return;
+    let xhr = new XMLHttpRequest();
+    xhr.open('PUT', `/api/users/1/edit`, true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.onreadystatechange = function () {
+        if (this.readyState !== 4)
+            return;
+        if (this.status !== 200) {
+            console.log('Error updating user details');
+            return;
+        }
+        console.log('User details updated');
+        updateSettingsPage();
+    }
+    xhr.send(JSON.stringify(newUser));
+}
+
+function getUpdatedAccountDetails(){
     let username = document.getElementById('InputUsername').value.trim();
     let email = document.getElementById('InputEmail').value.trim();
 
     let usernameInput = document.getElementById('InputUsername');
     if(username !== ''){
-        if (username.match(/^[a-zA-Z0-9_]+$/)){
+        if (username.match(/^[a-zA-Z0-9_\+\-\.\@]+$/)){
             usernameInput.classList.remove('is-invalid');
             usernameInput.classList.add('is-valid');
         }
@@ -70,11 +94,11 @@ function updateAccountDetails(user){
         emailInput.classList.remove('is-valid');
         emailInput.classList.remove('is-invalid');
     }
-    var user = {
-        username: username !== '' ? username : user.username,
-        email: email !== '' ? email : user.email
+    let newUser = {
+        username: username !== '' ? username : _user.username,
+        email: email !== '' ? email : _user.email
     }
-    console.log(user);
+    return newUser;
 }
 
 function loadSecuritySettings(){
@@ -89,16 +113,16 @@ function loadSecuritySettings(){
             return;
         }
         contentDiv.innerHTML = this.responseText;
-        var form = document.getElementById('accountDetailsForm');
+        var form = document.getElementById('accountSecurityForm');
         form.addEventListener('submit', function(e){
             e.preventDefault();
-            updateSecurityDetails(user);
+            updateSecurityDetails();
         });
     }
     xhr.send();
 }
 
-function updateSecurityDetails(user){
+function updateSecurityDetails(){
     //TODO implement update security details
 }
 

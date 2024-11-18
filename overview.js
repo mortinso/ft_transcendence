@@ -1,7 +1,17 @@
 
 async function getUserData() {
-    const url = 'http://localhost:8080/api/users/1/'; //TODO Change to get correct user
-    const response = await fetch(url);
+    const userID = getUserID();
+    if (userID === null)
+        return;
+    const url = `http://localhost:8080/api/users/${userID}/`;
+    const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+            Accept: 'application/json',
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${sessionStorage.getItem('jwt')}`
+        }
+    });
     if (response.status !== 200) {
         console.error('Error fetching user data');
         return;
@@ -9,6 +19,16 @@ async function getUserData() {
     const data = await response.json();
     //TODO cache data
     return data;
+}
+
+function getUserID(){
+    try {
+        const payload = sessionStorage.getItem('jwt').split('.')[1];
+        return JSON.parse(atob(payload))?.user_id;
+    }
+    catch (e) {
+        return null;
+    }
 }
 
 function updateOverviewPage() {
