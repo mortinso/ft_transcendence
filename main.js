@@ -26,7 +26,6 @@ function initialize() {
 
 function checkLogin() {
     let jwt = sessionStorage.getItem('jwt');
-    console.log(jwt);
     if (jwt !== null) {
         return true;
     }

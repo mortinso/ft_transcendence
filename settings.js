@@ -1,9 +1,8 @@
 
 let _user = null;
 
-function updateSettingsPage(){
+function updateSettingsPage() {
     getUserData().then(user => {
-        console.log(user.username, user);
         document.getElementById('userName').innerText = `${user.username}`;
         document.getElementById('userEmail').innerText = `${user.email}`;
         return user;
@@ -13,7 +12,7 @@ function updateSettingsPage(){
     });
 }
 
-function loadAccountSettings(){
+function loadAccountSettings() {
     var contentDiv = document.getElementById('settings-container');
     var xhr = new XMLHttpRequest();
     xhr.open('GET', `/src/pages/settings-account.html`, true);
@@ -28,69 +27,108 @@ function loadAccountSettings(){
         document.getElementById('InputUsername')?.setAttribute('placeholder', _user?.username);
         document.getElementById('InputEmail')?.setAttribute('placeholder', _user?.email);
         var form = document.getElementById('accountDetailsForm');
-        form.addEventListener('submit', function(e){
+        form.addEventListener('submit', function (e) {
             e.preventDefault();
-            updateAccountDetails(); 
+            updateAccountDetails();
         });
     }
     xhr.send();
 }
 
-function updateAccountDetails(){
+function updateAccountDetails() {
     let newUser = getUpdatedAccountDetails();
-    console.log(newUser);
     if (newUser === undefined)
         return;
+    if (newUser.username === _user.username && newUser.email === _user.email)
+    {
+        document.getElementById('InputUsername').classList.remove('is-valid');
+        document.getElementById('InputEmail').classList.remove('is-valid');
+        return;
+    }
     let xhr = new XMLHttpRequest();
-    xhr.open('PUT', `/api/users/1/edit`, true);
+    const userId = getUserID();
+    const url = `http://localhost:8080/api/users/${userId}/edit`;
+    xhr.open('PUT', url, true);
     xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.setRequestHeader('Authorization', `Bearer ${sessionStorage.getItem('jwt')}`);
     xhr.onreadystatechange = function () {
         if (this.readyState !== 4)
             return;
-        if (this.status !== 200) {
-            console.log('Error updating user details');
+        if (this.status === 400) {
+            document.getElementById('InputUsername').classList.remove('is-valid');
+            document.getElementById('InputUsername').classList.add('is-invalid');
             return;
         }
+        else if (this.status !== 200) {
+            console.log('Error updating user details', this);
+            return;
+        }
+        showUpdatedValues();
         console.log('User details updated');
-        updateSettingsPage();
     }
     xhr.send(JSON.stringify(newUser));
 }
 
-function getUpdatedAccountDetails(){
+function showUpdatedValues() {
+    let username = document.getElementById('InputUsername');
+    let email = document.getElementById('InputEmail');
+    let tmp = _user;
+
+    getUserData().then(user => {
+        _user = user;
+
+        if (username.value !== '' && username.value !== tmp.username) {
+            username.classList.remove('is-invalid');
+            username.classList.add('is-valid');
+            document.getElementById('userName').innerText = _user.username;
+        }
+        else
+            username.classList.remove('is-valid');
+
+        if (email.value !== '' && email.value !== tmp.email) {
+            email.classList.remove('is-invalid');
+            email.classList.add('is-valid');
+            document.getElementById('userEmail').innerText = _user.email;
+        }
+        else
+            email.classList.remove('is-valid');
+    });
+}
+
+function getUpdatedAccountDetails() {
     let username = document.getElementById('InputUsername').value.trim();
     let email = document.getElementById('InputEmail').value.trim();
 
     let usernameInput = document.getElementById('InputUsername');
-    if(username !== ''){
-        if (username.match(/^[a-zA-Z0-9_\+\-\.\@]+$/)){
+    if (username !== '') {
+        if (username.match(/^[a-zA-Z0-9_\+\-\.\@]+$/)) {
             usernameInput.classList.remove('is-invalid');
             usernameInput.classList.add('is-valid');
         }
-        else{
+        else {
             usernameInput.classList.remove('is-valid');
             usernameInput.classList.add('is-invalid');
             return;
         }
     }
-    else{
+    else {
         usernameInput.classList.remove('is-valid');
         usernameInput.classList.remove('is-invalid');
     }
 
     let emailInput = document.getElementById('InputEmail');
-    if (email !== ''){
-        if (email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)){
+    if (email !== '') {
+        if (email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
             emailInput.classList.remove('is-invalid');
             emailInput.classList.add('is-valid');
         }
-        else{
+        else {
             emailInput.classList.remove('is-valid');
             emailInput.classList.add('is-invalid');
             return;
         }
     }
-    else{
+    else {
         emailInput.classList.remove('is-valid');
         emailInput.classList.remove('is-invalid');
     }
@@ -101,7 +139,7 @@ function getUpdatedAccountDetails(){
     return newUser;
 }
 
-function loadSecuritySettings(){
+function loadSecuritySettings() {
     var contentDiv = document.getElementById('settings-container');
     var xhr = new XMLHttpRequest();
     xhr.open('GET', `/src/pages/settings-security.html`, true);
@@ -114,7 +152,7 @@ function loadSecuritySettings(){
         }
         contentDiv.innerHTML = this.responseText;
         var form = document.getElementById('accountSecurityForm');
-        form.addEventListener('submit', function(e){
+        form.addEventListener('submit', function (e) {
             e.preventDefault();
             updateSecurityDetails();
         });
@@ -122,11 +160,11 @@ function loadSecuritySettings(){
     xhr.send();
 }
 
-function updateSecurityDetails(){
+function updateSecurityDetails() {
     //TODO implement update security details
 }
 
-function deleteAccount(){
+function deleteAccount() {
     //TODO replace with modal with confirmation
     alert('Are you sure you want to delete your account?\nThis action cannot be undone!');
 }

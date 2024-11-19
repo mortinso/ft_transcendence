@@ -12,8 +12,42 @@ async function getUserData() {
             Authorization: `Bearer ${sessionStorage.getItem('jwt')}`
         }
     });
+    // if (response.status === 401) {
+    //     if (sessionStorage.getItem('jwt') !== null && sessionStorage.getItem('refresh') !== null) {
+    //         const refreshToken = sessionStorage.getItem('refresh');
+    //         const url = 'http://localhost:8080/api/auth/refresh/';
+    //         const response = await fetch(url, {
+    //             method: 'POST',
+    //             body: JSON.stringify({
+    //                 refresh: refreshToken
+    //             }),
+    //             headers: {
+    //                 'Content-Type': 'application/json; charset=utf-8'
+    //             }
+    //         }).then(response => {
+    //             if (response.status === 200) {
+    //                 return response.json();
+    //             }
+    //             else {
+    //                 console.error('Error refreshing token', response);
+    //                 return null;
+    //             }
+    //         }).then(data => {
+    //             if (data !== null) {
+    //                 sessionStorage.setItem('jwt', data.access);
+    //                 sessionStorage.setItem('refresh', data.refresh);
+    //                 return getUserData();
+    //             }
+    //             else {
+    //                 return;
+    //             }
+    //         });
+    //         return response;
+    //     }
+    // }
     if (response.status !== 200) {
         console.error('Error fetching user data');
+        logout();
         return;
     };
     const data = await response.json();
@@ -21,7 +55,7 @@ async function getUserData() {
     return data;
 }
 
-function getUserID(){
+function getUserID() {
     try {
         const payload = sessionStorage.getItem('jwt').split('.')[1];
         return JSON.parse(atob(payload))?.user_id;

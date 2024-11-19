@@ -2,11 +2,24 @@
     <form id="accountDetailsForm">
         <div class="mb-3">
             <label for="InputUsername" class="form-label">Username</label>
-            <input type="text" pattern="[a-zA-Z0-9_\+\-\.\@]{1,15}" title="Usernames can't contain special characters" class="form-control" id="InputUsername">
+            <div class="input-group has-validation">
+                <input id="InputUsername" class="form-control" type="text" pattern="[a-zA-Z0-9_\+\-\.\@]{1,15}" title="Usernames can't contain special characters" aria-describedby="usernameTakenFeedback usernameValidFeedback" >
+                <div id="usernameTakenFeedback" class="invalid-feedback">
+                    Username already taken
+                </div>
+                <div id="usernameValidFeedback" class="valid-feedback">
+                    Username updated
+                </div>
+            </div>
         </div>
         <div class="mb-3">
             <label for="InputEmail" class="form-label">Email Address</label>
-            <input type="email" class="form-control" id="InputEmail" aria-describedby="emailHelp">
+            <div class="input-group has-validation">
+                <input type="email" class="form-control" id="InputEmail" aria-describedby="emailHelp">
+                <div id="emailValidFeedback" class="valid-feedback">
+                    Email updated
+                </div>
+            </div>
         </div>
         <div class="mb-3">
             <label class="form-label" for="InputPicture">Profile Picture</label>
