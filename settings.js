@@ -161,7 +161,75 @@ function loadSecuritySettings() {
 }
 
 function updateSecurityDetails() {
-    //TODO implement update security details
+    let newPassword = getUpdatedSecuriyDetails();
+    if (newPassword === undefined)
+        return;
+    let xhr = new XMLHttpRequest();
+    const userId = getUserID();
+    const url = `http://localhost:8080/api/users/${userId}/edit`;
+    xhr.open('PUT', url, true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.setRequestHeader('Authorization', `Bearer ${sessionStorage.getItem('jwt')}`);
+    xhr.onreadystatechange = function () {
+        if (this.readyState !== 4)
+            return;
+        if (this.status === 400) {
+            document.getElementById('InputCurrentPassword').classList.remove('is-valid');
+            document.getElementById('InputCurrentPassword').classList.add('is-invalid');
+            console.warn(this);
+            return;
+        }
+        else if (this.status !== 200) {
+            console.log('Error updating user details', this);
+            return;
+        }
+        showSucessfulSave();
+    }
+    xhr.send(JSON.stringify(newPassword));
+}
+
+function showSucessfulSave() {
+    const alertPlaceholder = document.getElementById('saveSucessfulPlaceholder');
+    const appendAlert = (message, type) => {
+        const wrapper = document.createElement('div')
+        wrapper.innerHTML = [
+            `<div class="alert alert-${type} alert-dismissible" role="alert">`,
+            `   <div>${message}</div>`,
+            '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
+            '</div>'
+        ].join('')
+
+        alertPlaceholder.append(wrapper)
+    }
+    appendAlert('Password updated successfully!', 'success');
+    document.getElementById('InputPassword').value = '';
+    document.getElementById('InputPasswordConfirm').value = '';
+    document.getElementById('InputCurrentPassword').value = '';
+}
+
+function getUpdatedSecuriyDetails() {
+    let password = document.getElementById('InputPassword');
+    let confirmPassword = document.getElementById('InputPasswordConfirm');
+    let currentPassword = document.getElementById('InputCurrentPassword');
+
+    if (password.value === '' || confirmPassword.value === '' || currentPassword.value === '')
+        return;
+
+    if (password.value !== confirmPassword.value) {
+        confirmPassword.classList.remove('is-valid');
+        confirmPassword.classList.add('is-invalid');
+        return;
+    }
+    else
+        confirmPassword.classList.remove('is-invalid');
+
+    const newPassword = {
+        username: _user.username,
+        password: password.value,
+        confirm_password: confirmPassword.value,
+        old_password: currentPassword.value
+    }
+    return newPassword;
 }
 
 function deleteAccount() {
