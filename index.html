@@ -11,11 +11,21 @@
 </head>
 
 <body data-bs-theme="dark">
-  <!--#region Github icon-->
+  <!--#region Svg icons-->
   <svg style="display: none;">
     <symbol id="github" viewBox="0 0 16 16">
       <path
         d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.19 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z" />
+    </symbol>
+  </svg>
+  <svg style="display: none;">
+    <symbol id="notification-empty" viewBox="0 0 24 24">
+      <path stroke-linecap="round" fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="1.5" d="M21 5.75a2.75 2.75 0 1 1-5.5 0a2.75 2.75 0 0 1 5.5 0M11.5 3H9.4c-2.24 0-3.36 0-4.216.436a4 4 0 0 0-1.748 1.748C3 6.04 3 7.16 3 9.4v5.2c0 2.24 0 3.36.436 4.216a4 4 0 0 0 1.748 1.748C6.04 21 7.16 21 9.4 21h5.2c2.24 0 3.36 0 4.216-.436a4 4 0 0 0 1.748-1.748C21 17.96 21 16.84 21 14.6v-2.1"/>
+    </symbol>
+  </svg>
+  <svg style="display: none;">
+    <symbol id="notification-full" viewBox="0 0 24 24">
+      <path fill="currentColor" d="M9.367 2.25H11.5a.75.75 0 0 1 0 1.5H9.4c-1.132 0-1.937 0-2.566.052c-.62.05-1.005.147-1.31.302a3.25 3.25 0 0 0-1.42 1.42c-.155.305-.251.69-.302 1.31c-.051.63-.052 1.434-.052 2.566v5.2c0 1.133 0 1.937.052 2.566c.05.62.147 1.005.302 1.31a3.25 3.25 0 0 0 1.42 1.42c.305.155.69.251 1.31.302c.63.051 1.434.052 2.566.052h5.2c1.133 0 1.937 0 2.566-.052c.62-.05 1.005-.147 1.31-.302a3.25 3.25 0 0 0 1.42-1.42c.155-.305.251-.69.302-1.31c.051-.63.052-1.434.052-2.566v-2.1a.75.75 0 0 1 1.5 0v2.133c0 1.092 0 1.958-.057 2.655c-.058.714-.18 1.317-.46 1.869a4.75 4.75 0 0 1-2.076 2.075c-.552.281-1.155.403-1.869.461c-.697.057-1.563.057-2.655.057H9.367c-1.092 0-1.958 0-2.655-.057c-.714-.058-1.317-.18-1.868-.46a4.75 4.75 0 0 1-2.076-2.076c-.281-.552-.403-1.155-.461-1.869c-.057-.697-.057-1.563-.057-2.655V9.367c0-1.092 0-1.958.057-2.655c.058-.714.18-1.317.46-1.868a4.75 4.75 0 0 1 2.077-2.076c.55-.281 1.154-.403 1.868-.461c.697-.057 1.563-.057 2.655-.057m5.383 3.5a3.5 3.5 0 1 1 7 0a3.5 3.5 0 0 1-7 0"/>
     </symbol>
   </svg>
   <!--#endregion-->
@@ -33,8 +43,31 @@
             </li>
           </ul>
 
-          <div class="dropdown text-end">
-            <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle"
+          <div class="dropdown text-end mx-3 header-button">
+            <a class="d-block link-body-emphasis text-decoration-none"
+              data-bs-toggle="dropdown" aria-expanded="false">
+              <svg width="32" height="32">
+                <use href="#notification-empty"></use>
+              </svg>
+            </a>
+            <div class="dropdown-menu text-small p-1 notification-area">
+              <p class="dropdown-header">Notifications</p>
+              <div class="list-group">
+                <a class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
+                  <div class="d-flex gap-2 w-100 justify-content-between">
+                    <div>
+                      <h6 class="mb-0">Notification</h6>
+                      <p class="mb-0 opacity-75">Details</p>
+                    </div>
+                    <small class="opacity-50 text-nowrap tooltip align-self-center">date</small>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div class="dropdown text-end header-button">
+            <a class="d-block link-body-emphasis text-decoration-none dropdown-toggle"
               data-bs-toggle="dropdown" aria-expanded="false">
               <img src="https://avatars.githubusercontent.com/u/107864891?v=4" alt="mdo" width="32" height="32"
                 class="rounded-circle">
@@ -61,23 +94,30 @@
     <!--#region Footer-->
     <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top footer">
       <div class="col-md-4 d-flex align-items-center">
-        <a href="/" class="mb-3 me-2 mb-md-0 text-body-secondary text-decoration-none lh-1">
-          <svg class="bi" width="30" height="24">
-            <use xlink:href="#bootstrap"></use>
-          </svg>
-        </a>
-        <span class="mb-3 mb-md-0 text-body-secondary">Ft_Transcendence, 2024</span>
+        <span class="mb-3 mx-4 mb-md-0 text-body-secondary">Ft_Transcendence, 2024</span>
       </div>
 
       <ul class="nav col-md-4 pe-5 justify-content-end list-unstyled d-flex">
         <li class="ms-3"><a class="text-body-secondary" href="https://github.com/PauloBastos96/Ft_transcendence"><svg
               class="bi github-icon" width="24" height="24">
-              <use xlink:href="#github"></use>
+              <use href="#github"></use>
             </svg></a></li>
       </ul>
     </footer>
     <!--#endregion-->
   </div>
+
+  <template id="notificationTemplate">
+    <a class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
+        <div class="d-flex gap-2 w-100 justify-content-between">
+            <div>
+                <h6 class="mb-0">Notification</h6>
+                <p class="mb-0 opacity-75">Details</p>
+            </div>
+            <small class="opacity-50 text-nowrap tooltip">date</small>
+        </div>
+    </a>
+  </template>
 
   <!--Scripts-->
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
