@@ -6,7 +6,7 @@ from .models import User
 class ListUsersSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'username', 'email', 'friends', 'friend_requests', 'blocked', 'games_played', 'wins', 'losses', 'draws')
+        fields = ('id', 'username', 'email', 'first_name', 'last_name', 'friends', 'friend_requests', 'blocked', 'games_played', 'wins', 'losses', 'draws')
 
 class UpdateUserSerializer(serializers.ModelSerializer):
     old_password = serializers.CharField(max_length=100, write_only=True, required=False)
