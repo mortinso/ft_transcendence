@@ -175,7 +175,7 @@ CORS_ALLOWED_ORIGINS = [
 MEDIA_URL = '/avatars/'
 # Path where media is stored
 # MEDIA_ROOT = os.path.join(BASE_DIR, 'avatars/')  
-MEDIA_ROOT = ('/avatars/')  
+MEDIA_ROOT = ('/avatars/')
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
