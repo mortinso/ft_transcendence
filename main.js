@@ -82,7 +82,39 @@ async function login() {
     }
 }
 
-function logout() {
+async function logout() {
+    const url = 'http://localhost:8080/api/auth/logout/';
+    const response = await fetch(url, {
+        method: 'POST',
+        body: JSON.stringify({
+            refresh: sessionStorage.getItem('refresh')
+        }),
+        headers: {
+            'Content-Type': 'application/json; charset=utf-8',
+            Authorization: `Bearer ${sessionStorage.getItem('jwt')}`
+        }
+    }).then(response => {
+        if (response.status === 200) {
+            return response.json();
+        }
+        else {
+            return null;
+        }
+    }).then(data => {
+        if (data !== null) {
+            return;
+        }
+        else {
+            alert('Logout failed!');
+            return;
+        }
+    }).catch(error => {
+        let modal = new bootstrap.Modal(document.getElementById('loginFailModal'));
+        modal.show();
+        document.getElementById('loginLoading').classList.toggle('d-none');
+        //log error
+    });
+
     sessionStorage.removeItem('jwt');
     sessionStorage.removeItem('refresh');
     loggedIn = false;
