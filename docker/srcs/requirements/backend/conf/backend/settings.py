@@ -27,11 +27,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-9t0$i4hjzqu_cm=1@q0_7cpzgziu-xiwkqyiv2trpdeg2wyw-x'
 
-#TODO: CHANGE DEBUG AND ALLOWED HOSTS
+#TODO: CHANGE DEBUG AND ALLOWED HOSTS to https
+#TODO: disable debug
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["*"]
+# ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = [
+    ".localhost",
+    ".127.0.0.1",
+    ]
 
 
 # Application definition
@@ -151,24 +156,26 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        # 'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
         # 'rest_framework.authentication.SessionAuthentication',
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        # 'rest_framework_simplejwt.authentication.JWTAuthentication',
     ]
 }
 
-# TODO: CHANGE CORS_ALLOWED_ORIGINS
+#TODO: change origins to https
 
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_ALL_ORIGINS = False
 
-# CORS_ALLOWED_ORIGINS = [
-#     '*',
-# ]
+CORS_ALLOWED_ORIGINS = [
+    'http://127.0.0.1:8081',
+    'http://localhost:8081',
+]
 
-# # Base url to serve media files
-# MEDIA_URL = '/media/'
-# # Path where media is stored
-# MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')  
+# Base url to serve media files
+MEDIA_URL = '/avatars/'
+# Path where media is stored
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'avatars/')  
+MEDIA_ROOT = ('/avatars/')
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
