@@ -39,6 +39,7 @@ async function login() {
     let password = document.getElementById('loginPassword').value;
 
     const url = 'http://localhost:8080/api/auth/login/';
+    document.getElementById('loginLoading').classList.toggle('d-none');
     const response = await fetch(url, {
         method: 'POST',
         body: JSON.stringify({
@@ -60,11 +61,18 @@ async function login() {
             sessionStorage.setItem('jwt', data.access);
             sessionStorage.setItem('refresh', data.refresh);
             loggedIn = true;
+            document.getElementById('loginLoading').classList.toggle('d-none');
         }
         else {
             alert('Login failed!');
+            document.getElementById('loginLoading').classList.toggle('d-none');
             return;
         }
+    }).catch(error => {
+        let modal = new bootstrap.Modal(document.getElementById('loginFailModal'));
+        modal.show();
+        document.getElementById('loginLoading').classList.toggle('d-none');
+        //log error
     });
 
     if (loggedIn) {
