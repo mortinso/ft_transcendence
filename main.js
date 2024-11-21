@@ -15,7 +15,7 @@ function initialize() {
     
     loggedIn = checkLogin();
     if (!loggedIn) {
-        changeContent('signin', false);
+        changeContent('login', false);
         document.getElementById('header').style.display = 'none';
     }
     else {
@@ -119,7 +119,7 @@ async function logout() {
     sessionStorage.removeItem('refresh');
     loggedIn = false;
     document.getElementById('header').style.display = 'none';
-    changeContent('signin', false);
+    changeContent('login', false);
 }
 
 function signup(event) {
@@ -237,7 +237,7 @@ function changeContent(page, pushState = true) {
             case 'settings':
                 updateSettingsPage();
                 break;
-            case 'signin':
+            case 'login':
                 break;
             case 'signup':
                 document.getElementById('signupForm').addEventListener('submit', signup, true);

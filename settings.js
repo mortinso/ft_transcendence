@@ -39,8 +39,7 @@ function updateAccountDetails() {
     let newUser = getUpdatedAccountDetails();
     if (newUser === undefined)
         return;
-    if (newUser.username === _user.username && newUser.email === _user.email)
-    {
+    if (newUser.username === _user.username && newUser.email === _user.email) {
         document.getElementById('InputUsername').classList.remove('is-valid');
         document.getElementById('InputEmail').classList.remove('is-valid');
         return;
@@ -232,6 +231,61 @@ function getUpdatedSecuriyDetails() {
 }
 
 function deleteAccount() {
-    //TODO replace with modal with confirmation
-    alert('Are you sure you want to delete your account?\nThis action cannot be undone!');
+    let modal = new bootstrap.Modal(document.getElementById('deleteAccountModal'));
+    modal.show();
+}
+
+async function deleteAccountConfirmed() {
+    let password = document.getElementById('inputDelAccountPassword').value;
+    if (password === '') {
+        document.getElementById('inputDelAccountPassword').classList.add('is-invalid');
+        return;
+    }
+    else
+        document.getElementById('inputDelAccountPassword').classList.remove('is-invalid');
+
+    let isPasswordCorrect = await confirmPassword(password);
+    if (!isPasswordCorrect) {
+        document.getElementById('inputDelAccountPassword').classList.add('is-invalid');
+        return;
+    }
+    else {
+        let xhr = new XMLHttpRequest();
+        const userId = getUserID();
+        const url = `http://localhost:8080/api/users/${userId}/edit`;
+        xhr.open('DELETE', url, true);
+        xhr.setRequestHeader('Authorization', `Bearer ${sessionStorage.getItem('jwt')}`);
+        xhr.onreadystatechange = function () {
+            if (this.readyState !== 4)
+                return;
+            if (this.status !== 204) {
+                document.getElementById('inputDelAccountPassword').classList.add('is-invalid');
+                console.log('Error deleting user', this);
+                return;
+            }
+            sessionStorage.removeItem('jwt');
+            sessionStorage.removeItem('refresh');
+            location.reload();
+        }
+        xhr.send();
+    }
+}
+
+async function confirmPassword(password) {
+    let xhr = new XMLHttpRequest();
+    const userId = getUserID();
+    const url = `http://localhost:8080/api/users/${userId}/edit`;
+    xhr.open('PUT', url, false);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.setRequestHeader('Authorization', `Bearer ${sessionStorage.getItem('jwt')}`);
+    xhr.send(JSON.stringify(
+        {
+            username: _user.username,
+            password: password,
+            confirm_password: password,
+            old_password: password
+        }));
+    if (xhr.status === 200)
+        return true;
+    return false;
 }
