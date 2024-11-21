@@ -40,4 +40,4 @@ http://127.0.0.1:8080/api/auth/login (login)
 
 http://127.0.0.1:8080/api/auth/logout (logout)
 
-http://127.0.0.1:8080/api/auth/signup (logout)
+http://127.0.0.1:8080/api/auth/signup (signup)

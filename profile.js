@@ -1,6 +1,5 @@
 function updateProfilePage() {
     getUserData().then(user => {
-        console.log(user.username, user);
         document.getElementById('username').innerText = `${user.username}`;
         createPongChart();
         createPongGameList();

@@ -64,7 +64,6 @@ function updateAccountDetails() {
             return;
         }
         showUpdatedValues();
-        console.log('User details updated');
     }
     xhr.send(JSON.stringify(newUser));
 }

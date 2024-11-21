@@ -122,6 +122,74 @@ async function logout() {
     changeContent('signin', false);
 }
 
+function signup(event) {
+    event.preventDefault();
+    let username = document.getElementById('signupUsername');
+    let email = document.getElementById('signupEmail');
+    let password = document.getElementById('signupPassword');
+    let confirmPassword = document.getElementById('signupConfirmPassword');
+
+    if (username.value === '' || email.value === '' || password.value === '' || confirmPassword.value === '')
+        return;
+    if (password.value !== confirmPassword.value) {
+        document.getElementById('signupConfirmPassword').classList.add('is-invalid');
+        return;
+    }
+    else
+        document.getElementById('signupConfirmPassword').classList.remove('is-invalid');
+
+    const url = 'http://localhost:8080/api/auth/signup/';
+    fetch(url, {
+        method: 'POST',
+        body: JSON.stringify({
+            username: username.value,
+            email: email.value,
+            password: password.value,
+            confirm_password: confirmPassword.value
+        }),
+        headers: {
+            'Content-Type': 'application/json; charset=utf-8'
+        }
+    }).then(response => {
+        if (response.status === 400) {
+            document.getElementById('signupUsername').classList.add('is-invalid');
+            console.warn(response);
+            return;
+        }
+        else if (response.status === 201) {
+            return response.json();
+        }
+        else {
+            //log error
+            return;
+        }
+    }).then(data => {
+        if (data !== undefined) {
+            const alertPlaceholder = document.getElementById('signupSuccessAlert');
+            const appendAlert = (message, type) => {
+                const wrapper = document.createElement('div')
+                wrapper.innerHTML = [
+                    `<div class="alert alert-${type} alert-dismissible" role="alert">`,
+                    `   <div>${message}</div>`,
+                    '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
+                    '</div>'
+                ].join('')
+        
+                alertPlaceholder.append(wrapper)
+            }
+            appendAlert('Account created sucessfully! You may login now.', 'success');
+            email.value = '';
+            username.value = '';
+            password.value = '';
+            confirmPassword.value = '';
+        }
+    }).catch(error => {
+        let modal = new bootstrap.Modal(document.getElementById('signupFailModal'));
+        modal.show();
+        //log error
+    });
+}
+
 //Set the color scheme based on the user's browser settings
 function applyColorScheme() {
     if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
@@ -171,6 +239,8 @@ function changeContent(page, pushState = true) {
                 break;
             case 'signin':
                 break;
+            case 'signup':
+                document.getElementById('signupForm').addEventListener('submit', signup, true);
             default:
                 break;
         }

@@ -1,24 +1,50 @@
 <div class="form-signin w-25 m-auto my-5">
-    <form>
+    <form id="signupForm">
         <h1 class="h3 mb-3 fw-normal">Please sign up</h1>
 
         <div class="form-floating">
-            <input type="email" class="form-control" id="floatingInput" placeholder="email address">
-            <label for="floatingInput">Email address</label>
+            <input type="email" class="form-control" id="signupEmail" placeholder="Email Address" required>
+            <label for="signupEmail">Email Address</label>
+        </div>
+        <div class="input-group has-validation my-2">
+            <div class=" form-floating">
+                <input type="text" class="form-control" id="signupUsername" pattern="[a-zA-Z0-9_\+\-\.\@]{1,15}"
+                    placeholder="Username" required>
+                <label class="form-label" for="signupUsername">Username</label>
+                <div id="usernameTakenFeedback" class="invalid-feedback">
+                    Username already taken
+                </div>
+            </div>
         </div>
         <div class="form-floating my-2">
-            <input type="text" class="form-control" id="floatingUsername" placeholder="Username">
-            <label for="floatingUsername">Username</label>
+            <input type="password" class="form-control" id="signupPassword" placeholder="Password" required>
+            <label for="signupPassword">Password</label>
         </div>
-        <div class="form-floating my-2">
-            <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
-            <label for="floatingPassword">Password</label>
+        <div class="input-group has-validation my-2">
+            <div class=" form-floating">
+                <input type="password" class="form-control" id="signupConfirmPassword" placeholder="Password" required>
+                <label for="signupConfirmPassword">Confirm Password</label>
+                <div id="passwordMatchFeedback" class="invalid-feedback">
+                    Passwords do not match
+                </div>
+            </div>
         </div>
-        <div class="form-floating my-2">
-            <input type="password" class="form-control" id="floatingPassword2" placeholder="Password">
-            <label for="floatingPassword2">Confirm Password</label>
-        </div>
+        <div id="signupSuccessAlert"></div>
+        <button class="btn btn-primary w-100 py-2 mt-3" type="submit">Sign up</button>
     </form>
-    <button class="btn btn-primary w-100 py-2 mt-3" type="button" onclick="signup()">Sign up</button>
     <button class="btn btn-secondary w-100 py-2 my-2" type="button" onclick="changeContent('signin')">Sign in</button>
+    <div class="modal fade" id="signupFailModal" tabindex="-1" aria-labelledby="signupFailModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="signupFailModalLabel">Connection failed</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Couldn't connect to server. Please try again later.</p>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

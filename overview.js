@@ -67,7 +67,6 @@ function getUserID() {
 
 function updateOverviewPage() {
     getUserData().then(user => {
-        console.log(user?.username, user);
         document.getElementById('username').innerText = `Hello ${user?.username}`;
         document.getElementById('games-played').innerText = `Games played: ${user?.games_played}`;
         document.getElementById('wins').innerText = `Wins: ${user?.wins}`;
