@@ -1,3 +1,4 @@
+//Login user
 async function login(event) {
     event.preventDefault();
     const username = document.getElementById('loginUsername').value;
@@ -61,9 +62,10 @@ async function login(event) {
     }
 }
 
+//Logout the user
 async function logout() {
     const url = 'http://localhost:8080/api/auth/logout/';
-    const response = await fetch(url, {
+    await fetch(url, {
         method: 'POST',
         body: JSON.stringify({
             refresh: sessionStorage.getItem('refresh')
@@ -102,6 +104,7 @@ async function logout() {
     changeContent('login', false);
 }
 
+//Create a new user account
 function signup(event) {
     event.preventDefault();
     let username = document.getElementById('signupUsername');
@@ -170,6 +173,7 @@ function signup(event) {
     });
 }
 
+//Get user data
 async function getUserData() {
     const userID = await getUserID();
     if (userID === null)
@@ -198,6 +202,7 @@ async function getUserData() {
     return data;
 }
 
+//Get the user ID from the access token
 async function getUserID() {
     try {
         if (sessionStorage.getItem('jwt') === null) 
@@ -210,6 +215,7 @@ async function getUserID() {
     }
 }
 
+//Refresh the login token
 async function refreshLogin() {
     if (sessionStorage.getItem('refresh') !== null) {
         const refreshToken = sessionStorage.getItem('refresh');
