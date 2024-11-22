@@ -55,7 +55,6 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'corsheaders',
     
-    'django_cleanup.apps.CleanupConfig'
 ]
 
 MIDDLEWARE = [
@@ -185,4 +184,8 @@ SIMPLE_JWT = {
     'SLIDING_TOKEN_LIFETIME': timedelta(days=30),
     'SLIDING_TOKEN_REFRESH_LIFETIME_LATE_USER': timedelta(days=1),
     'SLIDING_TOKEN_LIFETIME_LATE_USER': timedelta(days=30),
+    'UPDATE_LAST_LOGIN': True,
 }
+
+# STATIC_URL = "/avatars/"
+# STATIC_ROOT = BASE_DIR

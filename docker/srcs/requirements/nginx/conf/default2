@@ -41,12 +41,22 @@ server {
         #
         # include snippets/snakeoil.conf;
 
-        root   /usr/share/nginx/html;
+        root   /usr/share/nginx/frontend;
+        # root   /usr/share/nginx/html;
 
         # Add index.php to the list if you are using PHP
         index index.php index.html;
 
         server_name localhost;
+
+        location = /favicon.ico {
+            access_log off;
+            log_not_found off;
+        }
+
+        location /media {
+            root /;
+        }
 
         location / {
                 # First attempt to serve request as file, then

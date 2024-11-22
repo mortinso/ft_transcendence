@@ -40,9 +40,10 @@ services:
     container_name: nginx
     build: requirements/nginx
     ports:
-      - "8081:80"
+      - "8081:443"
     volumes:
-      - ../../:/usr/share/nginx/html
+      - ../../:/usr/share/nginx/frontend
+      - ../avatars:/media
     restart: on-failure
     networks:
       - transcendence
