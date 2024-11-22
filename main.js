@@ -34,7 +34,8 @@ function checkLogin() {
     }
 }
 
-async function login() {
+async function login(event) {
+    event.preventDefault();
     let username = document.getElementById('loginUsername').value;
     let password = document.getElementById('loginPassword').value;
 
@@ -51,7 +52,14 @@ async function login() {
         }
     }).then(response => {
         if (response.status === 200) {
+            document.getElementById('loginUsername').classList.remove('is-invalid');
+            document.getElementById('loginPassword').classList.remove('is-invalid');
             return response.json();
+        }
+        else if (response.status === 401) {
+            document.getElementById('loginUsername').classList.add('is-invalid');
+            document.getElementById('loginPassword').classList.add('is-invalid');
+            return null;
         }
         else {
             return null;
@@ -64,7 +72,6 @@ async function login() {
             document.getElementById('loginLoading').classList.toggle('d-none');
         }
         else {
-            alert('Login failed!');
             document.getElementById('loginLoading').classList.toggle('d-none');
             return;
         }
@@ -77,8 +84,8 @@ async function login() {
 
     if (loggedIn) {
         document.getElementById('header').style.display = 'block';
+        changeContent('overview', true);
         history.replaceState(pageState, null, "");
-        changeContent('overview', false);
     }
 }
 
@@ -223,7 +230,8 @@ function changeContent(page, pushState = true) {
             return;
         }
         contentDiv.innerHTML = this.responseText;
-        pageState = page;
+        if (page !== 'login' && page !== 'signup')
+            pageState = page;
         if (pushState && history.state !== pageState) {
             history.pushState(pageState, null, "");
         }
@@ -238,6 +246,7 @@ function changeContent(page, pushState = true) {
                 updateSettingsPage();
                 break;
             case 'login':
+                document.getElementById('loginForm').addEventListener('submit', login, true);
                 break;
             case 'signup':
                 document.getElementById('signupForm').addEventListener('submit', signup, true);
