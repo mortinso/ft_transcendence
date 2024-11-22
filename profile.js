@@ -8,6 +8,7 @@ function updateProfilePage() {
     });
 }
 
+//Create chart for pong games
 function createPongChart() {
     new Chart("pongChart", {
         type: 'doughnut',
@@ -22,6 +23,7 @@ function createPongChart() {
     })
 }
 
+//Create chart for the second game
 function createSecondChart() {
     new Chart("secondChart", {
         type: 'doughnut',
@@ -36,6 +38,7 @@ function createSecondChart() {
     })
 }
 
+//Create list of last 5 games of pong
 function createPongGameList() {
     //TODO fetch data from backend
     let testData = ["Won against test1", " Won against test2", " Lost against test3", "Draw against test4", "Lost against test5"];
@@ -61,6 +64,7 @@ function createPongGameList() {
     });
 }
 
+//Create list of last 5 games of the second game
 function createSecondGameList() {
     //TODO fetch data from backend
     let testData = ["Won against test1", " Won against test2", " Lost against test3", "Draw against test4", "Lost against test5"];

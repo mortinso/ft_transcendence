@@ -24,6 +24,7 @@ function initialize() {
     }
 }
 
+//Check if the user is logged in
 function checkLogin() {
     const jwt = sessionStorage.getItem('jwt');
     const refresh = localStorage.getItem('refresh');

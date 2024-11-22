@@ -15,6 +15,7 @@ function updateSettingsPage() {
     });
 }
 
+//Load the widget for general settings
 function loadAccountSettings() {
     var contentDiv = document.getElementById('settings-container');
     var xhr = new XMLHttpRequest();
@@ -38,6 +39,7 @@ function loadAccountSettings() {
     xhr.send();
 }
 
+//Update account details
 function updateAccountDetails() {
     let newUser = getUpdatedAccountDetails();
     if (newUser === undefined)
@@ -70,6 +72,7 @@ function updateAccountDetails() {
     xhr.send(JSON.stringify(newUser));
 }
 
+//Show updated or invalid values
 function showUpdatedValues() {
     let username = document.getElementById('InputUsername');
     let email = document.getElementById('InputEmail');
@@ -96,6 +99,7 @@ function showUpdatedValues() {
     });
 }
 
+//Get object with new account details
 function getUpdatedAccountDetails() {
     let username = document.getElementById('InputUsername').value.trim();
     let email = document.getElementById('InputEmail').value.trim();
@@ -141,6 +145,7 @@ function getUpdatedAccountDetails() {
     return newUser;
 }
 
+//Load the widget for security settings
 function loadSecuritySettings() {
     var contentDiv = document.getElementById('settings-container');
     var xhr = new XMLHttpRequest();
@@ -162,6 +167,7 @@ function loadSecuritySettings() {
     xhr.send();
 }
 
+//Update password
 function updateSecurityDetails() {
     let newPassword = getUpdatedSecuriyDetails();
     if (newPassword === undefined)
@@ -190,6 +196,7 @@ function updateSecurityDetails() {
     xhr.send(JSON.stringify(newPassword));
 }
 
+//Show alert for successful save
 function showSucessfulSave() {
     const alertPlaceholder = document.getElementById('saveSucessfulPlaceholder');
     const appendAlert = (message, type) => {
@@ -209,6 +216,7 @@ function showSucessfulSave() {
     document.getElementById('InputCurrentPassword').value = '';
 }
 
+//Get object with new password details
 function getUpdatedSecuriyDetails() {
     let password = document.getElementById('InputPassword');
     let confirmPassword = document.getElementById('InputPasswordConfirm');
@@ -234,11 +242,13 @@ function getUpdatedSecuriyDetails() {
     return newPassword;
 }
 
+//Show confirmation modal for deleting account
 function deleteAccount() {
     let modal = new bootstrap.Modal(document.getElementById('deleteAccountModal'));
     modal.show();
 }
 
+//Delete account
 async function deleteAccountConfirmed() {
     let password = document.getElementById('inputDelAccountPassword').value;
     if (password === '') {
@@ -275,6 +285,7 @@ async function deleteAccountConfirmed() {
     }
 }
 
+//Confirm password before deleting account
 async function confirmPassword(password) {
     let xhr = new XMLHttpRequest();
     const userId = getUserID();
