@@ -5,6 +5,9 @@ function updateSettingsPage() {
     getUserData().then(user => {
         document.getElementById('userName').innerText = `${user.username}`;
         document.getElementById('userEmail').innerText = `${user.email}`;
+        const date = new Date(user.date_joined);
+        const formattedDate = new Intl.DateTimeFormat(navigator.language).format(date);
+        document.getElementById('userJoinDate').innerText = `Joined on ${formattedDate}`;
         return user;
     }).then(user => {
         _user = user;
@@ -96,6 +99,7 @@ function showUpdatedValues() {
 function getUpdatedAccountDetails() {
     let username = document.getElementById('InputUsername').value.trim();
     let email = document.getElementById('InputEmail').value.trim();
+    let avatar = document.getElementById('InputPicture').value;
 
     let usernameInput = document.getElementById('InputUsername');
     if (username !== '') {
@@ -252,7 +256,7 @@ async function deleteAccountConfirmed() {
     else {
         let xhr = new XMLHttpRequest();
         const userId = getUserID();
-        const url = `http://localhost:8080/api/users/${userId}/edit`;
+        const url = `http://localhost:8080/api/users/${userId}/edit/`;
         xhr.open('DELETE', url, true);
         xhr.setRequestHeader('Authorization', `Bearer ${sessionStorage.getItem('jwt')}`);
         xhr.onreadystatechange = function () {
@@ -274,7 +278,7 @@ async function deleteAccountConfirmed() {
 async function confirmPassword(password) {
     let xhr = new XMLHttpRequest();
     const userId = getUserID();
-    const url = `http://localhost:8080/api/users/${userId}/edit`;
+    const url = `http://localhost:8080/api/users/${userId}/edit/`;
     xhr.open('PUT', url, false);
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.setRequestHeader('Authorization', `Bearer ${sessionStorage.getItem('jwt')}`);
