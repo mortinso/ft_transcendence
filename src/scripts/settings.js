@@ -19,7 +19,7 @@ function updateSettingsPage() {
 function loadAccountSettings() {
     var contentDiv = document.getElementById('settings-container');
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', `/src/pages/settings-account.html`, true);
+    xhr.open('GET', `/src/components/settings-account.html`, true);
     xhr.onreadystatechange = function () {
         if (this.readyState !== 4)
             return;
@@ -149,7 +149,7 @@ function getUpdatedAccountDetails() {
 function loadSecuritySettings() {
     var contentDiv = document.getElementById('settings-container');
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', `/src/pages/settings-security.html`, true);
+    xhr.open('GET', `/src/components/settings-security.html`, true);
     xhr.onreadystatechange = function () {
         if (this.readyState !== 4)
             return;
