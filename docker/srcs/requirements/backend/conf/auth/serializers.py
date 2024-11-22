@@ -15,7 +15,7 @@ class SignUpSerializer(serializers.ModelSerializer):
     def validate(self, data):
         if 'email' not in data or not data['email']:
             raise serializers.ValidationError("Email is required.")
-        if data['password'] != data['confirm_password']:
+        if validate_password(data['password']) != validate_password(data['confirm_password']):
             raise serializers.ValidationError("Passwords do not match.")
         return data
 
