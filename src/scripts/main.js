@@ -10,10 +10,10 @@ window.onpopstate = function (event) {
 }
 
 //Initliaze the page
-function initialize() {
+async function initialize() {
     applyColorScheme();
     
-    loggedIn = checkLogin();
+    loggedIn = await checkLogin();
     if (!loggedIn) {
         changeContent('login', false);
         document.getElementById('header').style.display = 'none';
@@ -25,9 +25,17 @@ function initialize() {
 }
 
 //Check if the user is logged in
-function checkLogin() {
+async function checkLogin() {
     const jwt = sessionStorage.getItem('jwt');
     const refresh = localStorage.getItem('refresh');
+    await verifyRefreshToken(refresh).then(valid => {
+        if (!valid)
+        {
+            localStorage.removeItem('refresh');
+            localStorage.removeItem('keepLoggedIn');
+            return false;
+        }
+    });
     if (jwt !== null || refresh !== null) {
         if (sessionStorage.getItem('refresh') === null) {
             sessionStorage.setItem('refresh', refresh);
