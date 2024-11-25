@@ -252,3 +252,18 @@ async function refreshLogin() {
     }
     return null;
 }
+
+async function verifyRefreshToken(refresh){
+    const url = 'http://localhost:8080/api/auth/api/token/refresh/';
+    await fetch(url, {
+        method: 'POST',
+        body: JSON.stringify({
+            refresh: refresh
+        }),
+        headers: {
+            'Content-Type': 'application/json; charset=utf-8',
+        }
+    }).then(response => {
+        return response.status === 200;
+    });
+}
