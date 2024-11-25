@@ -32,18 +32,18 @@
 
   <div class="wrapper" id="app">
     <!--#region Header-->
-    <header id="header" class="p-3 mb-3 border-bottom">
+    <header id="header" class="p-3 border-bottom">
       <div class="container">
         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
           <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-            <li><a id="header-overview" class="nav-link px-2 header-button" onclick="changeContent('overview')">Overview</a></li>
-            <li><a id="header-pong" class="nav-link px-2 link-body-emphasis header-button" onclick="changeContent('pong')">Pong</a></li>
-            <li><a id="header-game2" class="nav-link px-2 link-body-emphasis header-button" onclick="changeContent('game2')">Game 2</a></li>
-            <li><a id="header-livechat" class="nav-link px-2 link-body-emphasis header-button" onclick="changeContent('livechat')">Live Chat</a>
+            <li><a id="header-overview" class="nav-link px-2 pointer-button" onclick="changeContent('overview')">Overview</a></li>
+            <li><a id="header-pong" class="nav-link px-2 link-body-emphasis pointer-button" onclick="changeContent('pong')">Pong</a></li>
+            <li><a id="header-game2" class="nav-link px-2 link-body-emphasis pointer-button" onclick="changeContent('game2')">Game 2</a></li>
+            <li><a id="header-livechat" class="nav-link px-2 link-body-emphasis pointer-button" onclick="changeContent('livechat')">Live Chat</a>
             </li>
           </ul>
 
-          <div class="dropdown text-end mx-3 header-button">
+          <div class="dropdown text-end mx-3 pointer-button">
             <a class="d-block link-body-emphasis text-decoration-none"
               data-bs-toggle="dropdown" aria-expanded="false">
               <svg width="32" height="32">
@@ -66,19 +66,19 @@
             </div>
           </div>
 
-          <div class="dropdown text-end header-button">
+          <div class="dropdown text-end pointer-button">
             <a class="d-block link-body-emphasis text-decoration-none dropdown-toggle"
               data-bs-toggle="dropdown" aria-expanded="false">
               <img src="https://avatars.githubusercontent.com/u/107864891?v=4" alt="mdo" width="32" height="32"
                 class="rounded-circle">
             </a>
             <ul class="dropdown-menu text-small">
-              <li><a class="dropdown-item header-button" onclick="changeContent('profile')">Profile</a></li>
-              <li><a class="dropdown-item header-button" onclick="changeContent('settings')">Settings</a></li>
+              <li><a class="dropdown-item pointer-button" onclick="changeContent('profile')">Profile</a></li>
+              <li><a class="dropdown-item pointer-button" onclick="changeContent('settings')">Settings</a></li>
               <li>
                 <hr class="dropdown-divider">
               </li>
-              <li><a class="dropdown-item header-button" onclick="logout()">Logout</a></li>
+              <li><a class="dropdown-item pointer-button" onclick="logout()">Logout</a></li>
             </ul>
           </div>
         </div>
@@ -90,7 +90,7 @@
     <main id="content"></main>
 
     <!--#region Footer-->
-    <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top footer">
+    <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 border-top footer">
       <div class="col-md-4 d-flex align-items-center">
         <span class="mb-3 mx-4 mb-md-0 text-body-secondary">Ft_Transcendence, 2024</span>
       </div>
