@@ -198,7 +198,6 @@ async function getUserData() {
     };
     const data = await response.json();
     //TODO cache data
-    console.log(data);
     return data;
 }
 
@@ -265,5 +264,7 @@ async function verifyRefreshToken(refresh){
         }
     }).then(response => {
         return response.status === 200;
+    }).catch(error => {
+        return false;
     });
 }

@@ -12,7 +12,7 @@ window.onpopstate = function (event) {
 //Initliaze the page
 async function initialize() {
     applyColorScheme();
-    
+
     loggedIn = await checkLogin();
     if (!loggedIn) {
         changeContent('login', false);
@@ -28,14 +28,16 @@ async function initialize() {
 async function checkLogin() {
     const jwt = sessionStorage.getItem('jwt');
     const refresh = localStorage.getItem('refresh');
-    await verifyRefreshToken(refresh).then(valid => {
-        if (!valid)
-        {
-            localStorage.removeItem('refresh');
-            localStorage.removeItem('keepLoggedIn');
-            return false;
-        }
-    });
+
+    if (refresh !== null) {
+        await verifyRefreshToken(refresh).then(valid => {
+            if (!valid) {
+                localStorage.removeItem('refresh');
+                localStorage.removeItem('keepLoggedIn');
+                return false;
+            }
+        });
+    }
     if (jwt !== null || refresh !== null) {
         if (sessionStorage.getItem('refresh') === null) {
             sessionStorage.setItem('refresh', refresh);
@@ -91,6 +93,9 @@ function changeContent(page, pushState = true) {
                 break;
             case 'profile':
                 updateProfilePage();
+                break;
+            case 'livechat':
+                initChatPage();
                 break;
             case 'settings':
                 updateSettingsPage();
