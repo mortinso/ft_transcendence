@@ -39,7 +39,7 @@ ALLOWED_HOSTS = [
     "localhost",
     ".127.0.0.1",
     'backend',
-    env("HOST_IP"),
+    "ft-transcendence.com"
     ]
 
 

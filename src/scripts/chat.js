@@ -9,6 +9,7 @@ function initChatPage() {
 
 function fillFriendList() {
     const friendList = document.getElementById('friend-list');
+    friendList.innerHTML = '';
     //test data
     // const friends = [
     //     {
@@ -64,4 +65,26 @@ function toggleSelectedFriend(element) {
     if (chatArea.classList.contains('d-none')) {
         chatArea.classList.remove('d-none');
     }
+}
+
+function showAddFriendModal() {
+    let addFriendModal = new bootstrap.Modal(document.getElementById('add-friend-modal'));
+    addFriendModal.show();
+}
+
+function addFriend(){
+    let friendName = document.getElementById('inputFriendUsername');
+    if(friendName.value === ''){
+        friendName.classList.add('is-invalid');
+        return;
+    }
+    let friend = _user.friends.find(f => f.name === friendName.value);
+    if(friend){
+        alert('This user is already your friend');
+        return;
+    }
+    
+    fillFriendList();
+    let addFriendModal = bootstrap.Modal.getInstance(document.getElementById('add-friend-modal'));
+    addFriendModal.hide();
 }

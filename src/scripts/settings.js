@@ -51,7 +51,7 @@ function updateAccountDetails() {
     }
     let xhr = new XMLHttpRequest();
     const userId = getUserID();
-    const url = `http://localhost:8080/api/users/${userId}/edit`;
+    const url = `https://ft-transcendence.com/api/users/${userId}/edit`;
     xhr.open('PUT', url, true);
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.setRequestHeader('Authorization', `Bearer ${sessionStorage.getItem('jwt')}`);
@@ -174,7 +174,7 @@ function updateSecurityDetails() {
         return;
     let xhr = new XMLHttpRequest();
     const userId = getUserID();
-    const url = `http://localhost:8080/api/users/${userId}/edit`;
+    const url = `https://ft-transcendence.com/api/users/${userId}/edit`;
     xhr.open('PUT', url, true);
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.setRequestHeader('Authorization', `Bearer ${sessionStorage.getItem('jwt')}`);
@@ -266,7 +266,7 @@ async function deleteAccountConfirmed() {
     else {
         let xhr = new XMLHttpRequest();
         const userId = getUserID();
-        const url = `http://localhost:8080/api/users/${userId}/edit/`;
+        const url = `https://ft-transcendence.com/api/users/${userId}/edit/`;
         xhr.open('DELETE', url, true);
         xhr.setRequestHeader('Authorization', `Bearer ${sessionStorage.getItem('jwt')}`);
         xhr.onreadystatechange = function () {
@@ -289,7 +289,7 @@ async function deleteAccountConfirmed() {
 async function confirmPassword(password) {
     let xhr = new XMLHttpRequest();
     const userId = getUserID();
-    const url = `http://localhost:8080/api/users/${userId}/edit/`;
+    const url = `https://ft-transcendence.com/api/users/${userId}/edit/`;
     xhr.open('PUT', url, false);
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.setRequestHeader('Authorization', `Bearer ${sessionStorage.getItem('jwt')}`);

@@ -10,7 +10,7 @@ async function login(event) {
     else
         localStorage.removeItem('keepLoggedIn');
 
-    const url = 'http://localhost:8080/api/auth/login/';
+    const url = 'https://ft-transcendence.com/api/auth/login/';
     document.getElementById('loginLoading').classList.toggle('d-none');
     await fetch(url, {
         method: 'POST',
@@ -64,7 +64,7 @@ async function login(event) {
 
 //Logout the user
 async function logout() {
-    const url = 'http://localhost:8080/api/auth/logout/';
+    const url = 'https://ft-transcendence.com/api/auth/logout/';
     await fetch(url, {
         method: 'POST',
         body: JSON.stringify({
@@ -121,7 +121,7 @@ function signup(event) {
     else
         document.getElementById('signupConfirmPassword').classList.remove('is-invalid');
 
-    const url = 'http://localhost:8080/api/auth/signup/';
+    const url = 'https://ft-transcendence.com/api/auth/signup/';
     fetch(url, {
         method: 'POST',
         body: JSON.stringify({
@@ -178,7 +178,7 @@ async function getUserData() {
     const userID = await getUserID();
     if (userID === null)
         return;
-    const url = `http://localhost:8080/api/users/${userID}/`;
+    const url = `https://ft-transcendence.com/api/users/${userID}/`;
     const response = await fetch(url, {
         method: 'GET',
         headers: {
@@ -218,7 +218,7 @@ async function getUserID() {
 async function refreshLogin() {
     if (sessionStorage.getItem('refresh') !== null) {
         const refreshToken = sessionStorage.getItem('refresh');
-        const url = 'http://localhost:8080/api/auth/api/token/refresh/';
+        const url = 'https://ft-transcendence.com/api/auth/api/token/refresh/';
         const response = await fetch(url, {
             method: 'POST',
             body: JSON.stringify({
@@ -253,7 +253,7 @@ async function refreshLogin() {
 }
 
 async function verifyRefreshToken(refresh){
-    const url = 'http://localhost:8080/api/auth/api/token/refresh/';
+    const url = 'https://ft-transcendence.com/api/auth/api/token/refresh/';
     await fetch(url, {
         method: 'POST',
         body: JSON.stringify({
