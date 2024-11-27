@@ -72,7 +72,7 @@ function showAddFriendModal() {
     addFriendModal.show();
 }
 
-function addFriend(){
+async function addFriend(){
     let friendName = document.getElementById('inputFriendUsername');
     if(friendName.value === ''){
         friendName.classList.add('is-invalid');
@@ -83,7 +83,15 @@ function addFriend(){
         alert('This user is already your friend');
         return;
     }
-    
+    await addFriendAsync(friendName.value).then((response) => {
+        friendName.classList.remove('is-invalid');
+        
+    }).catch((e) => {
+        friendName.classList.add('is-invalid');
+        console.log('Friend not found');
+        console.log(e);
+        return;
+    });
     fillFriendList();
     let addFriendModal = bootstrap.Modal.getInstance(document.getElementById('add-friend-modal'));
     addFriendModal.hide();

@@ -1,6 +1,4 @@
 
-let _user = null;
-
 function updateSettingsPage() {
     getUserData().then(user => {
         document.getElementById('userName').innerText = `${user.username}`;

@@ -268,3 +268,29 @@ async function verifyRefreshToken(refresh){
         return false;
     });
 }
+
+async function addFriendAsync(friendName) {
+    const userID = await getUserID();
+    if (userID === null)
+        return;
+    const url = `https://ft-transcendence.com/api/users/${userID}/invite_friend/`;
+    const response = await fetch(url, {
+        method: 'PUT',
+        body: JSON.stringify({
+            username: friendName
+        }),
+        headers: {
+            'Content-Type': 'application/json; charset=utf-8',
+            Authorization: `Bearer ${sessionStorage.getItem('jwt')}`
+        }
+    });
+    if (response.status === 401) {
+        await refreshLogin();
+        return await addFriendAsync(friendName);
+    }
+    if (response.status !== 201) {
+        console.error('Error adding friend', response);
+        return;
+    }
+    return response.json();
+}

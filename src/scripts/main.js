@@ -1,5 +1,6 @@
 let pageState = 'overview'
 let loggedIn = false;
+let _user = null;
 
 //Handle back and forward navigation events
 window.onpopstate = function (event) {
@@ -22,6 +23,7 @@ async function initialize() {
         history.replaceState(pageState, null, "");
         changeContent(pageState, false);
     }
+    await getNotifications();
 }
 
 //Check if the user is logged in
@@ -133,6 +135,28 @@ function updateHeaderButton(page) {
         } else {
             buttons[key].classList.add('link-body-emphasis');
         }
+    }
+}
+
+async function getNotifications(){
+    if (_user === null) {
+        _user = await getUserData();
+    }
+
+    let notificationTemplate = document.getElementById('notification-template');
+    let notificationContainer = document.getElementById('notification-area');
+    _user.friend_requests.forEach(element => {
+        let notification = notificationTemplate.content.cloneNode(true);
+        notification.querySelector('h6').innerText = 'Friend request';
+        notification.querySelector('p').innerText = `${element} wants to be your friend`;
+        notification.querySelector('a').addEventListener('click', () => {changeContent('livechat', true)});
+        notificationContainer.appendChild(notification);
+    });
+    if (notificationContainer.children.length === 0) {
+        notificationContainer.innerHTML = '<p class="d-flex mx-3 gap-3">No notifications</p>';
+    }
+    if (notificationContainer.children.length > 0) {
+        document.getElementById('notification-icon').setAttribute('href', '#notification-full');
     }
 }
 
