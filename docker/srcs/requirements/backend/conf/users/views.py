@@ -3,7 +3,6 @@ from .models import User
 from .serializers import ListUsersSerializer, UpdateUserSerializer, AddFriendSerializer, RemoveFriendSerializer, AcceptFriendSerializer, RemoveFriendRequestSerializer, BlockUserSerializer, UnblockUserSerializer
 from rest_framework import generics
 
-
 class ListUsersView(generics.ListAPIView):
     serializer_class = ListUsersSerializer
 
@@ -85,3 +84,6 @@ class UnblockUserView(generics.RetrieveUpdateAPIView):
         pk = self.kwargs.get('pk')
         if pk == self.request.user.id:
             return User.objects.filter(pk=pk)
+        
+class returnImageView(generics.RetrieveUpdateAPIView):
+    pass

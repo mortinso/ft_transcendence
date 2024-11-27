@@ -1,6 +1,6 @@
 from django.urls import path
 from django.contrib.auth import views
-from .views import LoginView, LogoutView, SignUpView
+from .views import LoginView, LogoutView, SignUpView, document_view
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 urlpatterns = [
@@ -10,4 +10,5 @@ urlpatterns = [
     # path('signup/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     # path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('media/<int:pk>/', document_view, name="document_view"),
 ]

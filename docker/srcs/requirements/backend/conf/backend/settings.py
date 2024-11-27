@@ -27,15 +27,19 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-9t0$i4hjzqu_cm=1@q0_7cpzgziu-xiwkqyiv2trpdeg2wyw-x'
 
-#TODO: CHANGE DEBUG AND ALLOWED HOSTS to https
+#TODO: CHANGE DEBUG
 #TODO: disable debug
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+# DEBUG = False
 
-# ALLOWED_HOSTS = ["*"]
+# ALLOWED_HOSTS = ['*']
+
 ALLOWED_HOSTS = [
-    ".localhost",
+    "localhost",
     ".127.0.0.1",
+    'backend',
+    env("HOST_IP"),
     ]
 
 
@@ -55,7 +59,6 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'corsheaders',
     
-    'django_cleanup.apps.CleanupConfig'
 ]
 
 MIDDLEWARE = [
@@ -142,7 +145,19 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, 'static'),
+# ]
+
+# Base url to serve media files
+MEDIA_URL = '/media/'
+# Path where media is stored
+MEDIA_ROOT = os.path.join(BASE_DIR, 'avatars/')  
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles')
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -164,20 +179,15 @@ REST_FRAMEWORK = {
     ]
 }
 
-#TODO: change origins to https
+#TODO: CORS not working on remote hosts
 
-CORS_ALLOW_ALL_ORIGINS = False
+# CORS_ALLOW_ALL_ORIGINS = True
+# CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOWED_ORIGINS = [
-    'http://127.0.0.1:8081',
-    'http://localhost:8081',
+    'https://127.0.0.1',
+    'https://localhost',
 ]
-
-# Base url to serve media files
-MEDIA_URL = '/avatars/'
-# Path where media is stored
-# MEDIA_ROOT = os.path.join(BASE_DIR, 'avatars/')  
-MEDIA_ROOT = ('/avatars/')
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
@@ -185,4 +195,7 @@ SIMPLE_JWT = {
     'SLIDING_TOKEN_LIFETIME': timedelta(days=30),
     'SLIDING_TOKEN_REFRESH_LIFETIME_LATE_USER': timedelta(days=1),
     'SLIDING_TOKEN_LIFETIME_LATE_USER': timedelta(days=30),
+    'UPDATE_LAST_LOGIN': True,
 }
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
