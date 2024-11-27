@@ -39,7 +39,7 @@ ALLOWED_HOSTS = [
     "localhost",
     ".127.0.0.1",
     'backend',
-    '192.168.10.72',
+    env("HOST_IP"),
     ]
 
 
@@ -197,3 +197,5 @@ SIMPLE_JWT = {
     'SLIDING_TOKEN_LIFETIME_LATE_USER': timedelta(days=30),
     'UPDATE_LAST_LOGIN': True,
 }
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
