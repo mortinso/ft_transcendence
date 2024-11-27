@@ -44,10 +44,11 @@ services:
       # - "8081:443"
       - "443:443"
       - "80:80"
+      - "8080:8080"
     volumes:
       - ../../:/usr/share/nginx/frontend
-      - static-volume:/usr/share/nginx/html/static/
-      - ../avatars:/usr/share/nginx/html/media
+      - static-volume:/etc/nginx/html/static/
+      - ../avatars:/etc/nginx/html/media
     restart: on-failure
     networks:
       - transcendence

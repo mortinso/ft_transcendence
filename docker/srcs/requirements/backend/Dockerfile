@@ -24,6 +24,6 @@ RUN chmod +x /usr/local/bin/backend.sh
 
 ENTRYPOINT ["/usr/local/bin/backend.sh"]
 
-# CMD [ "python3", "manage.py", "runserver", "0.0.0.0:8000" ]
-CMD [ "gunicorn", "--bind", "0.0.0.0:8000", "backend.wsgi" ]
+CMD [ "python3", "manage.py", "runserver", "0.0.0.0:8000" ]
+# CMD [ "gunicorn", "--bind", "0.0.0.0:8000", "backend.wsgi" ]
 # CMD [ "tail", "-f" ]

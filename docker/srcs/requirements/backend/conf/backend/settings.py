@@ -39,7 +39,8 @@ ALLOWED_HOSTS = [
     "localhost",
     ".127.0.0.1",
     'backend',
-    "ft-transcendence.com"
+    "ft-transcendence.com",
+    '10.12.244.234'
     ]
 
 
