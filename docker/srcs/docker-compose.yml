@@ -8,14 +8,15 @@ services:
     build: requirements/backend
     volumes:
       - ./requirements/backend/conf:/transcendence/backend
-      - ../avatars:/avatars
+      - static-volume:/transcendence/backend/staticfiles
+      - ../avatars:/transcendence/backend/mediafiles
     restart: on-failure
     env_file:
       - .env
     networks:
       - transcendence
-    ports:
-      - "8080:8000"
+    # ports:
+    #   - "8080:8000"
     secrets:
       - django_superuser_password
     
@@ -40,13 +41,20 @@ services:
     container_name: nginx
     build: requirements/nginx
     ports:
-      - "8081:443"
+      # - "8081:443"
+      - "443:443"
+      - "80:80"
     volumes:
       - ../../:/usr/share/nginx/frontend
-      - ../avatars:/media
+      - static-volume:/usr/share/nginx/html/static/
+      - ../avatars:/usr/share/nginx/html/media
     restart: on-failure
     networks:
       - transcendence
+
+volumes:
+  static-volume:
+  media-volume:
 
 networks:
   transcendence:

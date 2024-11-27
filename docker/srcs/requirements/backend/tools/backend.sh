@@ -13,6 +13,8 @@ cd backend
 # mv /temp/users/* users
 # mv /temp/auth/* auth
 
+python3 manage.py collectstatic --noinput
+
 python3 manage.py makemigrations
 
 python3 manage.py migrate
