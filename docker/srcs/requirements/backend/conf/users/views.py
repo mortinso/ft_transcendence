@@ -38,6 +38,7 @@ class RetrieveUpdateDestroyUserView(generics.RetrieveUpdateDestroyAPIView):
 
 class AddFriendView(generics.RetrieveUpdateAPIView):
     serializer_class = AddFriendSerializer
+    # serializer_class = UpdateUserSerializer
 
     def get_queryset(self):
         pk = self.kwargs.get('pk')
