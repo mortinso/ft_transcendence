@@ -47,7 +47,7 @@
                     <p>Enter username</p>
                     <div class="has-validation">
                         <input type="text" pattern="[a-zA-Z0-9_\+\-\.\@]{1,15}" class="form-control" placeholder="Username" id="inputFriendUsername">
-                        <div class="invalid-feedback">Username doesn't exist</div>
+                        <div id="friend-name-error" class="invalid-feedback"></div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -61,10 +61,36 @@
 
 <template id="friend-list-template">
     <li class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true" onclick="toggleSelectedFriend(this)">
-        <img alt="friend profile picture" width="50" height="50" class="rounded-circle flex-shrink-0">
+        <img alt="user avatar" width="50" height="50" class="rounded-circle flex-shrink-0">
         <div class="d-flex gap-2 w-100 justify-content-between align-items-center">
             <h6 class="mb-0">{{FRIEND NAME}}</h6>
             <small class="opacity-50 text-nowrap tooltip mx-3">🟢</small>
+        </div>
+    </li>
+</template>
+
+<template id="friend-request-template">
+    <li class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
+        <img alt="user avatar" width="50" height="50" class="rounded-circle flex-shrink-0">
+        <div class="d-flex gap-2 w-100 justify-content-between align-items-center">
+            <h6 class="mb-0">{{FRIEND NAME}}</h6>
+            <div class="d-flex gap-2">
+                <button class="btn btn-outline-primary p-1 py-0" type="button" onclick="acceptFriendRequest(this)">
+                    <svg width="16" height="16">
+                        <use xlink:href="#accept-icon"></use>
+                    </svg>
+                </button>
+                <button class="btn btn-outline-secondary p-1 py-0" type="button" onclick="rejectFriendRequest(this)">
+                    <svg width="16" height="16">
+                        <use xlink:href="#reject-icon"></use>
+                    </svg>
+                </button>
+                <button class="btn btn-outline-danger p-1 py-1" type="button" onclick="blockUser(this)">
+                    <svg width="16" height="16">
+                        <use xlink:href="#block-icon"></use>
+                    </svg>
+                </button>
+            </div>
         </div>
     </li>
 </template>
