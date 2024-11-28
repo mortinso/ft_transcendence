@@ -188,6 +188,8 @@ REST_FRAMEWORK = {
 CORS_ALLOWED_ORIGINS = [
     'https://127.0.0.1',
     'https://localhost',
+    'https://ft-transcendence.com',
+    'https://10.12.244.234',
 ]
 
 SIMPLE_JWT = {

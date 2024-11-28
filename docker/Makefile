@@ -20,6 +20,7 @@ fclean: clean
 	docker image rm transcendence-backend
 	docker image rm postgres
 	docker image rm transcendence-nginx
+	docker image prune
 
 re: fclean all
 
