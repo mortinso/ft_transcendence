@@ -14,8 +14,51 @@ from pathlib import Path
 from environs import Env
 import os
 from datetime import timedelta
+import logging.config
+from django.utils.log import DEFAULT_LOGGING
+
 
 env = Env()
+LOGGING_CONFIG = None
+
+LOGLEVEL = os.environ.get('LOGLEVEL', 'info').upper()
+
+logging.config.dictConfig({
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'default': {
+            # exact format is not important, this is the minimum information
+            'format': '%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
+        },
+        'django.server': DEFAULT_LOGGING['formatters']['django.server'],
+    },
+    'handlers': {
+        # console logs to stderr
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'default',
+        },
+        'django.server': DEFAULT_LOGGING['handlers']['django.server'],
+    },
+    'loggers': {
+        # default for all undefined Python modules
+        '': {
+            'level': 'WARNING',
+            'handlers': ['console'],
+        },
+        # Our application code
+        'app': {
+            'level': LOGLEVEL,
+            'handlers': ['console'],
+            # Avoid double logging because of root logger
+            'propagate': False,
+        },
+        # Default runserver request logging
+        'django.server': DEFAULT_LOGGING['loggers']['django.server'],
+    },
+})
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -28,19 +71,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-9t0$i4hjzqu_cm=1@q0_7cpzgziu-xiwkqyiv2trpdeg2wyw-x'
 
 #TODO: CHANGE DEBUG
-#TODO: disable debug
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 # DEBUG = False
-
-# ALLOWED_HOSTS = ['*']
 
 ALLOWED_HOSTS = [
     "localhost",
     ".127.0.0.1",
     'backend',
     "ft-transcendence.com",
-    '10.12.244.234'
+    '192.168.172.83',
     ]
 
 
@@ -72,6 +112,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    'backend.middleware.activeuser_middleware.ActiveUserMiddleware',
 ]
 
 ROOT_URLCONF = 'backend.urls'
@@ -180,16 +222,11 @@ REST_FRAMEWORK = {
     ]
 }
 
-#TODO: CORS not working on remote hosts
-
-# CORS_ALLOW_ALL_ORIGINS = True
-# CORS_ALLOW_CREDENTIALS = True
-
 CORS_ALLOWED_ORIGINS = [
     'https://127.0.0.1',
     'https://localhost',
     'https://ft-transcendence.com',
-    'https://10.12.244.234',
+    'https://192.168.172.83',
 ]
 
 SIMPLE_JWT = {
@@ -202,3 +239,12 @@ SIMPLE_JWT = {
 }
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': '127.0.0.1:11211'
+    }
+}
+
+USER_ONLINE_TIMEOUT = 300

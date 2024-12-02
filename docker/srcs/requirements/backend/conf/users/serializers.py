@@ -3,14 +3,22 @@ from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 from .models import User
 from django.shortcuts import get_object_or_404
+import logging
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
 
 class ListUsersSerializer(serializers.ModelSerializer):
+    is_online = serializers.SerializerMethodField()
+
     class Meta:
         model = User
-        fields = ('__all__')
-        extra_kwargs = {
-            'password': {'write_only': True, 'required': False},
-        }
+        fields = ('id', 'username', 'email', 'avatar', 'is_online', 'friends', 'friend_requests', 'blocked', 'wins', 'losses', 'draws', 'games_played')
+        extra_kwargs = {'password': {'write_only': True, 'required': False}}
+
+    def get_is_online(self, obj):
+        logger.debug(f"Checking if user is online: {obj.online()}")
+        return obj.online()
 
 class UpdateUserSerializer(serializers.ModelSerializer):
     old_password = serializers.CharField(max_length=126, write_only=True, required=False)

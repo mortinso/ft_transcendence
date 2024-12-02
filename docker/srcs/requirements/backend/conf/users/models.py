@@ -2,6 +2,14 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.core.files.storage import default_storage
 import os
+import datetime
+from django.core.cache import cache
+from django.conf import settings
+import logging
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
 
 def user_avatar_path(instance, filename):
     # Extract the file extension
@@ -14,7 +22,6 @@ class User(AbstractUser):
     friends = models.ManyToManyField('self', symmetrical=False, related_name='friends_set')
     friend_requests = models.ManyToManyField('self', symmetrical=False, related_name='friend_requests_set')
     blocked = models.ManyToManyField('self', symmetrical=False, related_name='banned_set')
-    is_online = models.BooleanField(default=True)
     wins = models.IntegerField(default=0)
     losses = models.IntegerField(default=0)
     draws = models.IntegerField(default=0)
@@ -35,3 +42,17 @@ class User(AbstractUser):
             pass  # This is a new user, so no need to delete anything
 
         super(User, self).save(*args, **kwargs)
+    
+    def last_seen(self):
+        return cache.get('seen_%s' % self.username)
+
+    def online(self):
+        if self.last_seen():
+            now = datetime.datetime.now()
+            logger.debug(f"User: {self.username}, Last Seen: {self.last_seen()}, Now: {now}")
+            if now > self.last_seen() + datetime.timedelta(seconds=settings.USER_ONLINE_TIMEOUT):
+                return False
+            else:
+                return True
+        else:
+            return False 
