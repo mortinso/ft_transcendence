@@ -22,8 +22,8 @@ async function initialize() {
     else {
         history.replaceState(pageState, null, "");
         changeContent(pageState, false);
+        await getNotifications();
     }
-    await getNotifications();
 }
 
 //Check if the user is logged in
@@ -154,8 +154,9 @@ async function getNotifications(){
     });
     if (notificationContainer.children.length === 0) {
         notificationContainer.innerHTML = '<p class="d-flex mx-3 gap-3">No notifications</p>';
+        document.getElementById('notification-icon').setAttribute('href', '#notification-empty');
     }
-    if (notificationContainer.children.length > 0) {
+    if (notificationContainer.children.length > 0 && notificationContainer.getElementsByTagName('a').length > 0) {
         document.getElementById('notification-icon').setAttribute('href', '#notification-full');
     }
 }

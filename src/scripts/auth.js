@@ -59,6 +59,7 @@ async function login(event) {
         document.getElementById('header').style.display = 'block';
         changeContent('overview', true);
         history.replaceState(pageState, null, "");
+        await getNotifications();
     }
 }
 
@@ -95,12 +96,17 @@ async function logout() {
         document.getElementById('loginLoading').classList.toggle('d-none');
         //log error
     });
+    clearSession();
+}
 
+function clearSession() {
     sessionStorage.removeItem('jwt');
     sessionStorage.removeItem('refresh');
     localStorage.removeItem('refresh');
     loggedIn = false;
+    _user = null;
     document.getElementById('header').style.display = 'none';
+    document.getElementById('notification-area').innerHTML = '';
     changeContent('login', false);
 }
 
@@ -174,6 +180,7 @@ function signup(event) {
 }
 
 //Get user data
+//TODO change to be able to get any user instead of just the logged in user
 async function getUserData() {
     const userID = await getUserID();
     if (userID === null)
@@ -277,7 +284,7 @@ async function addFriendAsync(friendName) {
     const response = await fetch(url, {
         method: 'PUT',
         body: JSON.stringify({
-            username: friendName
+            add_friend: friendName
         }),
         headers: {
             'Content-Type': 'application/json; charset=utf-8',
@@ -288,9 +295,46 @@ async function addFriendAsync(friendName) {
         await refreshLogin();
         return await addFriendAsync(friendName);
     }
-    if (response.status !== 201) {
-        console.error('Error adding friend', response);
-        return;
+    return response;
+}
+
+async function getUsernameByID(userID) {
+    const url = `https://ft-transcendence.com/api/users/${userID}/`;
+    const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json; charset=utf-8',
+            Authorization: `Bearer ${sessionStorage.getItem('jwt')}`
+        }
+    });
+    if (response.status === 401) {
+        await refreshLogin();
+        return await getUsernameByID(userID);
     }
-    return response.json();
+    const data = await response.json();
+    return data.username;
+}
+
+async function acceptFriendRequestAsync(friendID) {
+    const userID = await getUserID();
+    if (userID === null)
+        return;
+    const url = `https://ft-transcendence.com/api/users/${userID}/accept_friend/`;
+    const response = await fetch(url, {
+        method: 'PUT',
+        body: JSON.stringify({
+            accept_friend: friendID
+        }),
+        headers: {
+            'Content-Type': 'application/json; charset=utf-8',
+            Authorization: `Bearer ${sessionStorage.getItem('jwt')}`
+        }
+    });
+    if (response.status === 401) {
+        await refreshLogin();
+        return await acceptFriendRequestAsync(friendID);
+    }
+    console.log(response);
+    return response;
 }
