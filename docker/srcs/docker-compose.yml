@@ -44,7 +44,7 @@ services:
       # - "8081:443"
       - "443:443"
       - "80:80"
-      - "8080:8080"
+      # - "8080:8080"
     volumes:
       - ../../:/usr/share/nginx/frontend
       - static-volume:/etc/nginx/html/static/
@@ -55,7 +55,6 @@ services:
 
 volumes:
   static-volume:
-  media-volume:
 
 networks:
   transcendence:

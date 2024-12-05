@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import ListUsersView, UserDetailsView, RetrieveUpdateDestroyUserView, WhoamiView, AddFriendView, RemoveFriendView, AcceptFriendView, RemoveFriendRequestView, BlockUserView, UnblockUserView
+from .views import ListUsersView, UserDetailsView, RetrieveUpdateDestroyUserView, AddFriendView, RemoveFriendView, AcceptFriendView, RemoveFriendRequestView, BlockUserView, UnblockUserView, returnImage
 
 urlpatterns = [
     path("<int:pk>/edit/", RetrieveUpdateDestroyUserView.as_view(), name="user_update"),
@@ -10,6 +10,5 @@ urlpatterns = [
     path("<int:pk>/block/", BlockUserView.as_view(), name="block_user"),
     path("<int:pk>/unblock/", UnblockUserView.as_view(), name="unblock_user"),
     path("<int:pk>/", UserDetailsView.as_view(), name="user_details"),
-    path("whoami/", WhoamiView.as_view(), name="whoami"),
     path("", ListUsersView.as_view(), name="user_list"),
 ]

@@ -59,6 +59,9 @@ logging.config.dictConfig({
     },
 })
 
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -73,16 +76,18 @@ SECRET_KEY = 'django-insecure-9t0$i4hjzqu_cm=1@q0_7cpzgziu-xiwkqyiv2trpdeg2wyw-x
 #TODO: CHANGE DEBUG
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-# DEBUG = False
+DEBUG = False
 
 ALLOWED_HOSTS = [
     "localhost",
     ".127.0.0.1",
     'backend',
     "ft-transcendence.com",
-    '192.168.172.83',
     ]
 
+ALLOWED_REFERERS = [
+    "https://ft-transcendence.com/",
+]
 
 # Application definition
 
@@ -114,6 +119,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
     'backend.middleware.activeuser_middleware.ActiveUserMiddleware',
+    # 'backend.middleware.refer_middleware.FrontendOnlyMiddleware',
 ]
 
 ROOT_URLCONF = 'backend.urls'
@@ -198,8 +204,8 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # Base url to serve media files
 MEDIA_URL = '/media/'
 # Path where media is stored
-MEDIA_ROOT = os.path.join(BASE_DIR, 'avatars/')  
-# MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles')
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'avatars/')  
+MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles')
 
 
 # Default primary key field type
@@ -219,14 +225,16 @@ REST_FRAMEWORK = {
         # 'rest_framework.authentication.BasicAuthentication',
         # 'rest_framework.authentication.SessionAuthentication',
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-    ]
+    ],
 }
+
+# CORS_ALLOW_ALL_ORIGINS = True
+# CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOWED_ORIGINS = [
     'https://127.0.0.1',
     'https://localhost',
     'https://ft-transcendence.com',
-    'https://192.168.172.83',
 ]
 
 SIMPLE_JWT = {
@@ -239,6 +247,7 @@ SIMPLE_JWT = {
 }
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
 
 CACHES = {
     'default': {

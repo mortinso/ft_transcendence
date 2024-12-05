@@ -14,8 +14,6 @@
 
 https://ft-transcendence.com/api/users (list users except current user)
 
-https://ft-transcendence.com/api/users/whoami (shows current user)
-
 https://ft-transcendence.com/api/users/1 (retrieve user 1, if it exists)
 
 https://ft-transcendence.com/api/users/1/edit (update/destroy user1, if user 1 is current user, else show 404)

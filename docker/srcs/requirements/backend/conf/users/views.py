@@ -2,6 +2,12 @@ from django.shortcuts import render
 from .models import User
 from .serializers import ListUsersSerializer, UpdateUserSerializer, AddFriendSerializer, RemoveFriendSerializer, AcceptFriendSerializer, RemoveFriendRequestSerializer, BlockUserSerializer, UnblockUserSerializer
 from rest_framework import generics
+from django.conf import settings
+from django.http import FileResponse
+import os
+from rest_framework.response import Response
+from rest_framework import status
+from backend.permissions import IsSelf
 
 class ListUsersView(generics.ListAPIView):
     serializer_class = ListUsersSerializer
@@ -12,79 +18,63 @@ class ListUsersView(generics.ListAPIView):
         queryset = queryset.exclude(id=user.id)
         return queryset
 
-
 class UserDetailsView(generics.RetrieveAPIView):
-
+    queryset = User.objects.all()
     serializer_class = ListUsersSerializer
-
-    def get_object(self):
-        pk = self.kwargs.get('pk')
-        return generics.get_object_or_404(User, pk=pk)
-    
-class WhoamiView(generics.RetrieveAPIView):
-
-    serializer_class = ListUsersSerializer
-
-    def get_object(self):
-        return generics.get_object_or_404(User, id=self.request.user.id)
 
 class RetrieveUpdateDestroyUserView(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = [IsSelf]
+
+    queryset = User.objects.all()
     serializer_class = UpdateUserSerializer
 
-    def get_queryset(self):
-        pk = self.kwargs.get('pk')
-        if pk == self.request.user.id:
-            return User.objects.filter(pk=pk)
-
 class AddFriendView(generics.RetrieveUpdateAPIView):
-    serializer_class = AddFriendSerializer
-    # serializer_class = UpdateUserSerializer
+    permission_classes = [IsSelf]
 
-    def get_queryset(self):
-        pk = self.kwargs.get('pk')
-        if pk == self.request.user.id:
-            return User.objects.filter(pk=pk)
-    
-    
+    queryset = User.objects.all()
+    serializer_class = AddFriendSerializer
+
 class AcceptFriendView(generics.RetrieveUpdateAPIView):
+    permission_classes = [IsSelf]
+
+    queryset = User.objects.all()
     serializer_class = AcceptFriendSerializer
 
-    def get_queryset(self):
-        pk = self.kwargs.get('pk')
-        if pk == self.request.user.id:
-            return User.objects.filter(pk=pk)
-
 class RemoveFriendView(generics.RetrieveUpdateAPIView):
+    permission_classes = [IsSelf]
+
+    queryset = User.objects.all()
     serializer_class = RemoveFriendSerializer
 
-    def get_queryset(self):
-        pk = self.kwargs.get('pk')
-        if pk == self.request.user.id:
-            return User.objects.filter(pk=pk)
-
 class RemoveFriendRequestView(generics.RetrieveUpdateAPIView):
+    permission_classes = [IsSelf]
+
+    queryset = User.objects.all()
     serializer_class = RemoveFriendRequestSerializer
 
-    def get_queryset(self):
-        pk = self.kwargs.get('pk')
-        if pk == self.request.user.id:
-            return User.objects.filter(pk=pk)
-
 class BlockUserView(generics.RetrieveUpdateAPIView):
+    permission_classes = [IsSelf]
+
+    queryset = User.objects.all()
     serializer_class = BlockUserSerializer
 
-    def get_queryset(self):
-        pk = self.kwargs.get('pk')
-        if pk == self.request.user.id:
-            return User.objects.filter(pk=pk)
-
 class UnblockUserView(generics.RetrieveUpdateAPIView):
-    serializer_class = UnblockUserSerializer
+    permission_classes = [IsSelf]
 
-    def get_queryset(self):
-        pk = self.kwargs.get('pk')
-        if pk == self.request.user.id:
-            return User.objects.filter(pk=pk)
+    queryset = User.objects.all()
+    serializer_class = UnblockUserSerializer
         
-class returnImageView(generics.RetrieveUpdateAPIView):
-    pass
+def returnImage(request, path):
+    # Check if the user is authenticated
+    if not request.user.is_authenticated:
+        return Response({"detail": "Invalid credentials"}, status=status.HTTP_400_BAD_REQUEST)
+
+    # Construct the full file path
+    file_path = os.path.join(settings.MEDIA_ROOT, path)
+
+    # Check if the file exists
+    if not os.path.exists(file_path):
+        return Response({"detail": "Invalid path"}, status=status.HTTP_400_BAD_REQUEST)
+
+    # Serve the file
+    return FileResponse(open(file_path, 'rb'))

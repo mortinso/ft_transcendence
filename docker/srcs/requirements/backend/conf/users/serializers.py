@@ -10,15 +10,18 @@ logger.setLevel(logging.DEBUG)
 
 class ListUsersSerializer(serializers.ModelSerializer):
     is_online = serializers.SerializerMethodField()
+    last_seen = serializers.SerializerMethodField()
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'email', 'avatar', 'is_online', 'friends', 'friend_requests', 'blocked', 'wins', 'losses', 'draws', 'games_played')
+        fields = ('id', 'username', 'email', 'avatar', 'is_online', 'last_seen', 'friends', 'friend_requests', 'blocked', 'wins', 'losses', 'draws', 'games_played')
         extra_kwargs = {'password': {'write_only': True, 'required': False}}
 
     def get_is_online(self, obj):
-        logger.debug(f"Checking if user is online: {obj.online()}")
         return obj.online()
+
+    def get_last_seen(self, obj):
+        return obj.last_seen()
 
 class UpdateUserSerializer(serializers.ModelSerializer):
     old_password = serializers.CharField(max_length=126, write_only=True, required=False)
@@ -28,6 +31,7 @@ class UpdateUserSerializer(serializers.ModelSerializer):
         model = User
         fields = ('id', 'username', 'email', 'old_password', 'password', 'confirm_password', 'first_name', 'last_name', 'avatar')
         extra_kwargs = {
+            'username': {'required': False},
             'password': {'write_only': True, 'required': False},
             'old_password': {'write_only': True},
             'confirm_password': {'write_only': True},
@@ -65,7 +69,6 @@ class UpdateUserSerializer(serializers.ModelSerializer):
         return instance
     
 class AddFriendSerializer(serializers.ModelSerializer):
-    # add_friend = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), write_only=True)
     add_friend = serializers.CharField(max_length=126, write_only=True)
 
     class Meta:

@@ -18,6 +18,7 @@ def user_avatar_path(instance, filename):
     return f'{instance.id}/user_{instance.id}.{ext}'
 
 class User(AbstractUser):
+    email = models.EmailField(unique=True)
     avatar = models.ImageField(upload_to=user_avatar_path, default='default.jpg')
     friends = models.ManyToManyField('self', symmetrical=False, related_name='friends_set')
     friend_requests = models.ManyToManyField('self', symmetrical=False, related_name='friend_requests_set')
@@ -39,7 +40,7 @@ class User(AbstractUser):
                 if default_storage.exists(this.avatar.name):
                     default_storage.delete(this.avatar.name)
         except User.DoesNotExist:
-            pass  # This is a new user, so no need to delete anything
+            pass
 
         super(User, self).save(*args, **kwargs)
     
@@ -49,7 +50,6 @@ class User(AbstractUser):
     def online(self):
         if self.last_seen():
             now = datetime.datetime.now()
-            logger.debug(f"User: {self.username}, Last Seen: {self.last_seen()}, Now: {now}")
             if now > self.last_seen() + datetime.timedelta(seconds=settings.USER_ONLINE_TIMEOUT):
                 return False
             else:
