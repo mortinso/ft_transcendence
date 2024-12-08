@@ -34,8 +34,12 @@ https://ft-transcendence.com/api/users/1/unblock (unblock user)
 
 ## Auth
 
-https://ft-transcendence.com/api/auth/login (login)
+https://ft-transcendence.com/api/auth/login/ (login)
 
-https://ft-transcendence.com/api/auth/logout (logout)
+https://ft-transcendence.com/api/auth/logout/ (logout)
 
-https://ft-transcendence.com/api/auth/signup (signup)
+https://ft-transcendence.com/api/auth/signup/ (signup)
+
+https://ft-transcendence.com/api/auth/get_otp/ (send one-time password to user's email)
+
+https://ft-transcende.com/api/auth/check_otp/ (confirm user's one-time password)
