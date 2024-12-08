@@ -257,3 +257,10 @@ CACHES = {
 }
 
 USER_ONLINE_TIMEOUT = 300
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = "mail@mail.com" #sender's email-id
+EMAIL_HOST_PASSWORD = "password" #password associated with above email-id (not the regular password)

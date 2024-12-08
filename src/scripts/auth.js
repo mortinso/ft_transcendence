@@ -225,7 +225,7 @@ async function getUserID() {
 async function refreshLogin() {
     if (sessionStorage.getItem('refresh') !== null) {
         const refreshToken = sessionStorage.getItem('refresh');
-        const url = 'https://ft-transcendence.com/api/auth/api/token/refresh/';
+        const url = 'https://ft-transcendence.com/api/auth/token/refresh/';
         const response = await fetch(url, {
             method: 'POST',
             body: JSON.stringify({
@@ -260,7 +260,7 @@ async function refreshLogin() {
 }
 
 async function verifyRefreshToken(refresh){
-    const url = 'https://ft-transcendence.com/api/auth/api/token/refresh/';
+    const url = 'https://ft-transcendence.com/api/auth/token/refresh/';
     await fetch(url, {
         method: 'POST',
         body: JSON.stringify({

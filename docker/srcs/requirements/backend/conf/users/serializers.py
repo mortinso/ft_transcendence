@@ -29,10 +29,11 @@ class UpdateUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'email', 'old_password', 'password', 'confirm_password', 'first_name', 'last_name', 'avatar')
+        fields = ('id', 'username', 'email', 'old_password', 'password', 'confirm_password', 'first_name', 'last_name', 'avatar', 'tfa')
         extra_kwargs = {
             'username': {'required': False},
             'password': {'write_only': True, 'required': False},
+            'email': {'required': False},
             'old_password': {'write_only': True},
             'confirm_password': {'write_only': True},
             'avatar': {'write_only': True}

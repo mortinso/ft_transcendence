@@ -27,6 +27,9 @@ class User(AbstractUser):
     losses = models.IntegerField(default=0)
     draws = models.IntegerField(default=0)
     games_played = models.IntegerField(default=0)
+    tfa = models.BooleanField(default=False)
+    otp = models.CharField(max_length=64, blank=True, null=True)
+    otp_expiration = models.DateTimeField(blank=True, null=True)
 
     def __str__(self):
         return self.username
@@ -48,6 +51,7 @@ class User(AbstractUser):
         return cache.get('seen_%s' % self.username)
 
     def online(self):
+        logger.debug(f"{self.username} last_seen is: {self.last_seen()}")
         if self.last_seen():
             now = datetime.datetime.now()
             if now > self.last_seen() + datetime.timedelta(seconds=settings.USER_ONLINE_TIMEOUT):

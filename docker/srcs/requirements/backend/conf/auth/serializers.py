@@ -31,9 +31,15 @@ class SignUpSerializer(serializers.ModelSerializer):
         return user
     
 
-class LoginSerializer(serializers.Serializer):
-    username = serializers.CharField()
+class LoginSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(max_length=150)
     password = serializers.CharField(write_only=True)
+    # TFA = serializers.CharField(max_length=6, write_only=True, required=True)
+
+    class Meta:
+        model = User
+        fields = ('username', 'password')
+        extra_kwargs = {'password': {'write_only': True}}
 
     def validate(self, data):
         username = data.get('username')
@@ -51,3 +57,10 @@ class LoginSerializer(serializers.Serializer):
 
         data['user'] = user
         return data
+    
+class ForgotPasswordSerializer(serializers.Serializer):
+    email = serializers.CharField(max_length=100)
+
+class CheckOTPSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    otp = serializers.CharField()

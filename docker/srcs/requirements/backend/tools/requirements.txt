@@ -9,3 +9,4 @@ pillow #import images
 djangorestframework-simplejwt #JWT authentication
 gunicorn #Application server
 # django-debug-toolbar #debugging
+# pyotp #2FA
