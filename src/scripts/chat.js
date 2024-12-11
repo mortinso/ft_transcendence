@@ -39,7 +39,6 @@ async function fillFriendList() {
         clone.querySelector('small').textContent = friend.status === 'online' ? '🟢' : '⚫';
         clone.querySelector('img').src = friend.picture;
         friendList.appendChild(clone);
-        clone.addEventListener('contextmenu', showContextMenu);
     }
 }
 
@@ -56,9 +55,8 @@ function toggleSelectedFriend(element) {
     }
 }
 
-function showContextMenu(event) {
-    event.preventDefault();
-    console.log(event);
+function showFriendOptions(event) {
+    event.stopPropagation();
 }
 
 function showAddFriendModal() {

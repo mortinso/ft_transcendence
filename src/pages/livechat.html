@@ -10,8 +10,8 @@
         </div>
         <hr>
         <ul id="friend-list" class="list-group"></ul>
-      </div>
-      <div id="chat-area" class="d-none container-fluid bg-body-secondary h-100 p-3 d-flex flex-column">
+    </div>
+    <div id="chat-area" class="d-none container-fluid bg-body-secondary h-100 p-3 d-flex flex-column">
         <h4 id="selected-friend"></h4>
         <hr>
         <div class="container-fluid bg-body d-flex flex-column p-3 flex-grow-1">
@@ -30,12 +30,13 @@
                 </li>
             </ul>
             <div class="input-group">
-                <input type="text" class="form-control" placeholder="Type a message" aria-label="Message input" aria-describedby="send-message-button">
+                <input type="text" class="form-control" placeholder="Type a message" aria-label="Message input"
+                    aria-describedby="send-message-button">
                 <button class="btn btn-outline-secondary" type="button" id="send-message-button">Send</button>
             </div>
         </div>
-      </div>
-      <div class="modal fade" id="add-friend-modal" tabindex="-1" aria-labelledby="add-friend-modal-label"
+    </div>
+    <div class="modal fade" id="add-friend-modal" tabindex="-1" aria-labelledby="add-friend-modal-label"
         aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -46,7 +47,8 @@
                 <div class="modal-body">
                     <p>Enter username</p>
                     <div class="has-validation">
-                        <input type="text" pattern="[a-zA-Z0-9_\+\-\.\@]{1,15}" class="form-control" placeholder="Username" id="inputFriendUsername">
+                        <input type="text" pattern="[a-zA-Z0-9_\+\-\.\@]{1,15}" class="form-control"
+                            placeholder="Username" id="inputFriendUsername">
                         <div id="friend-name-error" class="invalid-feedback"></div>
                     </div>
                 </div>
@@ -60,12 +62,32 @@
 </div>
 
 <template id="friend-list-template">
-    <li class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true" onclick="toggleSelectedFriend(this)">
+    <li class="list-group-item list-group-item-action d-flex gap-3 py-3 dropdown-center" aria-current="true"
+        onclick="toggleSelectedFriend(this)">
         <img alt="user avatar" width="50" height="50" class="rounded-circle flex-shrink-0">
         <div class="d-flex gap-2 w-100 justify-content-between align-items-center">
             <h6 class="mb-0">{{FRIEND NAME}}</h6>
-            <small class="opacity-50 text-nowrap tooltip mx-3">🟢</small>
+            <small class="opacity-50 text-nowrap tooltip mx-2">🟢</small>
         </div>
+        <button class="btn btn-outline dropdown-toggle px-1 pe-2 py-0" data-bs-toggle="dropdown"
+            onclick="showFriendOptions(event)">
+            <ul class="dropdown-menu">
+                <li>
+                    <a class="dropdown-item" href="#">
+                        <svg width="16" height="16" class="me-2 mb-1">
+                            <use href="#remove-friend"></use>
+                        </svg>
+                    Remove</a>
+                </li>
+                <li>
+                    <a class="dropdown-item" href="#">
+                        <svg width="16" height="16" class="me-2 mb-1">
+                            <use href="#block-icon"></use>
+                        </svg>
+                    Block</a>
+                </li>
+            </ul>
+        </button>
     </li>
 </template>
 
