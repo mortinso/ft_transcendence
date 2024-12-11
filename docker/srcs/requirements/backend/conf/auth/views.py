@@ -17,13 +17,12 @@ from django.conf import settings
 
 class LoginView(generics.GenericAPIView):
     permission_classes = [AllowAny]
-    # serializer_class = LoginSerializer
 
     def post(self, request):
         serializer = LoginSerializer(data=request.data)
         if serializer.is_valid():
             user = serializer.validated_data['user']
-            if user is not None:
+            if user is not None and user.tfa == False:
                 login(request, user)
                 refresh = RefreshToken.for_user(user)
                 update_last_login(None, user)
@@ -43,18 +42,20 @@ class LogoutView(APIView):
         return response
     
 class SignUpView(generics.CreateAPIView):
-    serializer_class = SignUpSerializer
     permission_classes = [AllowAny]
+    serializer_class = SignUpSerializer
 
 class ForgotPasswordView(generics.GenericAPIView):
+    permission_classes = [AllowAny]
     serializer_class = ForgotPasswordSerializer
+
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
         email = serializer.validated_data['email']
         try:
-            user = User.objects.get(email=email)
             otp = str(random.randint(100000, 999999))
+            user = User.objects.get(email=email)
             user.otp = hashlib.sha256(otp.encode()).hexdigest()
             user.otp_expiration = timezone.now() + datetime.timedelta(minutes=5)
             user.save()
@@ -68,14 +69,16 @@ class ForgotPasswordView(generics.GenericAPIView):
                 )
             except Exception as e:
                 return Response({"error": "Failed to send email"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"detail": "An email was sent if the email is valid."}, status=status.HTTP_200_OK)
         except User.DoesNotExist:
             pass
-        return Response({"otp": otp, "user.otp": user.otp, "detail": "An email was sent if the email is valid."}, status=status.HTTP_200_OK)
+        return Response({"detail": "An email was sent if the email is valid."}, status=status.HTTP_200_OK)
     
 class    CheckOTPView(generics.GenericAPIView):
     pass
 
 class CheckOTPView(generics.GenericAPIView):
+    permission_classes = [AllowAny]
     serializer_class = CheckOTPSerializer
 
     def post(self, request, *args, **kwargs):

@@ -10,13 +10,14 @@ from rest_framework import status
 from backend.permissions import IsSelf
 
 class ListUsersView(generics.ListAPIView):
+    queryset = User.objects.all()
     serializer_class = ListUsersSerializer
 
-    def get_queryset(self):
-        user = self.request.user
-        queryset = User.objects.all()
-        queryset = queryset.exclude(id=user.id)
-        return queryset
+    # def get_queryset(self):
+    #     user = self.request.user
+    #     queryset = User.objects.all()
+    #     queryset = queryset.exclude(id=user.id)
+    #     return queryset
 
 class UserDetailsView(generics.RetrieveAPIView):
     queryset = User.objects.all()
