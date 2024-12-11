@@ -1,6 +1,8 @@
 #! /bin/sh
 cd transcendence
 
+export EMAIL_HOST_PASSWORD=$(cat /run/secrets/email_password);
+
 pip install -r requirements.txt
 # django-admin startproject backend
 cd backend

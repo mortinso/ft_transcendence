@@ -5,6 +5,7 @@ import os
 import datetime
 from django.core.cache import cache
 from django.conf import settings
+import uuid
 import logging
 
 logging.basicConfig(level=logging.INFO)
@@ -18,6 +19,7 @@ def user_avatar_path(instance, filename):
     return f'{instance.id}/user_{instance.id}.{ext}'
 
 class User(AbstractUser):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     email = models.EmailField(unique=True)
     avatar = models.ImageField(upload_to=user_avatar_path, default='default.jpg')
     friends = models.ManyToManyField('self', symmetrical=False, related_name='friends_set')
@@ -28,7 +30,7 @@ class User(AbstractUser):
     draws = models.IntegerField(default=0)
     games_played = models.IntegerField(default=0)
     tfa = models.BooleanField(default=False)
-    otp = models.CharField(max_length=64, blank=True, null=True)
+    otp = models.CharField(default=None, max_length=64, blank=True, null=True)
     otp_expiration = models.DateTimeField(blank=True, null=True)
 
     def __str__(self):
@@ -51,7 +53,7 @@ class User(AbstractUser):
         return cache.get('seen_%s' % self.username)
 
     def online(self):
-        logger.debug(f"{self.username} last_seen is: {self.last_seen()}")
+        # logger.debug(f"{self.username} last_seen is: {self.last_seen()}")
         if self.last_seen():
             now = datetime.datetime.now()
             if now > self.last_seen() + datetime.timedelta(seconds=settings.USER_ONLINE_TIMEOUT):
