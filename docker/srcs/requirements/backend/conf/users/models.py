@@ -16,7 +16,7 @@ def user_avatar_path(instance, filename):
     # Extract the file extension
     ext = filename.split('.')[-1]
     
-    return f'{instance.id}/user_{instance.id}.{ext}'
+    return f'{instance.id}/avatar.{ext}'
 
 class User(AbstractUser):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -24,7 +24,7 @@ class User(AbstractUser):
     avatar = models.ImageField(upload_to=user_avatar_path, default='default.jpg')
     friends = models.ManyToManyField('self', symmetrical=False, related_name='friends_set')
     friend_requests = models.ManyToManyField('self', symmetrical=False, related_name='friend_requests_set')
-    blocked = models.ManyToManyField('self', symmetrical=False, related_name='banned_set')
+    blocked = models.ManyToManyField('self', symmetrical=False, related_name='blocked_set')
     wins = models.IntegerField(default=0)
     losses = models.IntegerField(default=0)
     draws = models.IntegerField(default=0)
