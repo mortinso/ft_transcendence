@@ -338,7 +338,7 @@ async function acceptFriendRequestAsync(friendID) {
     return response;
 }
 
-async function removeFriendAsync(friendID) {
+async function removeFriendAsync(friendName) {
     const userID = await getUserID();
     if (userID === null)
         return;
@@ -346,7 +346,7 @@ async function removeFriendAsync(friendID) {
     const response = await fetch(url, {
         method: 'PUT',
         body: JSON.stringify({
-            remove_friend: friendID
+            remove_friend: friendName
         }),
         headers: {
             'Content-Type': 'application/json; charset=utf-8',
@@ -355,7 +355,51 @@ async function removeFriendAsync(friendID) {
     });
     if (response.status === 401) {
         await refreshLogin();
-        return await removeFriendAsync(friendID);
+        return await removeFriendAsync(friendName);
+    }
+    return response;
+}
+
+async function rejectFriendRequestAsync(friendName) {
+    const userID = await getUserID();
+    if (userID === null)
+        return;
+    const url = `https://ft-transcendence.com/api/users/${userID}/remove_friend_request/`;
+    const response = await fetch(url, {
+        method: 'PUT',
+        body: JSON.stringify({
+            remove_friend: friendName
+        }),
+        headers: {
+            'Content-Type': 'application/json; charset=utf-8',
+            Authorization: `Bearer ${sessionStorage.getItem('jwt')}`
+        }
+    });
+    if (response.status === 401) {
+        await refreshLogin();
+        return await rejectFriendRequestAsync(friendName);
+    }
+    return response;
+}
+
+async function blockUserAsync(userName) {
+    const userID = await getUserID();
+    if (userID === null)
+        return;
+    const url = `https://ft-transcendence.com/api/users/${userID}/block/`;
+    const response = await fetch(url, {
+        method: 'PUT',
+        body: JSON.stringify({
+            user: userName
+        }),
+        headers: {
+            'Content-Type': 'application/json; charset=utf-8',
+            Authorization: `Bearer ${sessionStorage.getItem('jwt')}`
+        }
+    });
+    if (response.status === 401) {
+        await refreshLogin();
+        return await blockUserAsync(userName);
     }
     return response;
 }

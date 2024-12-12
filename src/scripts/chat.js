@@ -104,15 +104,47 @@ async function addFriend() {
 }
 
 async function acceptFriendRequest(button){
-    let friendName = button.parentElement.parentElement.querySelector('h6').innerText;
+    const friendName = button.parentElement.parentElement.querySelector('h6').innerText;
     await acceptFriendRequestAsync(friendName);
     _user = await getUserData();
     fillFriendList();
 }
 
+function showRemoveFriendModal(button){
+    const friendName = button.parentElement.parentElement.parentElement.querySelector('h6').innerText;
+    let removeFriendModal = new bootstrap.Modal(document.getElementById('del-block-friend-modal'));
+    removeFriendModal._element.querySelector('h1').innerText = `Remove Friend`;
+    removeFriendModal._element.querySelector('p').innerText = `Are you sure you want to remove "${friendName}" from your friend list?`;
+    removeFriendModal._element.querySelector('.btn-danger').addEventListener('click', () => removeFriend(button));
+    removeFriendModal.show();
+}
+
 async function removeFriend(button){
-    let friendName = button.parentElement.parentElement.parentElement.querySelector('h6').innerText;
+    const friendName = button.parentElement.parentElement.parentElement.querySelector('h6').innerText;
     await removeFriendAsync(friendName);
+    _user = await getUserData();
+    fillFriendList();
+}
+
+async function rejectFriendRequest(button){
+    const friendName = button.parentElement.parentElement.querySelector('h6').innerText;
+    await rejectFriendRequestAsync(friendName);
+    _user = await getUserData();
+    fillFriendList();
+}
+
+function showBlockUserModal(button){
+    const userName = button.parentElement.parentElement.parentElement.querySelector('h6').innerText;
+    let removeUserModal = new bootstrap.Modal(document.getElementById('del-block-friend-modal'));
+    removeUserModal._element.querySelector('h1').innerText = `Block user`;
+    removeUserModal._element.querySelector('p').innerText = `Are you sure you want to block "${userName}"?`;
+    removeUserModal._element.querySelector('.btn-danger').addEventListener('click', () => blockUser(button));
+    removeUserModal.show();
+}
+
+async function blockUser(button){
+    const userName = button.parentElement.parentElement.parentElement.querySelector('h6').innerText;
+    await blockUserAsync(userName);
     _user = await getUserData();
     fillFriendList();
 }

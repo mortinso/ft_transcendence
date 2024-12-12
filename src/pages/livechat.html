@@ -59,6 +59,22 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="del-block-friend-modal" tabindex="-1" aria-labelledby="del-block-friend-modal-label"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="del-block-friend-modal-label">Remove friend</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <p class="m-3">Friend removal confirmation</p>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Yes</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <template id="friend-list-template">
@@ -72,14 +88,14 @@
         <button class="btn btn-outline dropdown-toggle px-1 pe-2 py-0" data-bs-toggle="dropdown"
             onclick="showFriendOptions(event)">
             <ul class="dropdown-menu">
-                <li onclick="removeFriend(this)">
+                <li onclick="showRemoveFriendModal(this)">
                     <a class="dropdown-item" href="#">
                         <svg width="16" height="16" class="me-2 mb-1">
                             <use xlink:href="#remove-friend"></use>
                         </svg>
                     Remove</a>
                 </li>
-                <li>
+                <li onclick="showBlockUserModal(this)">
                     <a class="dropdown-item" href="#">
                         <svg width="16" height="16" class="me-2 mb-1">
                             <use xlink:href="#block-icon"></use>
