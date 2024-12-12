@@ -18,6 +18,7 @@ async function fillFriendList() {
         clone.querySelector('small').classList.add('d-none');
         clone.querySelector('img').classList.add('d-none');
         clone.querySelector('li').classList.add('disabled');
+        clone.querySelector('button').classList.add('d-none');
         friendList.appendChild(clone);
     }
 
@@ -25,19 +26,20 @@ async function fillFriendList() {
         let friendRequestTemplate = document.getElementById('friend-request-template');
         for (let request of _user.friend_requests) {
             let clone = friendRequestTemplate.content.cloneNode(true);
-            let username = await getUsernameByID(request);
-            clone.querySelector('h6').textContent = username;
-            clone.querySelector('img').src = request.picture;
+            let user = (await getUserByID(request));
+            clone.querySelector('h6').textContent = user.username;
+            clone.querySelector('img').src = user.avatar;
             friendList.appendChild(clone);
         }
         friendList.appendChild(document.createElement('hr'));
     }
 
-    for (let friend of _user.friends) {
+    for (let friendID of _user.friends) {
+        let friend = await getUserByID(friendID);
         let clone = friendListTemplate.content.cloneNode(true);
-        clone.querySelector('h6').textContent = await getUsernameByID(friend);
+        clone.querySelector('h6').textContent = friend.username;
         clone.querySelector('small').textContent = friend.status === 'online' ? '🟢' : '⚫';
-        clone.querySelector('img').src = friend.picture;
+        clone.querySelector('img').src = friend.avatar;
         friendList.appendChild(clone);
     }
 }
@@ -103,7 +105,14 @@ async function addFriend() {
 
 async function acceptFriendRequest(button){
     let friendName = button.parentElement.parentElement.querySelector('h6').innerText;
-    acceptFriendRequestAsync(friendName).then(() => {
-        fillFriendList();
-    });
+    await acceptFriendRequestAsync(friendName);
+    _user = await getUserData();
+    fillFriendList();
+}
+
+async function removeFriend(button){
+    let friendName = button.parentElement.parentElement.parentElement.querySelector('h6').innerText;
+    await removeFriendAsync(friendName);
+    _user = await getUserData();
+    fillFriendList();
 }

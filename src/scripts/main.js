@@ -145,13 +145,14 @@ async function getNotifications(){
 
     let notificationTemplate = document.getElementById('notification-template');
     let notificationContainer = document.getElementById('notification-area');
-    _user.friend_requests.forEach(element => {
+    for (let request of _user.friend_requests) {
         let notification = notificationTemplate.content.cloneNode(true);
         notification.querySelector('h6').innerText = 'Friend request';
-        notification.querySelector('p').innerText = `${element} wants to be your friend`;
+        let user = await getUserByID(request);
+        notification.querySelector('p').innerText = `${user.username} wants to be your friend`;
         notification.querySelector('a').addEventListener('click', () => {changeContent('livechat', true)});
         notificationContainer.appendChild(notification);
-    });
+    }
     if (notificationContainer.children.length === 0) {
         notificationContainer.innerHTML = '<p class="d-flex mx-3 gap-3">No notifications</p>';
         document.getElementById('notification-icon').setAttribute('href', '#notification-empty');
