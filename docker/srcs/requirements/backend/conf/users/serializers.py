@@ -29,22 +29,14 @@ class UpdateUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'email', 'old_password', 'password', 'confirm_password', 'first_name', 'last_name', 'avatar', 'tfa')
+        fields = ('id', 'username', 'email', 'old_password', 'password', 'confirm_password', 'first_name', 'last_name', 'tfa')
         extra_kwargs = {
             'username': {'required': False},
             'password': {'write_only': True, 'required': False},
             'email': {'required': False},
             'old_password': {'write_only': True},
             'confirm_password': {'write_only': True},
-            'avatar': {'write_only': True}
         }
-
-    def validate_password(self, value):
-        try:
-            validate_password(value)
-        except ValidationError as e:
-            raise serializers.ValidationError(e.messages)
-        return value
 
     def validate(self, data):
         if data.get('password') or data.get('confirm_password'):
@@ -69,6 +61,15 @@ class UpdateUserSerializer(serializers.ModelSerializer):
             instance.save()
         return instance
     
+class AddAvatarSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'avatar')
+        extra_kwargs = {
+            'username': {'read_only': True},
+        }
+
 class AddFriendSerializer(serializers.ModelSerializer):
     add_friend = serializers.CharField(max_length=126, write_only=True)
 

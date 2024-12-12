@@ -17,11 +17,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
-from users.views import returnImage
+from users.views import GenerateMediaAccessToken
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("api/users/", include("users.urls")),
     path("api/auth/", include("auth.urls")),
-    # path("media/<int:pk>", returnImage, name="return_image"),
+    path("api/get_image/<uuid:pk>/", GenerateMediaAccessToken.as_view(), name="generate_media_token"),
 ]

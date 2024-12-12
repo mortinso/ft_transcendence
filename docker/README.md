@@ -14,9 +14,13 @@
 
 https://ft-transcendence.com/api/users (list users except current user)
 
-https://ft-transcendence.com/api/users/1 (retrieve user 1, if it exists)
+https://ft-transcendence.com/api/users/<uuid> (retrieve user <uuid>, if it exists)
 
-https://ft-transcendence.com/api/users/1/edit (update/destroy user1, if user 1 is current user, else show 404)
+https://ft-transcendence.com/api/users/whoami (retrieves current user)
+
+https://ft-transcendence.com/api/users/1/edit (update/destroy user1, if user 1 is current user, else show 404) - 'username', 'email', 'old_password', 'password', 'confirm_password', 'first_name', 'last_name'
+
+https://ft-transcendence.com/api/users/1/add_avatar (add or update avatar) - 'avatar'
 
 ### Friends
 

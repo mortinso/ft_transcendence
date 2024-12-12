@@ -20,18 +20,17 @@ class LoginView(generics.GenericAPIView):
 
     def post(self, request):
         serializer = LoginSerializer(data=request.data)
-        if serializer.is_valid():
-            user = serializer.validated_data['user']
-            if user is not None and user.tfa == False:
-                login(request, user)
-                refresh = RefreshToken.for_user(user)
-                update_last_login(None, user)
-                return Response({
-                    'refresh': str(refresh),
-                    'access': str(refresh.access_token),
-                }, status=status.HTTP_200_OK)
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        return Response(status=status.HTTP_401_UNAUTHORIZED)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data['user']
+        if user is not None:
+            # return Response({"Username and password OK."},status=status.HTTP_200_OK)
+            login(request, user)
+            refresh = RefreshToken.for_user(user)
+            update_last_login(None, user)
+            return Response({
+                'refresh': str(refresh),
+                'access': str(refresh.access_token),
+            }, status=status.HTTP_200_OK)
 
 class LogoutView(APIView):
     def post(self, request):
@@ -86,8 +85,9 @@ class CheckOTPView(generics.GenericAPIView):
         serializer.is_valid(raise_exception=True)
         email = serializer.validated_data['email']
         otp = serializer.validated_data['otp']
-        try:
-            user = User.objects.get(email=email)
+        user = User.objects.get(email=email)
+        if user is not None:
+            login(request, user)
             if user.otp == hashlib.sha256(otp.encode()).hexdigest() and user.otp_expiration > timezone.now():
                 refresh = RefreshToken.for_user(user)
                 update_last_login(None, user)
@@ -97,5 +97,4 @@ class CheckOTPView(generics.GenericAPIView):
                 }, status=status.HTTP_200_OK)
             else:
                 return Response({"detail": "Invalid or expired OTP."}, status=status.HTTP_400_BAD_REQUEST)
-        except User.DoesNotExist:
-            return Response({"detail": "Invalid email."}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"detail": "Invalid email."}, status=status.HTTP_400_BAD_REQUEST)
