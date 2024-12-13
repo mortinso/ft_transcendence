@@ -14,7 +14,7 @@ class ListUsersSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'email', 'avatar', 'is_online', 'last_seen', 'friends', 'friend_requests', 'blocked', 'wins', 'losses', 'draws', 'games_played')
+        fields = ('id', 'username', 'email', 'avatar', 'date_joined', 'is_online', 'last_seen', 'friends', 'friend_requests', 'blocked', 'wins', 'losses', 'draws', 'games_played')
         extra_kwargs = {'password': {'write_only': True, 'required': False}}
 
     def get_is_online(self, obj):

@@ -38,7 +38,7 @@ async function fillFriendList() {
         let friend = await getUserByID(friendID);
         let clone = friendListTemplate.content.cloneNode(true);
         clone.querySelector('h6').textContent = friend.username;
-        clone.querySelector('small').textContent = friend.status === 'online' ? '🟢' : '⚫';
+        clone.querySelector('small').textContent = friend.is_online === true ? '🟢' : '⚫';
         clone.querySelector('img').src = friend.avatar;
         friendList.appendChild(clone);
     }

@@ -38,8 +38,8 @@ function loadAccountSettings() {
 }
 
 //Update account details
-function updateAccountDetails() {
-    let newUser = getUpdatedAccountDetails();
+async function updateAccountDetails() {
+    let newUser = await getUpdatedAccountDetails();
     if (newUser === undefined)
         return;
     if (newUser.username === _user.username && newUser.email === _user.email) {
@@ -98,7 +98,7 @@ function showUpdatedValues() {
 }
 
 //Get object with new account details
-function getUpdatedAccountDetails() {
+async function getUpdatedAccountDetails() {
     let username = document.getElementById('InputUsername').value.trim();
     let email = document.getElementById('InputEmail').value.trim();
     let avatar = document.getElementById('InputPicture').value;
@@ -140,7 +140,31 @@ function getUpdatedAccountDetails() {
         username: username !== '' ? username : _user.username,
         email: email !== '' ? email : _user.email
     }
+    if (avatar !== '')
+        await updateAvatar();
     return newUser;
+}
+
+//Update user avatar
+async function updateAvatar() {
+    let avatar = document.getElementById('InputPicture');
+    let formData = new FormData();
+    formData.append('avatar', avatar.files[0]);
+    let xhr = new XMLHttpRequest();
+    const userId = await getUserID();
+    const url = `https://ft-transcendence.com/api/users/${userId}/add_avatar/`;
+    xhr.open('PUT', url, true);
+    xhr.setRequestHeader('Authorization', `Bearer ${sessionStorage.getItem('jwt')}`);
+    xhr.onreadystatechange = function () {
+        if (this.readyState !== 4)
+            return;
+        if (this.status !== 200) {
+            console.log('Error updating user avatar', this);
+            //TODO: log error
+            return;
+        }
+    }
+    xhr.send(formData);
 }
 
 //Load the widget for security settings

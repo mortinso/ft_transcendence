@@ -15,3 +15,5 @@ docker/srcs/requirements/backend/conf/games/migrations/*
 docker/srcs/requirements/backend/conf/users/migrations/*
 !docker/srcs/requirements/backend/conf/users/migrations/__init__.py
 docker/srcs/requirements/backend/conf/backend/middleware/__pycache__/*
+docker/avatars/*
+!docker/avatars/default.jpg
