@@ -9,7 +9,7 @@ function updateSettingsPage() {
         return user;
     }).then(user => {
         _user = user;
-        loadAccountSettings(_user);
+        loadGeneralSettings();
     });
 }
 
@@ -325,4 +325,20 @@ async function confirmPassword(password) {
     if (xhr.status === 200)
         return true;
     return false;
+}
+
+function loadGeneralSettings(){
+    var contentDiv = document.getElementById('settings-container');
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', `/src/components/settings-general.html`, true);
+    xhr.onreadystatechange = function () {
+        if (this.readyState !== 4)
+            return;
+        if (this.status !== 200) {
+            contentDiv.innerHTML = `<h2>Content not found!</h2>`
+            return;
+        }
+        contentDiv.innerHTML = this.responseText;
+    }
+    xhr.send();
 }

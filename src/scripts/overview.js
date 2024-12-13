@@ -6,6 +6,6 @@ function updateOverviewPage() {
         document.getElementById('losses').innerText = `Losses: ${user?.losses}`;
         document.getElementById('draws').innerText = `Draws: ${user?.draws}`;
         document.getElementById('friends-online').innerText = `Friends online: ${user?.friends_online}`;
-        console.log(user);
+        //console.log(user);
     });
 }
