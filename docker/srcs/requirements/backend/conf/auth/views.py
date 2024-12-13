@@ -25,6 +25,8 @@ class LoginView(generics.GenericAPIView):
         if user is not None:
             # return Response({"Username and password OK."},status=status.HTTP_200_OK)
             login(request, user)
+            user.is_online = True
+            # user.save()
             refresh = RefreshToken.for_user(user)
             update_last_login(None, user)
             return Response({
@@ -34,6 +36,9 @@ class LoginView(generics.GenericAPIView):
 
 class LogoutView(APIView):
     def post(self, request):
+        user = User.objects.get(username=request.data['username'])
+        user.is_online = False
+        # user.save()
         logout(request)
         request.session.flush()
         response = Response({"detail": "Successfully logged out."}, status=status.HTTP_200_OK)
