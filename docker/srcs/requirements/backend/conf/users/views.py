@@ -21,6 +21,11 @@ class ListUsersView(generics.ListAPIView):
     queryset = User.objects.all()
     serializer_class = ListUsersSerializer
 
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context['request'] = self.request
+        return context
+
 class UserDetailsView(generics.RetrieveAPIView):
     queryset = User.objects.all()
     serializer_class = ListUsersSerializer
@@ -79,37 +84,14 @@ class UnblockUserView(generics.RetrieveUpdateAPIView):
     queryset = User.objects.all()
     serializer_class = UnblockUserSerializer
         
-class GenerateMediaAccessToken(APIView):
-    permission_classes = [IsSelf]
-
+class GetImageView(APIView):
     def get(self, request, pk):
-        if self.request.user.id != pk:
-            return Response({"404 Not Found"}, status=status.HTTP_404_NOT_FOUND)
-        file_name = self.request.user.avatar
-        route = '/media/' + str(self.request.user.avatar)
+        user = generics.get_object_or_404(User, id=pk)
+        logger.debug(f"user.avatar: {user.avatar}")
+        route = '/media/' + str(user.avatar)
+        logger.debug(f"route: {route}")
         response = HttpResponse()
         response["X-Accel-Redirect"] = route
-        # response['Content-Disposition'] = 'attachment; filename="' + file_name + '"'
-        # del response['Content-Type']
-        # del response['Accept-Ranges']
-        # del response['Set-Cookie']
-        # del response['Cache-Control']
-        # del response['Expires']
+        del response['Content-Type']
         return response
         
-class GetImage(APIView):
-    prefix = ""
-    def get(self, request):
-        hashed_code = request.query_params.get('hashed_code')
-        log_type = request.query_params.get('log_type', 'Lightning')
-        file_name = request.query_params.get('file_name', '')
-        route = '/download-logs/' + file_name if log_type == 'Lightning' else '/download-logs/' + file_name
-        response = HttpResponse()
-        response["X-Accel-Redirect"] = route
-        response['Content-Disposition'] = 'attachment; filename="' + file_name + '"'
-        del response['Content-Type']
-        del response['Accept-Ranges']
-        del response['Set-Cookie']
-        del response['Cache-Control']
-        del response['Expires']
-        return response

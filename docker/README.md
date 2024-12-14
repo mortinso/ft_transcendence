@@ -38,7 +38,9 @@ https://ft-transcendence.com/api/users/1/unblock (unblock user)
 
 ## Images
 
-https://ft-transcendence.com/api/get_image/<uuid:pk> (get user avatar)
+https://ft-transcendence.com/api/users/<uuid:pk>/add_avatar/ (get user avatar)
+
+https://ft-transcendence.com/api/users/<uuid:pk>/get_avatar/ (get user avatar)
 
 ## Auth
 
