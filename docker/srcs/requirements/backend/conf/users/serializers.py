@@ -3,25 +3,28 @@ from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 from .models import User
 from django.shortcuts import get_object_or_404
+from django.core.files.storage import default_storage
+from PIL import Image
 import logging
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
 class ListUsersSerializer(serializers.ModelSerializer):
-    is_online = serializers.SerializerMethodField()
-    last_seen = serializers.SerializerMethodField()
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'email', 'avatar', 'date_joined', 'is_online', 'last_seen', 'friends', 'friend_requests', 'blocked', 'wins', 'losses', 'draws', 'games_played')
+        fields = ('id', 'username', 'email', 'date_joined', 'is_online', 'last_seen', 'friends', 'friend_requests', 'blocked', 'wins', 'losses', 'draws', 'games_played')
         extra_kwargs = {'password': {'write_only': True, 'required': False}}
 
-    def get_is_online(self, obj):
-        return obj.online()
-
-    def get_last_seen(self, obj):
-        return obj.last_seen()
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        request = self.context.get('request', None)
+        if request and request.user != instance:
+            fields_to_remove = ['email', 'friend_requests', 'blocked']
+            for field in fields_to_remove:
+                representation.pop(field, None)
+        return representation
 
 class UpdateUserSerializer(serializers.ModelSerializer):
     old_password = serializers.CharField(max_length=126, write_only=True, required=False)
@@ -68,7 +71,28 @@ class AddAvatarSerializer(serializers.ModelSerializer):
         fields = ('id', 'username', 'avatar')
         extra_kwargs = {
             'username': {'read_only': True},
+            # 'avatar': {'write_only': True},
         }
+    
+    def save(self, *args, **kwargs):
+        user = self.instance
+        avatar = self.validated_data.get('avatar')
+        if avatar:
+            # Delete the existing file using default_storage
+            if user.avatar and user.avatar.name != 'default.jpg':
+                if default_storage.exists(user.avatar.name):
+                    default_storage.delete(user.avatar.name)
+            user.avatar = avatar
+            user.save()
+
+            img_path = user.avatar.path
+            img = Image.open(img_path)
+            size = 300, 300
+            img.thumbnail(size)
+            img.save(img_path)
+
+        return user
+    
 
 class AddFriendSerializer(serializers.ModelSerializer):
     add_friend = serializers.CharField(max_length=126, write_only=True)

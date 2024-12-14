@@ -17,7 +17,7 @@ clean:
 	docker compose -f srcs/docker-compose.yml down -v 
 
 fclean: clean
-	rm -rf avatars/*
+	find avatars/ -type d -mindepth 1 -exec rm -rf {} +
 	docker image rm transcendence-backend
 	docker image rm postgres
 	docker image rm transcendence-nginx

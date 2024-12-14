@@ -7,6 +7,8 @@ from django.core.cache import cache
 from django.conf import settings
 import uuid
 import logging
+import datetime
+from django.utils import timezone
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -30,35 +32,34 @@ class User(AbstractUser):
     draws = models.IntegerField(default=0)
     games_played = models.IntegerField(default=0)
     tfa = models.BooleanField(default=False)
+    is_online = models.BooleanField(default=False, editable=True)
+    last_seen = models.DateTimeField(blank=True, null=True)
     otp = models.CharField(default=None, max_length=64, blank=True, null=True)
     otp_expiration = models.DateTimeField(blank=True, null=True)
 
     def __str__(self):
         return self.username
 
-    def save(self, *args, **kwargs):
-        # Check if there is an existing file and delete it
-        try:
-            this = User.objects.get(id=self.id)
-            if this.avatar and this.avatar.name != 'default.jpg':
-                # Delete the existing file using default_storage
-                if default_storage.exists(this.avatar.name):
-                    default_storage.delete(this.avatar.name)
-        except User.DoesNotExist:
-            pass
+    def update_last_seen(self):
+        self.last_seen = timezone.now()
+        self.save(update_fields=['last_seen'])
+        # last_seen = cache.get('seen_%s' % self.username)
+        # if last_seen:
+        #     self.last_seen = last_seen
+        #     self.save()
+        # return last_seen
 
-        super(User, self).save(*args, **kwargs)
-    
-    def last_seen(self):
-        return cache.get('seen_%s' % self.username)
-
-    def online(self):
-        # logger.debug(f"{self.username} last_seen is: {self.last_seen()}")
-        if self.last_seen():
-            now = datetime.datetime.now()
-            if now > self.last_seen() + datetime.timedelta(seconds=settings.USER_ONLINE_TIMEOUT):
-                return False
+    def update_is_online(self):
+        if self.last_seen:
+            now = timezone.now()
+            if now > self.last_seen + datetime.timedelta(seconds=settings.USER_ONLINE_TIMEOUT):
+                self.is_online = False
             else:
-                return True
+                self.is_online = True
         else:
-            return False 
+            self.is_online = False
+        self.save(update_fields=['is_online'])
+
+    def get_is_online(self):
+        self.update_is_online()
+        return self.is_online

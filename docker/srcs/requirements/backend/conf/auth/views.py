@@ -34,6 +34,9 @@ class LoginView(generics.GenericAPIView):
 
 class LogoutView(APIView):
     def post(self, request):
+        user = User.objects.get(username=request.data['username'])
+        user.is_online = False
+        user.save()
         logout(request)
         request.session.flush()
         response = Response({"detail": "Successfully logged out."}, status=status.HTTP_200_OK)

@@ -36,6 +36,12 @@ https://ft-transcendence.com/api/users/1/block (block user)
 
 https://ft-transcendence.com/api/users/1/unblock (unblock user)
 
+## Images
+
+https://ft-transcendence.com/api/users/<uuid:pk>/add_avatar/ (get user avatar)
+
+https://ft-transcendence.com/api/users/<uuid:pk>/get_avatar/ (get user avatar)
+
 ## Auth
 
 https://ft-transcendence.com/api/auth/login/ (login)
