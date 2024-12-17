@@ -57,9 +57,12 @@ async function login(event) {
 
     if (loggedIn) {
         document.getElementById('header').style.display = 'block';
+        _user = await getUserData();
+        await getNotifications();
+        await getUserAvatar(_user.id).then(avatar => { _avatar = avatar;});
+        document.getElementById('header-avatar').src = _avatar;
         changeContent('overview', true);
         history.replaceState(pageState, null, "");
-        await getNotifications();
     }
 }
 
@@ -402,4 +405,27 @@ async function blockUserAsync(userName) {
         return await blockUserAsync(userName);
     }
     return response;
+}
+
+async function getUserAvatar(userID) {
+    let url = `https://ft-transcendence.com/api/users/${userID}/get_avatar/`;
+    try {
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${sessionStorage.getItem('jwt')}`
+            }
+        });
+        if (response.ok) {
+            const blob = await response.blob();
+            const objectURL = URL.createObjectURL(blob);
+            return objectURL;
+        } else {
+            console.error('Error fetching avatar');
+            return null;
+        }
+    } catch (error) {
+        console.error('Error fetching avatar', error);
+        return null;
+    }
 }

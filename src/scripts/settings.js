@@ -1,16 +1,14 @@
 
-function updateSettingsPage() {
-    getUserData().then(user => {
-        document.getElementById('userName').innerText = `${user.username}`;
-        document.getElementById('userEmail').innerText = `${user.email}`;
-        const date = new Date(user.date_joined);
-        const formattedDate = new Intl.DateTimeFormat(navigator.language).format(date);
-        document.getElementById('userJoinDate').innerText = `Joined on ${formattedDate}`;
-        return user;
-    }).then(user => {
-        _user = user;
-        loadGeneralSettings();
-    });
+async function updateSettingsPage() {
+    if (_user === null)
+        _user = await getUserData();
+    document.getElementById('userName').innerText = `${_user.username}`;
+    document.getElementById('userEmail').innerText = `${_user.email}`;
+    document.getElementById('user-avatar').src = _avatar;
+    const date = new Date(_user.date_joined);
+    const formattedDate = new Intl.DateTimeFormat(navigator.language).format(date);
+    document.getElementById('userJoinDate').innerText = `Joined on ${formattedDate}`;
+    loadGeneralSettings();
 }
 
 //Load the widget for general settings
@@ -162,6 +160,14 @@ async function updateAvatar() {
             console.log('Error updating user avatar', this);
             //TODO: log error
             return;
+        }
+        else
+        {
+            getUserAvatar(userId).then(avatar => {
+                _avatar = avatar;
+                document.getElementById('user-avatar').src = _avatar;
+                document.getElementById('header-avatar').src = _avatar;
+            });
         }
     }
     xhr.send(formData);

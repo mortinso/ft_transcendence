@@ -1,6 +1,7 @@
 let pageState = 'overview'
 let loggedIn = false;
 let _user = null;
+let _avatar = null;
 
 //Handle back and forward navigation events
 window.onpopstate = function (event) {
@@ -21,8 +22,11 @@ async function initialize() {
     }
     else {
         history.replaceState(pageState, null, "");
-        changeContent(pageState, false);
+        _user = await getUserData();
         await getNotifications();
+        await getUserAvatar(_user.id).then(avatar => { _avatar = avatar;});
+        changeContent(pageState, false);
+        document.getElementById('header-avatar').src = _avatar;
     }
 }
 

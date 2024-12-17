@@ -20,8 +20,6 @@ https://ft-transcendence.com/api/users/whoami (retrieves current user)
 
 https://ft-transcendence.com/api/users/1/edit (update/destroy user1, if user 1 is current user, else show 404) - 'username', 'email', 'old_password', 'password', 'confirm_password', 'first_name', 'last_name'
 
-https://ft-transcendence.com/api/users/1/add_avatar (add or update avatar) - 'avatar'
-
 ### Friends
 
 https://ft-transcendence.com/api/users/1/invite_friend (send friend request from user 1)
@@ -38,7 +36,7 @@ https://ft-transcendence.com/api/users/1/unblock (unblock user)
 
 ## Images
 
-https://ft-transcendence.com/api/users/<uuid:pk>/add_avatar/ (get user avatar)
+https://ft-transcendence.com/api/users/<uuid:pk>/add_avatar/ (add user avatar)
 
 https://ft-transcendence.com/api/users/<uuid:pk>/get_avatar/ (get user avatar)
 

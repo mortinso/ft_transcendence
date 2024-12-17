@@ -1,11 +1,13 @@
-function updateProfilePage() {
-    getUserData().then(user => {
-        document.getElementById('username').innerText = `${user.username}`;
-        createPongChart();
-        createPongGameList();
-        createSecondChart();
-        createSecondGameList();
-    });
+async function updateProfilePage() {
+    if (_user === null)
+        _user = await getUserData();
+
+    document.getElementById('username').innerText = `${_user?.username}`;
+    document.getElementById('userAvatar').src = _avatar;
+    createPongChart();
+    createPongGameList();
+    createSecondChart();
+    createSecondGameList();
 }
 
 //Create chart for pong games
