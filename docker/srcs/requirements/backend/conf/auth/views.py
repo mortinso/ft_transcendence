@@ -32,9 +32,11 @@ class LoginView(generics.GenericAPIView):
                 'access': str(refresh.access_token),
             }, status=status.HTTP_200_OK)
 
+#TODO: error line 38
 class LogoutView(APIView):
     def post(self, request):
-        user = User.objects.get(username=request.data['username'])
+        user = request.user
+        # user = User.objects.get(username=request.data['username'])
         user.is_online = False
         user.save()
         logout(request)
