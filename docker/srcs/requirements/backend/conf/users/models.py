@@ -34,6 +34,7 @@ class User(AbstractUser):
     tfa = models.BooleanField(default=False)
     is_online = models.BooleanField(default=False, editable=True)
     last_seen = models.DateTimeField(blank=True, null=True)
+    tfa = models.BooleanField(default=False)
     otp = models.CharField(default=None, max_length=64, blank=True, null=True)
     otp_expiration = models.DateTimeField(blank=True, null=True)
 

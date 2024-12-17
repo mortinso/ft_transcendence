@@ -12,18 +12,13 @@ COPY tools/requirements.txt transcendence/requirements.txt
 
 COPY tools/backend.sh /usr/local/bin/
 
-# RUN mkdir temp temp/backend temp/users temp/auth
-
-# COPY conf/backend/* /temp/backend
-
-# COPY conf/users/* /temp/users
-
-# COPY conf/auth/* /temp/auth
+COPY tools/export.sh /usr/local/bin/
 
 RUN chmod +x /usr/local/bin/backend.sh
+
+RUN chmod +x /usr/local/bin/export.sh
 
 ENTRYPOINT ["/usr/local/bin/backend.sh"]
 
 CMD [ "python3", "manage.py", "runserver", "0.0.0.0:8000" ]
 # CMD [ "gunicorn", "--bind", "0.0.0.0:8000", "backend.wsgi" ]
-# CMD [ "tail", "-f" ]

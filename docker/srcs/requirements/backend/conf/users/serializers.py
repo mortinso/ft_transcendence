@@ -21,7 +21,7 @@ class ListUsersSerializer(serializers.ModelSerializer):
         representation = super().to_representation(instance)
         request = self.context.get('request', None)
         if request and request.user != instance:
-            fields_to_remove = ['email', 'friend_requests', 'blocked']
+            fields_to_remove = ['email', 'last_seen', 'friend_requests', 'blocked']
             for field in fields_to_remove:
                 representation.pop(field, None)
         return representation
