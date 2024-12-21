@@ -23,7 +23,22 @@ class LoginView(generics.GenericAPIView):
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data['user']
         if user is not None:
-            # return Response({"Username and password OK."},status=status.HTTP_200_OK)
+            if user.tfa == True:
+                otp = str(random.randint(100000, 999999))
+                user.otp = hashlib.sha256(otp.encode()).hexdigest()
+                user.otp_expiration = timezone.now() + datetime.timedelta(minutes=5)
+                user.save()
+                try:
+                    send_mail(
+                        "Your OTP Code",
+                        f"Your OTP code is {otp}",
+                        settings.EMAIL_HOST_USER,
+                        [user.email],
+                        fail_silently=False,
+                    )
+                except Exception as e:
+                    return Response({"error": "Failed to send email"}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({"detail": "Email sent."}, status=status.HTTP_200_OK)
             login(request, user)
             refresh = RefreshToken.for_user(user)
             update_last_login(None, user)
@@ -32,11 +47,9 @@ class LoginView(generics.GenericAPIView):
                 'access': str(refresh.access_token),
             }, status=status.HTTP_200_OK)
 
-#TODO: error line 38
 class LogoutView(APIView):
     def post(self, request):
         user = request.user
-        # user = User.objects.get(username=request.data['username'])
         user.is_online = False
         user.save()
         logout(request)
@@ -49,7 +62,7 @@ class SignUpView(generics.CreateAPIView):
     permission_classes = [AllowAny]
     serializer_class = SignUpSerializer
 
-class ForgotPasswordView(generics.GenericAPIView):
+class GetOTPView(generics.GenericAPIView):
     permission_classes = [AllowAny]
     serializer_class = ForgotPasswordSerializer
 
@@ -78,8 +91,6 @@ class ForgotPasswordView(generics.GenericAPIView):
             pass
         return Response({"detail": "An email was sent if the email is valid."}, status=status.HTTP_200_OK)
     
-class    CheckOTPView(generics.GenericAPIView):
-    pass
 
 class CheckOTPView(generics.GenericAPIView):
     permission_classes = [AllowAny]
