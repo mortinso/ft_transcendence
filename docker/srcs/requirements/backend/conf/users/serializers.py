@@ -14,14 +14,14 @@ class ListUsersSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'email', 'date_joined', 'is_online', 'last_seen', 'friends', 'friend_requests', 'blocked', 'wins', 'losses', 'draws', 'games_played')
+        fields = ('id', 'username', 'email', 'date_joined', 'is_online', 'last_seen', 'friends', 'friend_requests', 'blocked', 'wins', 'losses', 'draws', 'games_played', 'tfa')
         extra_kwargs = {'password': {'write_only': True, 'required': False}}
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
         request = self.context.get('request', None)
         if request and request.user != instance:
-            fields_to_remove = ['email', 'last_seen', 'friend_requests', 'blocked']
+            fields_to_remove = ['email', 'last_seen', 'friend_requests', 'blocked', 'tfa']
             for field in fields_to_remove:
                 representation.pop(field, None)
         return representation
@@ -42,22 +42,26 @@ class UpdateUserSerializer(serializers.ModelSerializer):
         }
 
     def validate(self, data):
-        if data.get('password') or data.get('confirm_password'):
-            if validate_password(self, data.get('password')) and validate_password(self, data.get('confirm_password')):
-                if not data.get('old_password'):
-                    raise serializers.ValidationError("Old password is required to set a new password.")
-                if validate_password(self, data.get('old_password')):
-                    if not self.instance.check_password(data.get('old_password')):
-                        raise serializers.ValidationError("Old password doesn't match.")
-                    if data.get('password') != data.get('confirm_password'):
-                        raise serializers.ValidationError("Passwords do not match.")
+        if data.get('password'):
+            if not data.get('confirm_password'):
+                raise serializers.ValidationError("Please confirm your password.")
+            if not data.get('old_password'):
+                raise serializers.ValidationError("Old password is required to set a new password.")
+            if not self.instance.check_password(data.get('old_password')):
+                raise serializers.ValidationError("Old password doesn't match.")
+            if data.get('password') != data.get('confirm_password'):
+                raise serializers.ValidationError("Passwords do not match.")
+            if validate_password(data.get('password')):
+                raise serializers.ValidationError("Invalid password.")
+        elif data.get('confirm_password') or data.get('old_password'):
+            raise serializers.ValidationError("Unable to change password: insuficient data.")
         return data
 
     def update(self, instance, validated_data):
         validated_data.pop('old_password', 'confirm_password')
         for attr, value in validated_data.items():
             if attr == 'password':
-                self.validate_password(value)
+                validate_password(value)
                 instance.set_password(value)
             else:
                 setattr(instance, attr, value)

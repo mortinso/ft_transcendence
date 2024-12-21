@@ -146,12 +146,16 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+file = open(env("POSTGRES_PASSWORD_FILE"), "r")
+postgres_password = file.readline()
+file.close()
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': env("POSTGRES_DB"),
         'USER': env("POSTGRES_USER"),
-        'PASSWORD': env("POSTGRES_PASSWORD"),
+        'PASSWORD': postgres_password,
         'HOST': 'postgres',
         'PORT': '5432',
     }
@@ -159,6 +163,7 @@ DATABASES = {
 
 
 #TODO: enable password validation
+#TODO: change password requirements
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -197,10 +202,6 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-# STATICFILES_DIRS = [
-#     os.path.join(BASE_DIR, 'static'),
-# ]
-
 # Base url to serve media files
 MEDIA_URL = '/media/'
 # Path where media is stored
@@ -236,6 +237,9 @@ CORS_ALLOWED_ORIGINS = [
     'https://localhost',
     'https://ft-transcendence.com',
 ]
+
+
+#TODO: JWT settings
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),

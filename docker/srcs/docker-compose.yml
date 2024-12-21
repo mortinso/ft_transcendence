@@ -15,6 +15,8 @@ services:
       - .env
     environment:
       EMAIL_PASSWORD_FILE: /run/secrets/email_password
+      POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
+      DJANGO_SUPERUSER_FILE: /run/secrets/django_superuser_password
     networks:
       - transcendence
     # ports:
@@ -22,6 +24,7 @@ services:
     secrets:
       - django_superuser_password
       - email_password
+      - postgres_password
     
   postgres:
     container_name: postgres
@@ -30,9 +33,9 @@ services:
     restart: on-failure
     env_file:
       - .env
-    # TODO: POSTGRESQL_PASSWORD_FILE as secret
-    # environment:
-    #   POSTGRESQL_PASSWORD_FILE: /run/secrets/postgres_password
+    # TODO: POSTGRES_PASSWORD_FILE as secret
+    environment:
+      POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
     networks:
       - transcendence
     secrets:
