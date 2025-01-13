@@ -2,6 +2,7 @@ let pageState = 'overview'
 let loggedIn = false;
 let _user = null;
 let _avatar = null;
+let _lang = 'en';
 
 //Handle back and forward navigation events
 window.onpopstate = function (event) {

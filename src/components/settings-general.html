@@ -6,9 +6,20 @@
     </symbol>
 </svg>
 
-<div class="px-4">
-    <div class="container">
-        <h3>Blocked users</h3>
+<div class="container px-4">
+    <div>
+        <h4>General settings</h4>
+        <!--language-->
+        <div class="mb-5">
+            <label for="language" class="form-label">Language</label>
+            <select class="form-select" id="language">
+                <option value="en">🇬🇧 English</option>
+                <option value="pt">🇵🇹 Português</option>
+                <option value="es">🇪🇸 Español</option>
+            </select>
+    </div>
+    <div>
+        <h4>Blocked users</h4>
         <p>Here you can see a list of users you have blocked.</p>
         <ul id="blockedUsers" class="list-group">
             <li class="list-group-item d-flex gap-3 py-3">
