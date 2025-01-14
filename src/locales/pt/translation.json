@@ -1,0 +1,35 @@
+{
+    "header":{
+        "overview": "Visão Geral",
+        "livechat": "Chat",
+        "notifications": "Notificações",
+        "profile": "Perfil",
+        "settings": "Configurações",
+        "logout": "Sair"
+    },
+    "notifications":{
+        "empty": "Sem notificações",
+        "friendRequest": "Pedido de amizade",
+        "friendRequestMessage": "quer ser teu amigo"
+    },
+    "overview":{
+        "greeting": "Olá",
+        "gamesPlayed": "Jogos Jogados",
+        "wins": "Vitórias",
+        "losses": "Derrotas",
+        "draws": "Empates",
+        "friendsOnline": "Amigos Online",
+        "playPong": "Jogar Pong",
+        "playersPlaying": "pessoas a jogar"
+    },
+    "profile":{
+        "addAsFriend": "Adicionar como amigo",
+        "message": "Enviar mensagem",
+        "stats": "Estatísticas",
+        "lastGames": "Últimos 5 jogos",
+        "wonAgainst": "Ganhaste contra",
+        "lostAgainst": "Perdeste contra",
+        "drawAgainst": "Empataste contra",
+        "result" : "Resultado"
+    }
+}

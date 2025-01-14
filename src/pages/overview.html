@@ -25,18 +25,13 @@
                 <li id="wins" class="list-group-item quick-stat">Wins: {{WINS}}</li>
                 <li id="losses" class="list-group-item quick-stat">Losses: {{LOSSES}}</li>
                 <li id="draws" class="list-group-item quick-stat">Draws: {{DRAWS}}</li>
-                <!--separator-->
-                <li class="list-group quick-stat">&nbsp;</li>
-                <li class="list-group quick-stat">&nbsp;</li>
-                <!--friends online-->
-                <li id="friends-online" class="list-group item quick-stat">Friends online: {{FRIENDS_ONLINE}}</li>
             </ul>
         </div>
     </div>
     <div class="bg-body-tertiary w-50 me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden">
         <div class="my-3 p-3">
-            <h2 class="display-5">Play Pong</h2>
-            <p class="lead">{{0}} people playing</p>
+            <h2 class="display-5" data-i18n="overview.playPong">Play Pong</h2>
+            <p id="pongPlayers" class="lead">{{0}} people playing</p>
         </div>
         <div class="bg-dark shadow-sm mx-auto" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;"></div>
     </div>
@@ -45,15 +40,15 @@
 <div class="d-md-flex flex-md-equal w-100 my-md-3 ps-md-3">
     <div class="bg-body-tertiary w-50 me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden">
         <div class="my-3 p-3">
-            <h2 class="display-5">Play second game</h2>
-            <p class="lead">{{0}} people playing</p>
+            <h2 class="display-5">[HC] Play second game</h2>
+            <p class="lead">[HC] {{0}} people playing</p>
         </div>
         <div class="bg-dark shadow-sm mx-auto" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;"></div>
     </div>
     <div class="text-bg-primary w-50 me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden">
         <div class="my-3 py-3">
-            <h2 class="display-5">Live Chat</h2>
-            <p class="lead">{{0}} people online</p>
+            <h2 class="display-5" data-i18n="header.livechat">Live Chat</h2>
+            <p id="onlineFriends" class="lead">{{0}} people online</p>
         </div>
         <div class="bg-body-tertiary shadow-sm mx-auto"
             style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;"></div>

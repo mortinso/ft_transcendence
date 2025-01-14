@@ -6,14 +6,14 @@
         <h1 id="username" class="display-4 fw-bold lh-1 text-body-emphasis">{{USERNAME}}</h1>
         <!--Only show for other users-->
         <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
-            <button type="button" class="btn btn-primary btn-lg px-4 me-md-2 fw-bold">Add as friend</button>
-            <button type="button" disabled="true" class="btn btn-lg px-4">Message</button>
+            <button type="button" class="btn btn-primary btn-lg px-4 me-md-2 fw-bold" data-i18n="profile.addAsFriend">Add as friend</button>
+            <button type="button" disabled="true" class="btn btn-lg px-4" data-i18n="profile.message">Message</button>
             <p>[DEV] shown only for other users</p>
         </div>
     </div>
 </div>
 <div class="row flex-lg-row-reverse align-items-center my-5 mx-5">
-    <h3 class="display-5 fw-bold text-body-emphasis lh-1 mb-3">Stats</h3>
+    <h3 class="display-5 fw-bold text-body-emphasis lh-1 mb-3" data-i18n="profile.stats">Stats</h3>
     <div class="col">
         <div class="card shadow-lg">
             <div class="row g-0">
@@ -23,7 +23,7 @@
                 <div class="col-md-8 shadow-left">
                     <div class="card-body">
                         <h5 class="card-title">Pong</h5>
-                        <p class="card-text">Last 5 games</p>
+                        <p class="card-text" data-i18n="profile.lastGames">Last 5 games</p>
                         <div id="pongGameList" class="list-group"></div>
                     </div>
                 </div>
@@ -36,8 +36,8 @@
                 </div>
                 <div class="col-md-8 shadow-left">
                     <div class="card-body">
-                        <h5 class="card-title">Second Game</h5>
-                        <p class="card-text">Last 5 games</p>
+                        <h5 class="card-title">[HC] Second Game</h5>
+                        <p class="card-text" data-i18n="profile.lastGames">Last 5 games</p>
                         <div id="secondGameList" class="list-group"></div>
                     </div>
                 </div>

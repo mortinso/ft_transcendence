@@ -8,6 +8,7 @@ async function updateProfilePage() {
     createPongGameList();
     createSecondChart();
     createSecondGameList();
+    translateAll();
 }
 
 //Create chart for pong games
