@@ -121,6 +121,7 @@ function signup(event) {
     let password = document.getElementById('signupPassword');
     let confirmPassword = document.getElementById('signupConfirmPassword');
 
+    document.getElementById('signupUsername').classList.remove('is-invalid');
     if (username.value === '' || email.value === '' || password.value === '' || confirmPassword.value === '')
         return;
     if (password.value !== confirmPassword.value) {

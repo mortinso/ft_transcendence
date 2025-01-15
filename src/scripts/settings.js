@@ -6,12 +6,12 @@ async function updateSettingsPage() {
     document.getElementById('userEmail').innerText = `${_user.email}`;
     document.getElementById('user-avatar').src = _avatar;
     const date = new Date(_user.date_joined);
-    const formattedDate = new Intl.DateTimeFormat(navigator.language).format(date);
-    document.getElementById('userJoinDate').innerText = `Joined on ${formattedDate}`;
+    const formattedDate = new Intl.DateTimeFormat(_lang).format(date);
+    document.getElementById('userJoinDate').innerText = `${i18next.t('settings.joinDate')} ${formattedDate}`;
     loadGeneralSettings();
 }
 
-//Load the widget for general settings
+//Load the widget for account settings
 function loadAccountSettings() {
     var contentDiv = document.getElementById('settings-container');
     var xhr = new XMLHttpRequest();
@@ -31,6 +31,7 @@ function loadAccountSettings() {
             e.preventDefault();
             updateAccountDetails();
         });
+        translateAll();
     }
     xhr.send();
 }
@@ -46,8 +47,8 @@ async function updateAccountDetails() {
         return;
     }
     let xhr = new XMLHttpRequest();
-    const userId = getUserID();
-    const url = `https://ft-transcendence.com/api/users/${userId}/edit`;
+    const userId = await getUserID();
+    const url = `https://ft-transcendence.com/api/users/${userId}/edit/`;
     xhr.open('PUT', url, true);
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.setRequestHeader('Authorization', `Bearer ${sessionStorage.getItem('jwt')}`);
@@ -191,18 +192,19 @@ function loadSecuritySettings() {
             e.preventDefault();
             updateSecurityDetails();
         });
+        translateAll();
     }
     xhr.send();
 }
 
 //Update password
-function updateSecurityDetails() {
+async function updateSecurityDetails() {
     let newPassword = getUpdatedSecuriyDetails();
     if (newPassword === undefined)
         return;
     let xhr = new XMLHttpRequest();
-    const userId = getUserID();
-    const url = `https://ft-transcendence.com/api/users/${userId}/edit`;
+    const userId = await getUserID();
+    const url = `https://ft-transcendence.com/api/users/${userId}/edit/`;
     xhr.open('PUT', url, true);
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.setRequestHeader('Authorization', `Bearer ${sessionStorage.getItem('jwt')}`);
@@ -238,7 +240,8 @@ function showSucessfulSave() {
 
         alertPlaceholder.append(wrapper)
     }
-    appendAlert('Password updated successfully!', 'success');
+    appendAlert(i18next.t('settings.passwordUpdated'), 'success');
+    document.getElementById('InputCurrentPassword').classList.remove('is-invalid');
     document.getElementById('InputPassword').value = '';
     document.getElementById('InputPasswordConfirm').value = '';
     document.getElementById('InputCurrentPassword').value = '';
@@ -274,6 +277,8 @@ function getUpdatedSecuriyDetails() {
 function deleteAccount() {
     let modal = new bootstrap.Modal(document.getElementById('deleteAccountModal'));
     modal.show();
+    translateAll();
+    document.getElementById('inputDelAccountPassword').setAttribute('placeholder', i18next.t('common.password'));
 }
 
 //Delete account
@@ -293,7 +298,7 @@ async function deleteAccountConfirmed() {
     }
     else {
         let xhr = new XMLHttpRequest();
-        const userId = getUserID();
+        const userId = await getUserID();
         const url = `https://ft-transcendence.com/api/users/${userId}/edit/`;
         xhr.open('DELETE', url, true);
         xhr.setRequestHeader('Authorization', `Bearer ${sessionStorage.getItem('jwt')}`);
@@ -303,6 +308,7 @@ async function deleteAccountConfirmed() {
             if (this.status !== 204) {
                 document.getElementById('inputDelAccountPassword').classList.add('is-invalid');
                 console.log('Error deleting user', this);
+                //TODO: log error
                 return;
             }
             sessionStorage.removeItem('jwt');
@@ -316,7 +322,7 @@ async function deleteAccountConfirmed() {
 //Confirm password before deleting account
 async function confirmPassword(password) {
     let xhr = new XMLHttpRequest();
-    const userId = getUserID();
+    const userId = await getUserID();
     const url = `https://ft-transcendence.com/api/users/${userId}/edit/`;
     xhr.open('PUT', url, false);
     xhr.setRequestHeader('Content-Type', 'application/json');
@@ -333,6 +339,7 @@ async function confirmPassword(password) {
     return false;
 }
 
+//Load the widget for site settings
 function loadGeneralSettings(){
     var contentDiv = document.getElementById('settings-container');
     var xhr = new XMLHttpRequest();
@@ -345,6 +352,7 @@ function loadGeneralSettings(){
             return;
         }
         contentDiv.innerHTML = this.responseText;
+        translateAll();
     }
     xhr.send();
 }

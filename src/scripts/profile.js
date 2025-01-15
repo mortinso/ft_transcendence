@@ -16,7 +16,7 @@ function createPongChart() {
     new Chart("pongChart", {
         type: 'doughnut',
         data: {
-            labels: ['Wins', 'Losses', 'Draws'],
+            labels: [i18next.t('overview.wins'), i18next.t('overview.losses'), i18next.t('overview.draws')],
             datasets: [{
                 //TODO fetch data from backend
                 data: [3, 2, 1],
@@ -31,7 +31,7 @@ function createSecondChart() {
     new Chart("secondChart", {
         type: 'doughnut',
         data: {
-            labels: ['Wins', 'Losses', 'Draws'],
+            labels: [i18next.t('overview.wins'), i18next.t('overview.loses'), i18next.t('overview.draws')],
             datasets: [{
                 //TODO fetch data from backend
                 data: [5, 4, 2],

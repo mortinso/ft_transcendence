@@ -129,9 +129,11 @@ function changeContent(page, pushState = true) {
                 break;
             case 'login':
                 document.getElementById('loginForm').addEventListener('submit', login, true);
+                translateAll();
                 break;
             case 'signup':
                 document.getElementById('signupForm').addEventListener('submit', signup, true);
+                translateAll();
             default:
                 break;
         }
@@ -163,6 +165,7 @@ function updateHeaderButton(page) {
     }
 }
 
+//Get user notifications
 async function getNotifications(){
     if (_user === null) {
         _user = await getUserData();

@@ -1,4 +1,17 @@
 {
+    "common":{
+        "login": "Login",
+        "signup": "Sign Up",
+        "username": "Username",
+        "password": "Password",
+        "email": "Email",
+        "save": "Save",
+        "cancel": "Cancel"
+    },
+    "login":{
+        "rememberMe": "Remember me",
+        "invalidCredentials": "Invalid credentials"
+    },
     "header":{
         "overview": "Overview",
         "livechat": "Live Chat",
@@ -31,5 +44,33 @@
         "lostAgainst": "Lost against",
         "drawAgainst": "Draw against",
         "result" : "Result"
+    },
+    "settings":{
+        "joinDate": "Joined on",
+        "general" : "General",
+        "generalLabel" : "General site settings",
+        "account": "Account",
+        "accountLabel": "Change settings related to your account",
+        "security": "Security",
+        "securityLabel": "Change settings related to your account security",
+        "generalSettings": "General Settings",
+        "language": "Language",
+        "blockedUsers": "Blocked Users",
+        "blockedUsersInfo": "Manage users you have blocked",
+        "usernameTaken": "Username already taken",
+        "usernameUpdated": "Username updated",
+        "emailUpdated": "Email updated",
+        "avatar": "Profile Picture",
+        "changePassword": "Change Password",
+        "newPassword": "New Password",
+        "confirmPassword": "Confirm Password",
+        "currentPassword": "Current Password",
+        "passwordUpdated": "Password updated",
+        "passwordsDoNotMatch": "Passwords do not match",
+        "incorrectPassword": "Incorrect password",
+        "deleteAccount": "Delete Account",
+        "deleteAccountQuestion": "Are you sure you want to delete your account?",
+        "deleteAccountWarning": "This action is irreversible!",
+        "deleteAccountConfirm": "Please enter your password to confirm"
     }
 }
