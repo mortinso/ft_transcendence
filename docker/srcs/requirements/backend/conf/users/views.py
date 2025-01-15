@@ -11,6 +11,7 @@ from rest_framework import status
 from backend.permissions import IsSelf
 import hashlib
 from django.http import HttpResponse
+from rest_framework.exceptions import PermissionDenied
 import logging
 
 logging.basicConfig(level=logging.INFO)
@@ -18,7 +19,8 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
 class ListUsersView(generics.ListAPIView):
-    queryset = User.objects.all()
+    queryset = User.objects.all().filter(is_active=True)
+
     serializer_class = ListUsersSerializer
 
     def get_serializer_context(self):
@@ -36,14 +38,24 @@ class WhoAmIView(generics.RetrieveAPIView):
     def get_object(self):
         return generics.get_object_or_404(User, id=self.request.user.id)
 
-class RetrieveUpdateDestroyUserView(generics.RetrieveUpdateDestroyAPIView):
+class RetrieveUpdateUserView(generics.RetrieveUpdateAPIView):
     permission_classes = [IsSelf]
 
     queryset = User.objects.all()
     serializer_class = UpdateUserSerializer
 
+class DestroyUserView(generics.DestroyAPIView):
+    queryset = User.objects.all()
+    def destroy(self, request, pk):
+        user = generics.get_object_or_404(User, id=pk)
+        if request.user.id != user.id:
+            raise PermissionDenied("You cannot deactivate another user's account.")
+        user.is_active = False
+        user.save()
+        return Response({"detail": "user deleted."}, status=status.HTTP_200_OK)
+
 class AddAvatarView(generics.UpdateAPIView):
-    # permission_classes = [IsSelf]
+    permission_classes = [IsSelf]
 
     queryset = User.objects.all()
     serializer_class = AddAvatarSerializer
