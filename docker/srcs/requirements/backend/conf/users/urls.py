@@ -1,9 +1,10 @@
 from django.urls import path
-from .views import ListUsersView, UserDetailsView, WhoAmIView, RetrieveUpdateDestroyUserView, AddFriendView, RemoveFriendView, AcceptFriendView, RemoveFriendRequestView, BlockUserView, UnblockUserView, AddAvatarView, GetImageView
+from .views import ListUsersView, UserDetailsView, WhoAmIView, RetrieveUpdateUserView, DestroyUserView, AddFriendView, RemoveFriendView, AcceptFriendView, RemoveFriendRequestView, BlockUserView, UnblockUserView, AddAvatarView, GetImageView
 
 urlpatterns = [
     path("whoami/", WhoAmIView.as_view(), name="whoami"),
-    path("<uuid:pk>/edit/", RetrieveUpdateDestroyUserView.as_view(), name="user_update"),
+    path("<uuid:pk>/edit/", RetrieveUpdateUserView.as_view(), name="user_update"),
+    path("<uuid:pk>/delete/", DestroyUserView.as_view(), name="user_update"),
     path("<uuid:pk>/invite_friend/", AddFriendView.as_view(), name="invite_friend"),
     path("<uuid:pk>/accept_friend/", AcceptFriendView.as_view(), name="accept_friend"),
     path("<uuid:pk>/remove_friend/", RemoveFriendView.as_view(), name="remove_friend"),

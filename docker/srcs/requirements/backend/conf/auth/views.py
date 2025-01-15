@@ -22,7 +22,7 @@ class LoginView(generics.GenericAPIView):
         serializer = LoginSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data['user']
-        if user is not None:
+        if user is not None and user.is_active:
             if user.tfa == True:
                 otp = str(random.randint(100000, 999999))
                 user.otp = hashlib.sha256(otp.encode()).hexdigest()
