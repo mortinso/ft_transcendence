@@ -38,13 +38,9 @@ class WhoAmIView(generics.RetrieveAPIView):
     def get_object(self):
         return generics.get_object_or_404(User, id=self.request.user.id)
 
-class RetrieveUpdateUserView(generics.RetrieveUpdateAPIView):
+class RetrieveUpdateDestroyUserView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsSelf]
 
-    queryset = User.objects.all()
-    serializer_class = UpdateUserSerializer
-
-class DestroyUserView(generics.DestroyAPIView):
     queryset = User.objects.all()
     def destroy(self, request, pk):
         user = generics.get_object_or_404(User, id=pk)
@@ -53,6 +49,7 @@ class DestroyUserView(generics.DestroyAPIView):
         user.is_active = False
         user.save()
         return Response({"detail": "user deleted."}, status=status.HTTP_200_OK)
+    serializer_class = UpdateUserSerializer
 
 class AddAvatarView(generics.UpdateAPIView):
     permission_classes = [IsSelf]
