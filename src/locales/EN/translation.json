@@ -6,11 +6,15 @@
         "password": "Password",
         "email": "Email",
         "save": "Save",
-        "cancel": "Cancel"
+        "cancel": "Cancel",
+        "serverConnectionError": "Couldn't connect to server. Please try again later.",
+        "connectionFailed": "Connection failed",
+        "contentNotFound": "Content not found"
     },
     "login":{
         "rememberMe": "Remember me",
-        "invalidCredentials": "Invalid credentials"
+        "invalidCredentials": "Invalid credentials",
+        "accountCreated": "Account created sucessfully. You may login now."
     },
     "header":{
         "overview": "Overview",

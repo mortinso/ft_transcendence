@@ -22,7 +22,7 @@ def user_avatar_path(instance, filename):
 
 IDIOMS = (
     ('EN','EN'),
-    ('SP', 'SP'),
+    ('ES', 'ES'),
     ('PT','PT'),
 )
 
@@ -40,7 +40,7 @@ class User(AbstractUser):
     tfa = models.BooleanField(default=False)
     is_online = models.BooleanField(default=False, editable=True)
     last_seen = models.DateTimeField(blank=True, null=True)
-    idiom = models.CharField(max_length=10, choices=IDIOMS, default='english')
+    idiom = models.CharField(max_length=10, choices=IDIOMS, default='EN')
     otp = models.CharField(default=None, max_length=64, blank=True, null=True)
     otp_expiration = models.DateTimeField(blank=True, null=True)
 

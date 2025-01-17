@@ -27,12 +27,12 @@ async function login(event) {
             document.getElementById('loginPassword').classList.remove('is-invalid');
             return response.json();
         }
-        else if (response.status === 401) {
-            document.getElementById('loginUsername').classList.add('is-invalid');
-            document.getElementById('loginPassword').classList.add('is-invalid');
-            return null;
+        else if (response.status === 502) {
+            throw new Error('Server error');
         }
         else {
+            document.getElementById('loginUsername').classList.add('is-invalid');
+            document.getElementById('loginPassword').classList.add('is-invalid');
             return null;
         }
     }).then(data => {
@@ -52,7 +52,8 @@ async function login(event) {
         let modal = new bootstrap.Modal(document.getElementById('loginFailModal'));
         modal.show();
         document.getElementById('loginLoading').classList.toggle('d-none');
-        //log error
+        translateAll();
+        //TODO: log error
     });
 
     if (loggedIn) {
@@ -145,6 +146,7 @@ function signup(event) {
         }
     }).then(response => {
         if (response.status === 400) {
+            //TODO: check if username or email is already taken
             document.getElementById('signupUsername').classList.add('is-invalid');
             console.warn(response);
             return;
@@ -153,8 +155,7 @@ function signup(event) {
             return response.json();
         }
         else {
-            //log error
-            return;
+            throw new Error('Error creating account');
         }
     }).then(data => {
         if (data !== undefined) {
@@ -170,7 +171,7 @@ function signup(event) {
 
                 alertPlaceholder.append(wrapper)
             }
-            appendAlert('Account created sucessfully! You may login now.', 'success');
+            appendAlert(i18next.t('login.accountCreated'), 'success');
             email.value = '';
             username.value = '';
             password.value = '';
@@ -179,6 +180,7 @@ function signup(event) {
     }).catch(error => {
         let modal = new bootstrap.Modal(document.getElementById('signupFailModal'));
         modal.show();
+        translateAll();
         //log error
     });
 }
@@ -208,7 +210,6 @@ async function getUserData() {
         return;
     };
     const data = await response.json();
-    //TODO cache data
     return data;
 }
 

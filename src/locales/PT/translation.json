@@ -6,11 +6,15 @@
         "password": "Palavra-passe",
         "email": "Email",
         "save": "Guardar",
-        "cancel": "Cancelar"
+        "cancel": "Cancelar",
+        "serverConnectionError": "Não foi possível ligar ao servidor. Por favor tenta novamente mais tarde.",
+        "connectionFailed": "Ligação falhou",
+        "contentNotFound": "Conteúdo não encontrado"
     },
     "login":{
         "rememberMe": "Lembrar-me",
-        "invalidCredentials": "Credenciais inválidas"
+        "invalidCredentials": "Credenciais inválidas",
+        "accountCreated": "Conta criada com sucesso. Podes iniciar sessão agora."
     },
     "header":{
         "overview": "Visão Geral",

@@ -11,8 +11,8 @@
             <div class="form-floating my-2">
                 <input type="password" class="form-control" id="loginPassword" placeholder="Password">
                 <label for="loginPassword" data-i18n="common.password">Password</label>
-                <div id="wrongCredentials" class="invalid-feedback">
-                    Wrong Credentials
+                <div id="wrongCredentials" class="invalid-feedback" data-i18n="login.invalidCredentials">
+                    Invalid Credentials
                 </div>
             </div>
         </div>
@@ -30,11 +30,11 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="loginFailModalLabel">Connection failed</h1>
+                    <h1 class="modal-title fs-5" id="loginFailModalLabel" data-i18n="common.connectionFailed">Connection failed</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p>Couldn't connect to server. Please try again later.</p>
+                    <p data-i18n="common.serverConnectionError">Couldn't connect to server. Please try again later.</p>
                 </div>
             </div>
         </div>

@@ -2,7 +2,7 @@ let pageState = 'overview'
 let loggedIn = false;
 let _user = null;
 let _avatar = null;
-let _lang = 'pt';
+let _lang = 'EN';
 
 //Handle back and forward navigation events
 window.onpopstate = function (event) {
@@ -15,7 +15,10 @@ window.onpopstate = function (event) {
 //Initliaze the page
 async function initialize() {
     applyColorScheme();
-    initTranslations();
+    if (localStorage.getItem('lang') !== null) {
+        _lang = localStorage.getItem('lang');
+    }
+    await initTranslations();
 
     loggedIn = await checkLogin();
     if (!loggedIn) {
@@ -25,6 +28,7 @@ async function initialize() {
     else {
         history.replaceState(pageState, null, "");
         _user = await getUserData();
+        _lang = _user.idiom;
         await getNotifications();
         await getUserAvatar(_user.id).then(avatar => { _avatar = avatar;});
         changeContent(pageState, false);
@@ -76,10 +80,11 @@ function applyColorScheme() {
     });
 }
 
+//Initialize the translation system
 async function initTranslations(){
     await i18next.use(i18nextHttpBackend).init({
         lng: _lang,
-        fallbackLng: 'en',
+        fallbackLng: 'EN',
         debug: true,
         backend: {
             loadPath: '/src/locales/{{lng}}/{{ns}}.json'
@@ -88,6 +93,7 @@ async function initTranslations(){
     translateAll();
 }
 
+//Translate all elements with the data-i18n attribute
 function translateAll(){
     document.querySelectorAll('[data-i18n]').forEach(element => {
         let key = element.getAttribute('data-i18n');
@@ -105,7 +111,7 @@ function changeContent(page, pushState = true) {
         if (this.readyState !== 4)
             return;
         if (this.status !== 200) {
-            contentDiv.innerHTML = `<h2>Content not found!</h2>`
+            contentDiv.innerHTML = `<h2>${i18next.t('common.contentNotFound')}</h2>`
             return;
         }
         contentDiv.innerHTML = this.responseText;
