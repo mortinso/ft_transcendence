@@ -6,7 +6,10 @@
         "password": "Password",
         "email": "Email",
         "save": "Save",
+        "add": "Add",
         "cancel": "Cancel",
+        "yes": "Yes",
+        "no": "No",
         "serverConnectionError": "Couldn't connect to server. Please try again later.",
         "connectionFailed": "Connection failed",
         "contentNotFound": "Content not found"
@@ -76,5 +79,24 @@
         "deleteAccountQuestion": "Are you sure you want to delete your account?",
         "deleteAccountWarning": "This action is irreversible!",
         "deleteAccountConfirm": "Please enter your password to confirm"
+    },
+    "livechat": {
+        "friends": "Friends",
+        "noFriends": "You have no friends yet",
+        "addFriend": "Add Friend",
+        "enterUsername": "Enter username",
+        "emptyError": "Name can't' be empty",
+        "selfError": "You can't add yourself as a friend",
+        "alreadyFriendError": "You are already friends with this user",
+        "unkownUserError": "User not found",
+        "remove": "Remove",
+        "block": "Block",
+        "removeFriend": "Remove Friend",
+        "removeFriendQuestion1": "Are you sure you want to remove",
+        "removeFriendQuestion2": "from your friends list?",
+        "blockUser": "Block User",
+        "blockUserQuestion": "Are you sure you want to block",
+        "chatPlaceholder": "Type your message here",
+        "send": "Send"
     }
 }

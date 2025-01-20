@@ -5,6 +5,7 @@ function initChatPage() {
         _user = user;
         fillFriendList();
     });
+    translateAll();
 }
 
 async function fillFriendList() {
@@ -14,7 +15,7 @@ async function fillFriendList() {
     let friendListTemplate = document.getElementById('friend-list-template');
     if (_user.friends.length === 0 && _user.friend_requests.length === 0) {
         let clone = friendListTemplate.content.cloneNode(true);
-        clone.querySelector('h6').textContent = 'No friends yet';
+        clone.querySelector('h6').textContent = i18next.t('livechat.noFriends');
         clone.querySelector('small').classList.add('d-none');
         clone.querySelector('img').classList.add('d-none');
         clone.querySelector('li').classList.add('disabled');
@@ -55,34 +56,41 @@ function toggleSelectedFriend(element) {
     if (chatArea.classList.contains('d-none')) {
         chatArea.classList.remove('d-none');
     }
+    let input = document.getElementById('chat-input');
+    input?.focus();
+    input?.setAttribute('placeholder', i18next.t('livechat.chatPlaceholder'));
 }
 
 function showFriendOptions(event) {
     event.stopPropagation();
+    translateAll();
 }
 
 function showAddFriendModal() {
     let addFriendModal = new bootstrap.Modal(document.getElementById('add-friend-modal'));
     addFriendModal.show();
+    translateAll();
+    let friendName = document.getElementById('inputFriendUsername');
+    friendName.setAttribute('placeholder', i18next.t('common.username'));
 }
 
 async function addFriend() {
     let friendName = document.getElementById('inputFriendUsername');
     if (friendName.value === '') {
         friendName.classList.add('is-invalid');
-        document.getElementById('friend-name-error').innerText = 'Name cannot be empty';
+        document.getElementById('friend-name-error').innerText = i18next.t('livechat.emptyError');
         return;
     }
     if (friendName.value === _user.username) {
         friendName.classList.add('is-invalid');
-        document.getElementById('friend-name-error').innerText = 'You cannot add yourself as a friend';
+        document.getElementById('friend-name-error').innerText = i18next.t('livechat.selfError');
         return;
     }
     let friendList = document.getElementById('friend-list');
     for (let friend of friendList.children) {
         if (friend.querySelector('h6').innerText === friendName.value) {
             friendName.classList.add('is-invalid');
-            document.getElementById('friend-name-error').innerText = 'User is already your friend';
+            document.getElementById('friend-name-error').innerText = i18next.t('livechat.alreadyFriendError');
             return;
         }
     }
@@ -91,7 +99,7 @@ async function addFriend() {
     });
     if (result.status === 404) {
         friendName.classList.add('is-invalid');
-        document.getElementById('friend-name-error').innerText = 'User not found';
+        document.getElementById('friend-name-error').innerText = i18next.t('livechat.unkownUserError');
         return;
     }
     else if (result.status === 200) {
@@ -113,8 +121,8 @@ async function acceptFriendRequest(button){
 function showRemoveFriendModal(button){
     const friendName = button.parentElement.parentElement.parentElement.querySelector('h6').innerText;
     let removeFriendModal = new bootstrap.Modal(document.getElementById('del-block-friend-modal'));
-    removeFriendModal._element.querySelector('h1').innerText = `Remove Friend`;
-    removeFriendModal._element.querySelector('p').innerText = `Are you sure you want to remove "${friendName}" from your friend list?`;
+    removeFriendModal._element.querySelector('h1').innerText = i18next.t('livechat.removeFriend');
+    removeFriendModal._element.querySelector('p').innerText =`${i18next.t('livechat.removeFriendQuestion1')} "${friendName}" ${i18next.t('livechat.removeFriendQuestion2')}`;
     removeFriendModal._element.querySelector('.btn-danger').addEventListener('click', () => removeFriend(button));
     removeFriendModal.show();
 }
@@ -136,8 +144,8 @@ async function rejectFriendRequest(button){
 function showBlockUserModal(button){
     const userName = button.parentElement.parentElement.parentElement.querySelector('h6').innerText;
     let removeUserModal = new bootstrap.Modal(document.getElementById('del-block-friend-modal'));
-    removeUserModal._element.querySelector('h1').innerText = `Block user`;
-    removeUserModal._element.querySelector('p').innerText = `Are you sure you want to block "${userName}"?`;
+    removeUserModal._element.querySelector('h1').innerText = i18next.t('livechat.blockUser');
+    removeUserModal._element.querySelector('p').innerText = `${i18next.t('livechat.blockUserQuestion')} "${userName}"?`;
     removeUserModal._element.querySelector('.btn-danger').addEventListener('click', () => blockUser(button));
     removeUserModal.show();
 }
