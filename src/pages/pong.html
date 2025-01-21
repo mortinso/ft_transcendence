@@ -1,4 +1,19 @@
-<h2>Pong Page</h2>
-<p>
-    This is the pong page content.
-</p>
+<style>
+	body {
+		margin: 0;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		/* background-color: black; */
+		color: white;
+		height: 100vh;
+		overflow: hidden;
+	}
+
+	canvas {
+		border: 2px solid white;
+	}
+</style>
+
+<canvas id="pong" width="1000" height="500"></canvas>
+<script src="/src/scripts/pong.js"></script>
