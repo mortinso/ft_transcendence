@@ -3,6 +3,7 @@ from users.models import User
 
 # TODO:on_delete
 
+
 class Game():
     date = models.DateTimeField(auto_now_add=True)
     active = models.BooleanField()

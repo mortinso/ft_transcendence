@@ -5,6 +5,9 @@ up:
 	docker compose -f srcs/docker-compose.yml up
 	# docker compose -f srcs/docker-compose.yml up --detach
 
+dev:
+	ENVIRONMENT=development docker compose -f srcs/docker-compose.yml up --build
+
 stop:
 	docker compose -f srcs/docker-compose.yml stop
 
@@ -31,4 +34,10 @@ clean-docker:
 reset:
 	docker stop $(shell docker ps -qa); docker rm $(shell docker ps -qa); docker rmi -f $(shell docker images -qa); docker volume rm $(shell docker volume ls -q); docker network rm $(shell docker network ls -q) 2>/dev/null
 
-.PHONY: all start stop down restart clean fclean re clean-docker reset
+sh-backend:
+	docker exec -it backend /bin/bash
+
+sh-postgres:
+	docker exec -it postgres /bin/bash
+
+.PHONY: all start stop down restart clean fclean re clean-docker reset dev sh-backend sh-postgres

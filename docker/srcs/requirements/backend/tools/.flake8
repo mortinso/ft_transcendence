@@ -1,0 +1,15 @@
+[flake8]
+max-line-length = 120
+exclude = 
+    .git,
+    .dockerignore,
+    Dockerfile,
+    __pycache__,
+    tools,
+    manage.py,
+    __init__.py,
+    migrations
+ignore = 
+    F401  
+
+# F401: imported but unused (for now)

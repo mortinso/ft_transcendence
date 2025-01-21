@@ -2,7 +2,9 @@
 
 1.  Define password in each /secrets file
 
-2.  make
+2.  to build and run the containers use:
+  - `make` for production
+  - `make dev` for development 
 
 3.  Browser: https://ft-transcendence.com
 
@@ -38,7 +40,7 @@ https://192.168.20.111/api/users/1/unblock (unblock user)
 
 ## Images
 
-https://192.168.20.111/api/users/<uuid:pk>/add_avatar/ (get user avatar)
+https://ft-transcendence.com/api/users/<uuid:pk>/add_avatar/ (add user avatar)
 
 https://192.168.20.111/api/users/<uuid:pk>/get_avatar/ (get user avatar)
 
