@@ -41,27 +41,27 @@ class UpdateUserSerializer(serializers.ModelSerializer):
             'confirm_password': {'write_only': True},
         }
 
+    #TODO: PASSWORD VALIDATION NOT WORKING
     def validate(self, data):
-        if data.get('password'):
-            if not data.get('confirm_password'):
-                raise serializers.ValidationError("Please confirm your password.")
+        if data.get('password') or data.get('confirm_password'):
+            try:
+                validate_password(data.get('password'))
+                validate_password(data.get('confirm_password'))
+            except ValidationError as e:
+                raise serializers.ValidationError(e.messages)
             if not data.get('old_password'):
                 raise serializers.ValidationError("Old password is required to set a new password.")
             if not self.instance.check_password(data.get('old_password')):
                 raise serializers.ValidationError("Old password doesn't match.")
             if data.get('password') != data.get('confirm_password'):
                 raise serializers.ValidationError("Passwords do not match.")
-            if validate_password(data.get('password')):
-                raise serializers.ValidationError("Invalid password.")
-        elif data.get('confirm_password') or data.get('old_password'):
-            raise serializers.ValidationError("Unable to change password: insuficient data.")
         return data
 
     def update(self, instance, validated_data):
         validated_data.pop('old_password', 'confirm_password')
         for attr, value in validated_data.items():
             if attr == 'password':
-                validate_password(value)
+                validate_password(self, value)
                 instance.set_password(value)
             else:
                 setattr(instance, attr, value)

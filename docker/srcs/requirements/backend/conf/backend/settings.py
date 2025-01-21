@@ -83,6 +83,7 @@ ALLOWED_HOSTS = [
     ".127.0.0.1",
     'backend',
     "ft-transcendence.com",
+    '192.168.20.111',
     ]
 
 ALLOWED_REFERERS = [
