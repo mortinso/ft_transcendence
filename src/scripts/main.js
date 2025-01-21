@@ -105,6 +105,10 @@ function translateAll(){
 function changeContent(page, pushState = true) {
     var contentDiv = document.getElementById('content');
 
+     // Remove previously added scripts
+     var oldScripts = document.querySelectorAll('script[data-dynamic]');
+     oldScripts.forEach(script => script.remove());
+
     var xhr = new XMLHttpRequest();
     xhr.open('GET', `/src/pages/${page}.html`, true);
     xhr.onreadystatechange = function () {
@@ -115,6 +119,21 @@ function changeContent(page, pushState = true) {
             return;
         }
         contentDiv.innerHTML = this.responseText;
+
+        // Execute scripts in the loaded content
+        var scripts = contentDiv.getElementsByTagName('script');
+        for (var i = 0; i < scripts.length; i++) {
+            var script = document.createElement('script');
+            script.type = 'text/javascript';
+            script.setAttribute('data-dynamic', 'true'); // Mark script as dynamically added
+            if (scripts[i].src) {
+                script.src = scripts[i].src;
+            } else {
+                script.textContent = scripts[i].textContent;
+            }
+            document.head.appendChild(script);
+        }
+
         if (page !== 'login' && page !== 'signup')
             pageState = page;
         if (pushState && history.state !== pageState) {
