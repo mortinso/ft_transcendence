@@ -73,7 +73,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-9t0$i4hjzqu_cm=1@q0_7cpzgziu-xiwkqyiv2trpdeg2wyw-x'
 
-#TODO: CHANGE DEBUG
+# TODO: CHANGE DEBUG
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 # DEBUG = False
@@ -83,7 +83,7 @@ ALLOWED_HOSTS = [
     ".127.0.0.1",
     'backend',
     "ft-transcendence.com",
-    ]
+]
 
 ALLOWED_REFERERS = [
     "https://ft-transcendence.com/",
@@ -104,7 +104,6 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'corsheaders',
-    
 ]
 
 MIDDLEWARE = [
@@ -162,8 +161,8 @@ DATABASES = {
 }
 
 
-#TODO: enable password validation
-#TODO: change password requirements
+# TODO: enable password validation
+# TODO: change password requirements
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -205,7 +204,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # Base url to serve media files
 MEDIA_URL = '/media/'
 # Path where media is stored
-# MEDIA_ROOT = os.path.join(BASE_DIR, 'avatars/')  
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'avatars/')
 MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles')
 
 
@@ -220,7 +219,7 @@ AUTH_USER_MODEL = "users.User"
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
-         'rest_framework.permissions.IsAuthenticated',
+        'rest_framework.permissions.IsAuthenticated',
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
         # 'rest_framework.authentication.BasicAuthentication',
@@ -239,7 +238,7 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 
-#TODO: JWT settings
+# TODO: JWT settings
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
@@ -266,7 +265,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
-EMAIL_HOST_USER = "ffttranscendence@gmail.com" #sender's email-id
+EMAIL_HOST_USER = "ffttranscendence@gmail.com"  # sender's email-id
 file = open(env("EMAIL_PASSWORD_FILE"), "r")
 EMAIL_HOST_PASSWORD = file.readline()
 file.close()

@@ -23,15 +23,10 @@ gunicorn==23.0.0
 # Dependencies
 asgiref==3.8.1
 marshmallow==3.25.1
-packaging==24.2
 PyJWT==2.10.1
 python-dotenv==1.0.1
 sqlparse==0.5.3
 typing_extensions==4.12.2
-
-# Development dependencies
-flake8==7.1.1
-black==24.10.0
 
 # Optional dependencies
 # django-cleanup #delete previously uploaded images

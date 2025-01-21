@@ -2,7 +2,9 @@
 
 1.  Define password in each /secrets file
 
-2.  make
+2.  to build and run the containers use:
+  - `make` for production
+  - `make dev` for development 
 
 3.  Browser: https://ft-transcendence.com
 

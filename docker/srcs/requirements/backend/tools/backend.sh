@@ -4,7 +4,11 @@ cd transcendence
 
 export DJANGO_SUPERUSER_PASSWORD=$(cat $DJANGO_SUPERUSER_FILE);
 
-pip install -r requirements.txt
+if [ "$ENVIRONMENT" = "development" ]; then
+    pip install -r requirements-dev.txt
+else
+    pip install -r requirements.txt
+fi
 
 cd backend
 

@@ -6,6 +6,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
+
 class FrontendOnlyMiddleware:
     def __init__(self, get_response):
         self.get_response = get_response
@@ -15,7 +16,7 @@ class FrontendOnlyMiddleware:
         allowed_referers = settings.ALLOWED_REFERERS
 
         # Check the Referer header
-        referer = request.headers.get('Referer')
+        referer = request.headers.get("Referer")
 
         if referer is None:
             return HttpResponseBadRequest()
