@@ -1,0 +1,80 @@
+{
+    "common":{
+        "login": "Login",
+        "signup": "Sign Up",
+        "username": "Username",
+        "password": "Password",
+        "email": "Email",
+        "save": "Save",
+        "cancel": "Cancel",
+        "serverConnectionError": "Couldn't connect to server. Please try again later.",
+        "connectionFailed": "Connection failed",
+        "contentNotFound": "Content not found"
+    },
+    "login":{
+        "rememberMe": "Remember me",
+        "invalidCredentials": "Invalid credentials",
+        "accountCreated": "Account created sucessfully. You may login now."
+    },
+    "header":{
+        "overview": "Overview",
+        "livechat": "Live Chat",
+        "notifications": "Notifications",
+        "profile": "Profile",
+        "settings": "Settings",
+        "logout": "Logout"
+    },
+    "notifications":{
+        "empty": "No notifications",
+        "friendRequest": "Friend request",
+        "friendRequestMessage": "wants to be your friend"
+    },
+    "overview":{
+        "greeting": "Hello",
+        "gamesPlayed": "Games Played",
+        "wins": "Victories",
+        "losses": "Losses",
+        "draws": "Draws",
+        "friendsOnline": "Friends Online",
+        "playPong": "Play Pong",
+        "playersPlaying": "people playing"
+    },
+    "profile":{
+        "addAsFriend": "Add as friend",
+        "message": "Message",
+        "stats": "Stats",
+        "lastGames": "Last 5 games",
+        "wonAgainst": "Won against",
+        "lostAgainst": "Lost against",
+        "drawAgainst": "Draw against",
+        "result" : "Result"
+    },
+    "settings":{
+        "joinDate": "Joined on",
+        "general" : "General",
+        "generalLabel" : "General site settings",
+        "account": "Account",
+        "accountLabel": "Change settings related to your account",
+        "security": "Security",
+        "securityLabel": "Change settings related to your account security",
+        "generalSettings": "General Settings",
+        "language": "Language",
+        "blockedUsers": "Blocked Users",
+        "blockedUsersInfo": "Manage users you have blocked",
+        "usernameTaken": "Username already taken",
+        "usernameUpdated": "Username updated",
+        "emailUpdated": "Email updated",
+        "avatar": "Profile Picture",
+        "changePassword": "Change Password",
+        "newPassword": "New Password",
+        "confirmPassword": "Confirm Password",
+        "currentPassword": "Current Password",
+        "passwordUpdated": "Password updated",
+        "passwordsDoNotMatch": "Passwords do not match",
+        "incorrectPassword": "Incorrect password",
+        "deleteAccount": "Delete Account",
+        "deleteAccountQuestion": "Are you sure you want to delete your account?",
+        "deleteAccountWarning": "This action is irreversible!",
+        "deleteAccountConfirm": "Please enter your password to confirm"
+    }
+}

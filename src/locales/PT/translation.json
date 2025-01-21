@@ -1,0 +1,80 @@
+{
+    "common":{
+        "login": "Iniciar Sessão",
+        "signup": "Registar",
+        "username": "Nome de Utilizador",
+        "password": "Palavra-passe",
+        "email": "Email",
+        "save": "Guardar",
+        "cancel": "Cancelar",
+        "serverConnectionError": "Não foi possível ligar ao servidor. Por favor tenta novamente mais tarde.",
+        "connectionFailed": "Ligação falhou",
+        "contentNotFound": "Conteúdo não encontrado"
+    },
+    "login":{
+        "rememberMe": "Lembrar-me",
+        "invalidCredentials": "Credenciais inválidas",
+        "accountCreated": "Conta criada com sucesso. Podes iniciar sessão agora."
+    },
+    "header":{
+        "overview": "Visão Geral",
+        "livechat": "Chat",
+        "notifications": "Notificações",
+        "profile": "Perfil",
+        "settings": "Definições",
+        "logout": "Sair"
+    },
+    "notifications":{
+        "empty": "Sem notificações",
+        "friendRequest": "Pedido de amizade",
+        "friendRequestMessage": "quer ser teu amigo"
+    },
+    "overview":{
+        "greeting": "Olá",
+        "gamesPlayed": "Jogos Jogados",
+        "wins": "Vitórias",
+        "losses": "Derrotas",
+        "draws": "Empates",
+        "friendsOnline": "Amigos Online",
+        "playPong": "Jogar Pong",
+        "playersPlaying": "pessoas a jogar"
+    },
+    "profile":{
+        "addAsFriend": "Adicionar como amigo",
+        "message": "Enviar mensagem",
+        "stats": "Estatísticas",
+        "lastGames": "Últimos 5 jogos",
+        "wonAgainst": "Ganhaste contra",
+        "lostAgainst": "Perdeste contra",
+        "drawAgainst": "Empataste contra",
+        "result" : "Resultado"
+    },
+    "settings":{
+        "joinDate": "Registado em",
+        "general" : "Geral",
+        "generalLabel" : "Definições gerais do site",
+        "account": "Conta",
+        "accountLabel": "Muda definições relacionadas com a tua conta",
+        "security": "Segurança",
+        "securityLabel": "Muda definições relacionadas com a segurança da tua conta",
+        "generalSettings": "Definições Gerais",
+        "language": "Idioma",
+        "blockedUsers": "Utilizadores Bloqueados",
+        "blockedUsersInfo": "Gerir utilizadores bloqueados",
+        "usernameTaken": "Nome de utilizador já em uso",
+        "usernameUpdated": "Nome de utilizador atualizado",
+        "emailUpdated": "Email atualizado",
+        "avatar": "Imagem de Perfil",
+        "changePassword": "Mudar Palavra-passe",
+        "newPassword": "Nova Palavra-passe",
+        "confirmPassword": "Confirmar Palavra-passe",
+        "currentPassword": "Palavra-passe Atual",
+        "passwordUpdated": "Palavra-passe atualizada",
+        "passwordsDoNotMatch": "As palavras-passe não coincidem",
+        "incorrectPassword": "Palavra-passe incorreta",
+        "deleteAccount": "Apagar Conta",
+        "deleteAccountQuestion": "Tens a certeza que queres apagar a tua conta?",
+        "deleteAccountWarning": "Esta ação é irreversível!",
+        "deleteAccountConfirm": "Por favor insere a tua palavra-passe para confirmar"
+    }
+}
