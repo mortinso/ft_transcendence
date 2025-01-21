@@ -1,6 +1,5 @@
 .vscode
-docker/secrets/django_superuser_password.txt
-docker/secrets/postgres_password.txt
+docker/secrets/*
 docker/srcs/requirements/backend/venv/
 docker/srcs/requirements/backend/conf/backend/__pycache__/*
 docker/srcs/requirements/backend/conf/users/__pycache__/*

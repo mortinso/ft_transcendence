@@ -48,8 +48,8 @@ async function updateAccountDetails() {
         return;
     }
     let xhr = new XMLHttpRequest();
-    const userId = getUserID();
-    const url = `https://192.168.20.111/api/users/${userId}/edit`;
+    const userId = await getUserID();
+    const url = `https://ft-transcendence.com/api/users/${userId}/edit/`;
     xhr.open('PUT', url, true);
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.setRequestHeader('Authorization', `Bearer ${sessionStorage.getItem('jwt')}`);
@@ -152,7 +152,7 @@ async function updateAvatar() {
     formData.append('avatar', avatar.files[0]);
     let xhr = new XMLHttpRequest();
     const userId = await getUserID();
-    const url = `https://192.168.20.111/api/users/${userId}/add_avatar/`;
+    const url = `https://ft-transcendence.com/api/users/${userId}/add_avatar/`;
     xhr.open('PUT', url, true);
     xhr.setRequestHeader('Authorization', `Bearer ${sessionStorage.getItem('jwt')}`);
     xhr.onreadystatechange = function () {
@@ -195,8 +195,8 @@ function updateSecurityDetails() {
     if (newPassword === undefined)
         return;
     let xhr = new XMLHttpRequest();
-    const userId = getUserID();
-    const url = `https://192.168.20.111/api/users/${userId}/edit`;
+    const userId = await getUserID();
+    const url = `https://ft-transcendence.com/api/users/${userId}/edit/`;
     xhr.open('PUT', url, true);
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.setRequestHeader('Authorization', `Bearer ${sessionStorage.getItem('jwt')}`);
@@ -287,8 +287,8 @@ async function deleteAccountConfirmed() {
     }
     else {
         let xhr = new XMLHttpRequest();
-        const userId = getUserID();
-        const url = `https://192.168.20.111/api/users/${userId}/edit/`;
+        const userId = await getUserID();
+        const url = `https://ft-transcendence.com/api/users/${userId}/edit/`;
         xhr.open('DELETE', url, true);
         xhr.setRequestHeader('Authorization', `Bearer ${sessionStorage.getItem('jwt')}`);
         xhr.onreadystatechange = function () {
@@ -310,8 +310,8 @@ async function deleteAccountConfirmed() {
 //Confirm password before deleting account
 async function confirmPassword(password) {
     let xhr = new XMLHttpRequest();
-    const userId = getUserID();
-    const url = `https://192.168.20.111/api/users/${userId}/edit/`;
+    const userId = await getUserID();
+    const url = `https://ft-transcendence.com/api/users/${userId}/edit/`;
     xhr.open('PUT', url, false);
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.setRequestHeader('Authorization', `Bearer ${sessionStorage.getItem('jwt')}`);
