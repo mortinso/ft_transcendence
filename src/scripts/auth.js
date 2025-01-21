@@ -10,7 +10,7 @@ async function login(event) {
     else
         localStorage.removeItem('keepLoggedIn');
 
-    const url = 'https://ft-transcendence.com/api/auth/login/';
+    const url = 'https://192.168.20.111/api/auth/login/';
     document.getElementById('loginLoading').classList.toggle('d-none');
     await fetch(url, {
         method: 'POST',
@@ -65,7 +65,7 @@ async function login(event) {
 
 //Logout the user
 async function logout() {
-    const url = 'https://ft-transcendence.com/api/auth/logout/';
+    const url = 'https://192.168.20.111/api/auth/logout/';
     await fetch(url, {
         method: 'POST',
         body: JSON.stringify({
@@ -127,7 +127,7 @@ function signup(event) {
     else
         document.getElementById('signupConfirmPassword').classList.remove('is-invalid');
 
-    const url = 'https://ft-transcendence.com/api/auth/signup/';
+    const url = 'https://192.168.20.111/api/auth/signup/';
     fetch(url, {
         method: 'POST',
         body: JSON.stringify({
@@ -185,7 +185,7 @@ async function getUserData() {
     const userID = await getUserID();
     if (userID === null)
         return;
-    const url = `https://ft-transcendence.com/api/users/${userID}/`;
+    const url = `https://192.168.20.111/api/users/${userID}/`;
     const response = await fetch(url, {
         method: 'GET',
         headers: {
@@ -225,7 +225,7 @@ async function getUserID() {
 async function refreshLogin() {
     if (sessionStorage.getItem('refresh') !== null) {
         const refreshToken = sessionStorage.getItem('refresh');
-        const url = 'https://ft-transcendence.com/api/auth/token/refresh/';
+        const url = 'https://192.168.20.111/api/auth/token/refresh/';
         const response = await fetch(url, {
             method: 'POST',
             body: JSON.stringify({
@@ -260,7 +260,7 @@ async function refreshLogin() {
 }
 
 async function verifyRefreshToken(refresh){
-    const url = 'https://ft-transcendence.com/api/auth/token/refresh/';
+    const url = 'https://192.168.20.111/api/auth/token/refresh/';
     await fetch(url, {
         method: 'POST',
         body: JSON.stringify({
@@ -280,7 +280,7 @@ async function addFriendAsync(friendName) {
     const userID = await getUserID();
     if (userID === null)
         return;
-    const url = `https://ft-transcendence.com/api/users/${userID}/invite_friend/`;
+    const url = `https://192.168.20.111/api/users/${userID}/invite_friend/`;
     const response = await fetch(url, {
         method: 'PUT',
         body: JSON.stringify({
@@ -299,7 +299,7 @@ async function addFriendAsync(friendName) {
 }
 
 async function getUserByID(userID) {
-    const url = `https://ft-transcendence.com/api/users/${userID}/`;
+    const url = `https://192.168.20.111/api/users/${userID}/`;
     const response = await fetch(url, {
         method: 'GET',
         headers: {
@@ -320,7 +320,7 @@ async function acceptFriendRequestAsync(friendID) {
     const userID = await getUserID();
     if (userID === null)
         return;
-    const url = `https://ft-transcendence.com/api/users/${userID}/accept_friend/`;
+    const url = `https://192.168.20.111/api/users/${userID}/accept_friend/`;
     const response = await fetch(url, {
         method: 'PUT',
         body: JSON.stringify({
@@ -342,7 +342,7 @@ async function removeFriendAsync(friendName) {
     const userID = await getUserID();
     if (userID === null)
         return;
-    const url = `https://ft-transcendence.com/api/users/${userID}/remove_friend/`;
+    const url = `https://192.168.20.111/api/users/${userID}/remove_friend/`;
     const response = await fetch(url, {
         method: 'PUT',
         body: JSON.stringify({
@@ -364,7 +364,7 @@ async function rejectFriendRequestAsync(friendName) {
     const userID = await getUserID();
     if (userID === null)
         return;
-    const url = `https://ft-transcendence.com/api/users/${userID}/remove_friend_request/`;
+    const url = `https://192.168.20.111/api/users/${userID}/remove_friend_request/`;
     const response = await fetch(url, {
         method: 'PUT',
         body: JSON.stringify({
@@ -386,7 +386,7 @@ async function blockUserAsync(userName) {
     const userID = await getUserID();
     if (userID === null)
         return;
-    const url = `https://ft-transcendence.com/api/users/${userID}/block/`;
+    const url = `https://192.168.20.111/api/users/${userID}/block/`;
     const response = await fetch(url, {
         method: 'PUT',
         body: JSON.stringify({

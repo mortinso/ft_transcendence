@@ -34,7 +34,6 @@ class SignUpSerializer(serializers.ModelSerializer):
 class LoginSerializer(serializers.ModelSerializer):
     username = serializers.CharField(max_length=150)
     password = serializers.CharField(write_only=True)
-    # TFA = serializers.CharField(max_length=6, write_only=True, required=True)
 
     class Meta:
         model = User
@@ -62,5 +61,6 @@ class ForgotPasswordSerializer(serializers.Serializer):
     email = serializers.CharField(max_length=100)
 
 class CheckOTPSerializer(serializers.Serializer):
-    email = serializers.EmailField()
+    # email = serializers.EmailField()
     otp = serializers.CharField()
+    purpose = serializers.CharField(required=True)

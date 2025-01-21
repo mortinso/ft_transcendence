@@ -12,11 +12,11 @@ COPY tools/requirements.txt transcendence/requirements.txt
 
 COPY tools/backend.sh /usr/local/bin/
 
-COPY tools/export.sh /usr/local/bin/
+COPY tools/backend.sh /usr/local/bin/
 
 RUN chmod +x /usr/local/bin/backend.sh
 
-RUN chmod +x /usr/local/bin/export.sh
+RUN chmod +x /usr/local/bin/backend.sh
 
 ENTRYPOINT ["/usr/local/bin/backend.sh"]
 
