@@ -5,9 +5,6 @@ up:
 	docker compose -f srcs/docker-compose.yml up
 	# docker compose -f srcs/docker-compose.yml up --detach
 
-dev:
-	ENVIRONMENT=development docker compose -f srcs/docker-compose.yml up --build
-
 stop:
 	docker compose -f srcs/docker-compose.yml stop
 

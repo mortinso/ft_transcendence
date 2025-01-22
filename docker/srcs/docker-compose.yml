@@ -17,15 +17,16 @@ services:
       EMAIL_PASSWORD_FILE: /run/secrets/email_password
       POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
       DJANGO_SUPERUSER_FILE: /run/secrets/django_superuser_password
-      ENVIRONMENT: ${ENVIRONMENT:-production}
-    networks:
-      - transcendence
-    # ports:
-    #   - "8080:8000"
+      DJANGO_SECRET_KEY: /run/secrets/django_secret_key
     secrets:
       - django_superuser_password
       - email_password
       - postgres_password
+      - django_secret_key
+    networks:
+      - transcendence
+    # ports:
+    #   - "8080:8000"
     
   postgres:
     container_name: postgres
@@ -74,3 +75,5 @@ secrets:
     file: ../secrets/postgres_password.txt
   email_password:
     file: ../secrets/email_host_password.txt
+  django_secret_key:
+    file: ../secrets/django_secret_key.txt
