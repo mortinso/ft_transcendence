@@ -1,4 +1,67 @@
-<h2>Second Game Page</h2>
-<p>
-    This is the second game page content.
-</p>
+<style>
+	body {
+		font-family: Arial, sans-serif;
+		text-align: center;
+		margin: 0;
+		padding: 0;
+		/*background-color: grey;*/
+	}
+
+	.board {
+		display: grid;
+		grid-template-columns: repeat(3, 100px);
+		grid-template-rows: repeat(3, 100px);
+		gap: 5px;
+		justify-content: center;
+		margin: 20px auto;
+	}
+
+	.cell {
+		width: 100px;
+		height: 100px;
+		background: #fff;
+		border: 2px solid #333;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 48px;
+		font-weight: bold;
+		cursor: pointer;
+	}
+
+	.cell.taken {
+		cursor: not-allowed;
+	}
+
+	.cell.X {
+		color: orange;
+	}
+
+	.cell.O {
+		color: blue;
+	}
+
+	.message {
+		font-size: 18px;
+		margin-top: 20px;
+	}
+
+	.reset {
+		margin-top: 20px;
+		padding: 10px 20px;
+		font-size: 16px;
+		cursor: pointer;
+		background-color: #007BFF;
+		color: #fff;
+		border: none;
+		border-radius: 5px;
+	}
+</style>
+
+
+<h1>Tic-Tac-Toe</h1>
+<div class="board" id="board"></div>
+<div class="message" id="message">Player X's turn</div>
+<button class="reset" id="reset">Reset Game</button>
+
+<script src="/src/scripts/ttt.js"></script>
