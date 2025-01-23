@@ -25,4 +25,8 @@ python3 manage.py createsuperuser --username admin --email mail@mail.com --noinp
 
 echo "backend starting"
 
-exec "$@"
+if [ "$DEBUG" = "1" ]; then
+    exec python3 manage.py runserver 0.0.0.0:8000
+else
+    exec gunicorn --bind 0.0.0.0:8000 backend.wsgi
+fi
