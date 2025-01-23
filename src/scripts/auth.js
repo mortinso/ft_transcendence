@@ -4,12 +4,10 @@ async function login(event) {
     const username = document.getElementById('loginUsername').value;
     const password = document.getElementById('loginPassword').value;
     const keepLoggedIn = document.getElementById('keepLogin').checked;
-
     if (keepLoggedIn)
         localStorage.setItem('keepLoggedIn', true);
     else
         localStorage.removeItem('keepLoggedIn');
-
     const url = 'https://ft-transcendence.com/api/auth/login/';
     document.getElementById('loginLoading').classList.toggle('d-none');
     await fetch(url, {
@@ -102,7 +100,6 @@ async function logout() {
     });
     clearSession();
 }
-
 function clearSession() {
     sessionStorage.removeItem('jwt');
     sessionStorage.removeItem('refresh');
@@ -113,7 +110,6 @@ function clearSession() {
     document.getElementById('notification-area').innerHTML = '';
     changeContent('login', false);
 }
-
 //Create a new user account
 function signup(event) {
     event.preventDefault();
@@ -131,7 +127,6 @@ function signup(event) {
     }
     else
         document.getElementById('signupConfirmPassword').classList.remove('is-invalid');
-
     const url = 'https://ft-transcendence.com/api/auth/signup/';
     fetch(url, {
         method: 'POST',
@@ -184,7 +179,6 @@ function signup(event) {
         //log error
     });
 }
-
 //Get user data
 //TODO change to be able to get any user instead of just the logged in user
 async function getUserData() {
@@ -225,7 +219,6 @@ async function getUserID() {
         return null;
     }
 }
-
 //Refresh the login token
 async function refreshLogin() {
     if (sessionStorage.getItem('refresh') !== null) {
@@ -263,7 +256,6 @@ async function refreshLogin() {
     }
     return null;
 }
-
 async function verifyRefreshToken(refresh){
     const url = 'https://ft-transcendence.com/api/auth/token/refresh/';
     await fetch(url, {
@@ -280,7 +272,6 @@ async function verifyRefreshToken(refresh){
         return false;
     });
 }
-
 async function addFriendAsync(friendName) {
     const userID = await getUserID();
     if (userID === null)
@@ -302,7 +293,6 @@ async function addFriendAsync(friendName) {
     }
     return response;
 }
-
 async function getUserByID(userID) {
     const url = `https://ft-transcendence.com/api/users/${userID}/`;
     const response = await fetch(url, {
@@ -320,7 +310,6 @@ async function getUserByID(userID) {
     const data = await response.json();
     return data;
 }
-
 async function acceptFriendRequestAsync(friendID) {
     const userID = await getUserID();
     if (userID === null)
@@ -342,7 +331,6 @@ async function acceptFriendRequestAsync(friendID) {
     }
     return response;
 }
-
 async function removeFriendAsync(friendName) {
     const userID = await getUserID();
     if (userID === null)
@@ -364,7 +352,6 @@ async function removeFriendAsync(friendName) {
     }
     return response;
 }
-
 async function rejectFriendRequestAsync(friendName) {
     const userID = await getUserID();
     if (userID === null)
@@ -386,7 +373,6 @@ async function rejectFriendRequestAsync(friendName) {
     }
     return response;
 }
-
 async function blockUserAsync(userName) {
     const userID = await getUserID();
     if (userID === null)

@@ -17,6 +17,7 @@ services:
       EMAIL_PASSWORD_FILE: /run/secrets/email_password
       POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
       DJANGO_SUPERUSER_FILE: /run/secrets/django_superuser_password
+      ENVIRONMENT: ${ENVIRONMENT:-production}
     networks:
       - transcendence
     # ports:

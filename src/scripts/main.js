@@ -11,7 +11,6 @@ window.onpopstate = function (event) {
         changeContent(pageState, false);
     }
 }
-
 //Initliaze the page
 async function initialize() {
     applyColorScheme();
@@ -30,7 +29,7 @@ async function initialize() {
         _user = await getUserData();
         _lang = _user.idiom;
         await getNotifications();
-        await getUserAvatar(_user.id).then(avatar => { _avatar = avatar;});
+        await getUserAvatar(_user.id).then(avatar => { _avatar = avatar; });
         changeContent(pageState, false);
         document.getElementById('header-avatar').src = _avatar;
     }
@@ -40,7 +39,6 @@ async function initialize() {
 async function checkLogin() {
     const jwt = sessionStorage.getItem('jwt');
     const refresh = localStorage.getItem('refresh');
-
     if (refresh !== null) {
         await verifyRefreshToken(refresh).then(valid => {
             if (!valid) {
@@ -60,7 +58,6 @@ async function checkLogin() {
         return false;
     }
 }
-
 //Set the color scheme based on the user's browser settings
 function applyColorScheme() {
     if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
@@ -69,7 +66,6 @@ function applyColorScheme() {
     else {
         document.body.setAttribute('data-bs-theme', 'light');
     }
-
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
         if (e.matches) {
             document.body.setAttribute('data-bs-theme', 'dark');
@@ -81,7 +77,7 @@ function applyColorScheme() {
 }
 
 //Initialize the translation system
-async function initTranslations(){
+async function initTranslations() {
     await i18next.use(i18nextHttpBackend).init({
         lng: _lang,
         fallbackLng: 'EN',
@@ -94,7 +90,7 @@ async function initTranslations(){
 }
 
 //Translate all elements with the data-i18n attribute
-function translateAll(){
+function translateAll() {
     document.querySelectorAll('[data-i18n]').forEach(element => {
         let key = element.getAttribute('data-i18n');
         element.innerText = i18next.t(key);
@@ -104,11 +100,9 @@ function translateAll(){
 //Change the content of the page
 function changeContent(page, pushState = true) {
     var contentDiv = document.getElementById('content');
-
-     // Remove previously added scripts
-     var oldScripts = document.querySelectorAll('script[data-dynamic]');
-     oldScripts.forEach(script => script.remove());
-
+    // Remove previously added scripts
+    var oldScripts = document.querySelectorAll('script[data-dynamic]');
+    oldScripts.forEach(script => script.remove());
     var xhr = new XMLHttpRequest();
     xhr.open('GET', `/src/pages/${page}.html`, true);
     xhr.onreadystatechange = function () {
@@ -119,7 +113,6 @@ function changeContent(page, pushState = true) {
             return;
         }
         contentDiv.innerHTML = this.responseText;
-
         // Execute scripts in the loaded content
         var scripts = contentDiv.getElementsByTagName('script');
         for (var i = 0; i < scripts.length; i++) {
@@ -133,7 +126,6 @@ function changeContent(page, pushState = true) {
             }
             document.head.appendChild(script);
         }
-
         if (page !== 'login' && page !== 'signup')
             pageState = page;
         if (pushState && history.state !== pageState) {
@@ -166,21 +158,18 @@ function changeContent(page, pushState = true) {
     }
     xhr.send();
 }
-
 //Update header buttons based on the current page
 function updateHeaderButton(page) {
     let overviewButton = document.getElementById('header-overview');
     let pongButton = document.getElementById('header-pong');
     let game2Button = document.getElementById('header-game2');
     let livechatButton = document.getElementById('header-livechat');
-
     let buttons = {
         'overview': overviewButton,
         'pong': pongButton,
         'game2': game2Button,
         'livechat': livechatButton
     };
-
     for (let key in buttons) {
         if (key === page) {
             buttons[key].classList.remove('link-body-emphasis');
@@ -191,11 +180,10 @@ function updateHeaderButton(page) {
 }
 
 //Get user notifications
-async function getNotifications(){
+async function getNotifications() {
     if (_user === null) {
         _user = await getUserData();
     }
-
     let notificationTemplate = document.getElementById('notification-template');
     let notificationContainer = document.getElementById('notification-area');
     for (let request of _user.friend_requests) {
@@ -203,7 +191,7 @@ async function getNotifications(){
         notification.querySelector('h6').innerText = i18next.t('notifications.friendRequest');
         let user = await getUserByID(request);
         notification.querySelector('p').innerText = `${user.username} ${i18next.t('notifications.friendRequestMessage')}`;
-        notification.querySelector('a').addEventListener('click', () => {changeContent('livechat', true)});
+        notification.querySelector('a').addEventListener('click', () => { changeContent('livechat', true) });
         notificationContainer.appendChild(notification);
     }
     if (notificationContainer.children.length === 0) {
@@ -214,5 +202,4 @@ async function getNotifications(){
         document.getElementById('notification-icon').setAttribute('href', '#notification-full');
     }
 }
-
 initialize();

@@ -1,5 +1,18 @@
 from django.urls import path
-from .views import ListUsersView, UserDetailsView, WhoAmIView, RetrieveUpdateDestroyUserView, AddFriendView, RemoveFriendView, AcceptFriendView, RemoveFriendRequestView, BlockUserView, UnblockUserView, AddAvatarView, GetImageView
+from .views import (
+    ListUsersView,
+    UserDetailsView,
+    WhoAmIView,
+    RetrieveUpdateDestroyUserView,
+    AddFriendView,
+    RemoveFriendView,
+    AcceptFriendView,
+    RemoveFriendRequestView,
+    BlockUserView,
+    UnblockUserView,
+    AddAvatarView,
+    GetImageView,
+)
 
 urlpatterns = [
     path("whoami/", WhoAmIView.as_view(), name="whoami"),

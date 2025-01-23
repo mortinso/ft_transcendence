@@ -25,7 +25,6 @@ function createPongChart() {
         }
     })
 }
-
 //Create chart for the second game
 function createSecondChart() {
     new Chart("secondChart", {
@@ -40,14 +39,12 @@ function createSecondChart() {
         }
     })
 }
-
 //Create list of last 5 games of pong
 function createPongGameList() {
     //TODO fetch data from backend
     let testData = ["Won against test1", " Won against test2", " Lost against test3", "Draw against test4", "Lost against test5"];
     let gameList = document.getElementById('pongGameList');
     let template = document.getElementById("gameResultTemplate");
-
     let container = template.content.querySelector("a");
     testData.forEach(game => {
         let a = document.importNode(container, true);
@@ -66,14 +63,12 @@ function createPongGameList() {
         gameList.appendChild(a);
     });
 }
-
 //Create list of last 5 games of the second game
 function createSecondGameList() {
     //TODO fetch data from backend
     let testData = ["Won against test1", " Won against test2", " Lost against test3", "Draw against test4", "Lost against test5"];
     let gameList = document.getElementById('secondGameList');
     let template = document.getElementById("gameResultTemplate");
-
     let container = template.content.querySelector("a");
     testData.forEach(game => {
         let a = document.importNode(container, true);

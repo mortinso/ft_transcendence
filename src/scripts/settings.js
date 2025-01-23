@@ -161,8 +161,7 @@ async function updateAvatar() {
             //TODO: log error
             return;
         }
-        else
-        {
+        else {
             getUserAvatar(userId).then(avatar => {
                 _avatar = avatar;
                 document.getElementById('user-avatar').src = _avatar;
@@ -339,7 +338,7 @@ async function confirmPassword(password) {
 }
 
 //Load the widget for site settings
-function loadGeneralSettings(){
+function loadGeneralSettings() {
     var contentDiv = document.getElementById('settings-container');
     var xhr = new XMLHttpRequest();
     xhr.open('GET', `/src/components/settings-general.html`, true);
@@ -357,10 +356,10 @@ function loadGeneralSettings(){
     xhr.send();
 }
 
-function languageSelector(){
+function languageSelector() {
     let langSelector = document.getElementById('langSelector');
     langSelector.value = _user.idiom;
-    langSelector?.addEventListener('change', function(){
+    langSelector?.addEventListener('change', function () {
         _lang = langSelector.value;
         _user.idiom = _lang;
         i18next.changeLanguage(_lang);
@@ -370,7 +369,7 @@ function languageSelector(){
     });
 }
 
-async function updateUserLanguage(){
+async function updateUserLanguage() {
     let newUser = {
         idiom: _lang
     }

@@ -1,12 +1,34 @@
-django
-psycopg #talk to Postgres
-psycopg2-binary #talk to Postgres
-djangorestframework #API framework
-django-cors-headers #CORS settings
-environs #import environment variables from .env
-pillow #resize images
+# Django framework
+Django==5.1.4
+
+# talk to Postgres
+psycopg==3.2.3
+psycopg2-binary==2.9.10
+
+# Django REST framework API
+djangorestframework==3.15.2
+djangorestframework-simplejwt==5.4.0
+
+django-cors-headers==4.6.0
+
+# Import environment variables from .env
+environs==14.1.0
+
+# Resize images
+pillow==11.1.0
+
+# Application server
+gunicorn==23.0.0
+
+# Dependencies
+asgiref==3.8.1
+marshmallow==3.25.1
+PyJWT==2.10.1
+python-dotenv==1.0.1
+sqlparse==0.5.3
+typing_extensions==4.12.2
+
+# Optional dependencies
 # django-cleanup #delete previously uploaded images
-djangorestframework-simplejwt #JWT authentication
-gunicorn #Application server
 # django-debug-toolbar #debugging
 # pyotp #2FA
