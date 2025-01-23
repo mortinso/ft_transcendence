@@ -191,8 +191,40 @@ function loadSecuritySettings() {
             updateSecurityDetails();
         });
         translateAll();
+        let f2aSwitch = document.getElementById('enable2FA');
+        f2aSwitch.checked = _user.tfa;
+        f2aSwitch.addEventListener('change', function () {
+            update2FA(f2aSwitch);
+        });
     }
     xhr.send();
+}
+
+//Update 2FA status
+async function update2FA(f2aSwitch) {
+    let tfa = f2aSwitch.checked;
+    let newUser = {
+        tfa: tfa
+    }
+    let userId = await getUserID();
+    const url = `https://ft-transcendence.com/api/users/${userId}/edit/`;
+    let xhr = new XMLHttpRequest();
+    xhr.open('PUT', url, true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.setRequestHeader('Authorization', `Bearer ${sessionStorage.getItem('jwt')}`);
+    xhr.onreadystatechange = function () {
+        if (this.readyState !== 4)
+            return;
+        if (this.status === 400) {
+            console.log('Error updating user details', this);
+            return;
+        }
+        else if (this.status !== 200) {
+            console.log('Error updating user details', this);
+            return;
+        }
+    }
+    xhr.send(JSON.stringify(newUser));
 }
 
 //Update password
@@ -356,6 +388,7 @@ function loadGeneralSettings() {
     xhr.send();
 }
 
+//Language selector
 function languageSelector() {
     let langSelector = document.getElementById('langSelector');
     langSelector.value = _user.idiom;
@@ -369,6 +402,7 @@ function languageSelector() {
     });
 }
 
+//Update user language
 async function updateUserLanguage() {
     let newUser = {
         idiom: _lang

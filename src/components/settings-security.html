@@ -24,6 +24,14 @@
             </div>
         </div>
         <div id="saveSucessfulPlaceholder"></div>
+        <div class="mb-3">
+            <h4 class="mb-3" data-i18n="settings.twoFactorAuth">Two Factor Authentication</h4>
+            <div class="form-check form-switch">
+                <p style="color: red;">Disabled until fully implemented</p>
+                <input class="form-check-input" type="checkbox" id="enable2FA" disabled>
+                <label class="form-check-label" for="enable2FA" data-i18n="settings.enable2FA">Use 2FA</label>
+            </div>
+        </div>
         <button type="submit" class="btn btn-primary" data-i18n="common.save">Save</button>
         <button type="button" class="btn btn-danger" data-i18n="settings.deleteAccount" onclick="deleteAccount()">Delete Account</button>
     </form>

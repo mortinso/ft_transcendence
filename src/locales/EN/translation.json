@@ -78,7 +78,9 @@
         "deleteAccount": "Delete Account",
         "deleteAccountQuestion": "Are you sure you want to delete your account?",
         "deleteAccountWarning": "This action is irreversible!",
-        "deleteAccountConfirm": "Please enter your password to confirm"
+        "deleteAccountConfirm": "Please enter your password to confirm",
+        "twoFactorAuth": "Two Factor Authentication",
+        "enable2FA": "Use Two Factor Authentication"
     },
     "livechat": {
         "friends": "Friends",
