@@ -4,12 +4,10 @@ async function login(event) {
     const username = document.getElementById('loginUsername').value;
     const password = document.getElementById('loginPassword').value;
     const keepLoggedIn = document.getElementById('keepLogin').checked;
-
     if (keepLoggedIn)
         localStorage.setItem('keepLoggedIn', true);
     else
         localStorage.removeItem('keepLoggedIn');
-
     const url = 'https://ft-transcendence.com/api/auth/login/';
     document.getElementById('loginLoading').classList.toggle('d-none');
     await fetch(url, {
@@ -27,12 +25,12 @@ async function login(event) {
             document.getElementById('loginPassword').classList.remove('is-invalid');
             return response.json();
         }
-        else if (response.status === 401) {
-            document.getElementById('loginUsername').classList.add('is-invalid');
-            document.getElementById('loginPassword').classList.add('is-invalid');
-            return null;
+        else if (response.status === 502) {
+            throw new Error('Server error');
         }
         else {
+            document.getElementById('loginUsername').classList.add('is-invalid');
+            document.getElementById('loginPassword').classList.add('is-invalid');
             return null;
         }
     }).then(data => {
@@ -52,14 +50,18 @@ async function login(event) {
         let modal = new bootstrap.Modal(document.getElementById('loginFailModal'));
         modal.show();
         document.getElementById('loginLoading').classList.toggle('d-none');
-        //log error
+        translateAll();
+        //TODO: log error
     });
 
     if (loggedIn) {
         document.getElementById('header').style.display = 'block';
+        _user = await getUserData();
+        await getNotifications();
+        await getUserAvatar(_user.id).then(avatar => { _avatar = avatar;});
+        document.getElementById('header-avatar').src = _avatar;
         changeContent('overview', true);
         history.replaceState(pageState, null, "");
-        await getNotifications();
     }
 }
 
@@ -98,7 +100,6 @@ async function logout() {
     });
     clearSession();
 }
-
 function clearSession() {
     sessionStorage.removeItem('jwt');
     sessionStorage.removeItem('refresh');
@@ -109,7 +110,6 @@ function clearSession() {
     document.getElementById('notification-area').innerHTML = '';
     changeContent('login', false);
 }
-
 //Create a new user account
 function signup(event) {
     event.preventDefault();
@@ -118,6 +118,7 @@ function signup(event) {
     let password = document.getElementById('signupPassword');
     let confirmPassword = document.getElementById('signupConfirmPassword');
 
+    document.getElementById('signupUsername').classList.remove('is-invalid');
     if (username.value === '' || email.value === '' || password.value === '' || confirmPassword.value === '')
         return;
     if (password.value !== confirmPassword.value) {
@@ -126,7 +127,6 @@ function signup(event) {
     }
     else
         document.getElementById('signupConfirmPassword').classList.remove('is-invalid');
-
     const url = 'https://ft-transcendence.com/api/auth/signup/';
     fetch(url, {
         method: 'POST',
@@ -141,6 +141,7 @@ function signup(event) {
         }
     }).then(response => {
         if (response.status === 400) {
+            //TODO: check if username or email is already taken
             document.getElementById('signupUsername').classList.add('is-invalid');
             console.warn(response);
             return;
@@ -149,8 +150,7 @@ function signup(event) {
             return response.json();
         }
         else {
-            //log error
-            return;
+            throw new Error('Error creating account');
         }
     }).then(data => {
         if (data !== undefined) {
@@ -166,7 +166,7 @@ function signup(event) {
 
                 alertPlaceholder.append(wrapper)
             }
-            appendAlert('Account created sucessfully! You may login now.', 'success');
+            appendAlert(i18next.t('login.accountCreated'), 'success');
             email.value = '';
             username.value = '';
             password.value = '';
@@ -175,10 +175,10 @@ function signup(event) {
     }).catch(error => {
         let modal = new bootstrap.Modal(document.getElementById('signupFailModal'));
         modal.show();
+        translateAll();
         //log error
     });
 }
-
 //Get user data
 //TODO change to be able to get any user instead of just the logged in user
 async function getUserData() {
@@ -204,7 +204,6 @@ async function getUserData() {
         return;
     };
     const data = await response.json();
-    //TODO cache data
     return data;
 }
 
@@ -220,7 +219,6 @@ async function getUserID() {
         return null;
     }
 }
-
 //Refresh the login token
 async function refreshLogin() {
     if (sessionStorage.getItem('refresh') !== null) {
@@ -258,7 +256,6 @@ async function refreshLogin() {
     }
     return null;
 }
-
 async function verifyRefreshToken(refresh){
     const url = 'https://ft-transcendence.com/api/auth/token/refresh/';
     await fetch(url, {
@@ -275,7 +272,6 @@ async function verifyRefreshToken(refresh){
         return false;
     });
 }
-
 async function addFriendAsync(friendName) {
     const userID = await getUserID();
     if (userID === null)
@@ -297,7 +293,6 @@ async function addFriendAsync(friendName) {
     }
     return response;
 }
-
 async function getUserByID(userID) {
     const url = `https://ft-transcendence.com/api/users/${userID}/`;
     const response = await fetch(url, {
@@ -315,7 +310,6 @@ async function getUserByID(userID) {
     const data = await response.json();
     return data;
 }
-
 async function acceptFriendRequestAsync(friendID) {
     const userID = await getUserID();
     if (userID === null)
@@ -337,7 +331,6 @@ async function acceptFriendRequestAsync(friendID) {
     }
     return response;
 }
-
 async function removeFriendAsync(friendName) {
     const userID = await getUserID();
     if (userID === null)
@@ -359,7 +352,6 @@ async function removeFriendAsync(friendName) {
     }
     return response;
 }
-
 async function rejectFriendRequestAsync(friendName) {
     const userID = await getUserID();
     if (userID === null)
@@ -381,7 +373,6 @@ async function rejectFriendRequestAsync(friendName) {
     }
     return response;
 }
-
 async function blockUserAsync(userName) {
     const userID = await getUserID();
     if (userID === null)
@@ -402,4 +393,27 @@ async function blockUserAsync(userName) {
         return await blockUserAsync(userName);
     }
     return response;
+}
+
+async function getUserAvatar(userID) {
+    let url = `https://ft-transcendence.com/api/users/${userID}/get_avatar/`;
+    try {
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${sessionStorage.getItem('jwt')}`
+            }
+        });
+        if (response.ok) {
+            const blob = await response.blob();
+            const objectURL = URL.createObjectURL(blob);
+            return objectURL;
+        } else {
+            console.error('Error fetching avatar');
+            return null;
+        }
+    } catch (error) {
+        console.error('Error fetching avatar', error);
+        return null;
+    }
 }

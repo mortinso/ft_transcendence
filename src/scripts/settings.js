@@ -1,19 +1,16 @@
-
-function updateSettingsPage() {
-    getUserData().then(user => {
-        document.getElementById('userName').innerText = `${user.username}`;
-        document.getElementById('userEmail').innerText = `${user.email}`;
-        const date = new Date(user.date_joined);
-        const formattedDate = new Intl.DateTimeFormat(navigator.language).format(date);
-        document.getElementById('userJoinDate').innerText = `Joined on ${formattedDate}`;
-        return user;
-    }).then(user => {
-        _user = user;
-        loadGeneralSettings();
-    });
+async function updateSettingsPage() {
+    if (_user === null)
+        _user = await getUserData();
+    document.getElementById('userName').innerText = `${_user.username}`;
+    document.getElementById('userEmail').innerText = `${_user.email}`;
+    document.getElementById('user-avatar').src = _avatar;
+    const date = new Date(_user.date_joined);
+    const formattedDate = new Intl.DateTimeFormat(_lang).format(date);
+    document.getElementById('userJoinDate').innerText = `${i18next.t('settings.joinDate')} ${formattedDate}`;
+    loadGeneralSettings();
 }
 
-//Load the widget for general settings
+//Load the widget for account settings
 function loadAccountSettings() {
     var contentDiv = document.getElementById('settings-container');
     var xhr = new XMLHttpRequest();
@@ -22,7 +19,7 @@ function loadAccountSettings() {
         if (this.readyState !== 4)
             return;
         if (this.status !== 200) {
-            contentDiv.innerHTML = `<h2>Content not found!</h2>`
+            contentDiv.innerHTML = `<h2>${i18next.t('common.contentNotFound')}</h2>`;
             return;
         }
         contentDiv.innerHTML = this.responseText;
@@ -33,6 +30,7 @@ function loadAccountSettings() {
             e.preventDefault();
             updateAccountDetails();
         });
+        translateAll();
     }
     xhr.send();
 }
@@ -163,6 +161,13 @@ async function updateAvatar() {
             //TODO: log error
             return;
         }
+        else {
+            getUserAvatar(userId).then(avatar => {
+                _avatar = avatar;
+                document.getElementById('user-avatar').src = _avatar;
+                document.getElementById('header-avatar').src = _avatar;
+            });
+        }
     }
     xhr.send(formData);
 }
@@ -176,7 +181,7 @@ function loadSecuritySettings() {
         if (this.readyState !== 4)
             return;
         if (this.status !== 200) {
-            contentDiv.innerHTML = `<h2>Content not found!</h2>`
+            contentDiv.innerHTML = `<h2>${i18next.t('common.contentNotFound')}</h2>`;
             return;
         }
         contentDiv.innerHTML = this.responseText;
@@ -185,12 +190,13 @@ function loadSecuritySettings() {
             e.preventDefault();
             updateSecurityDetails();
         });
+        translateAll();
     }
     xhr.send();
 }
 
 //Update password
-function updateSecurityDetails() {
+async function updateSecurityDetails() {
     let newPassword = getUpdatedSecuriyDetails();
     if (newPassword === undefined)
         return;
@@ -232,7 +238,8 @@ function showSucessfulSave() {
 
         alertPlaceholder.append(wrapper)
     }
-    appendAlert('Password updated successfully!', 'success');
+    appendAlert(i18next.t('settings.passwordUpdated'), 'success');
+    document.getElementById('InputCurrentPassword').classList.remove('is-invalid');
     document.getElementById('InputPassword').value = '';
     document.getElementById('InputPasswordConfirm').value = '';
     document.getElementById('InputCurrentPassword').value = '';
@@ -268,6 +275,8 @@ function getUpdatedSecuriyDetails() {
 function deleteAccount() {
     let modal = new bootstrap.Modal(document.getElementById('deleteAccountModal'));
     modal.show();
+    translateAll();
+    document.getElementById('inputDelAccountPassword').setAttribute('placeholder', i18next.t('common.password'));
 }
 
 //Delete account
@@ -294,9 +303,10 @@ async function deleteAccountConfirmed() {
         xhr.onreadystatechange = function () {
             if (this.readyState !== 4)
                 return;
-            if (this.status !== 204) {
+            if (this.status !== 200) {
                 document.getElementById('inputDelAccountPassword').classList.add('is-invalid');
                 console.log('Error deleting user', this);
+                //TODO: log error
                 return;
             }
             sessionStorage.removeItem('jwt');
@@ -327,7 +337,8 @@ async function confirmPassword(password) {
     return false;
 }
 
-function loadGeneralSettings(){
+//Load the widget for site settings
+function loadGeneralSettings() {
     var contentDiv = document.getElementById('settings-container');
     var xhr = new XMLHttpRequest();
     xhr.open('GET', `/src/components/settings-general.html`, true);
@@ -335,10 +346,50 @@ function loadGeneralSettings(){
         if (this.readyState !== 4)
             return;
         if (this.status !== 200) {
-            contentDiv.innerHTML = `<h2>Content not found!</h2>`
+            contentDiv.innerHTML = `<h2>${i18next.t('common.contentNotFound')}</h2>`;
             return;
         }
         contentDiv.innerHTML = this.responseText;
+        translateAll();
+        languageSelector();
     }
     xhr.send();
+}
+
+function languageSelector() {
+    let langSelector = document.getElementById('langSelector');
+    langSelector.value = _user.idiom;
+    langSelector?.addEventListener('change', function () {
+        _lang = langSelector.value;
+        _user.idiom = _lang;
+        i18next.changeLanguage(_lang);
+        translateAll();
+        updateUserLanguage();
+        localStorage.setItem('lang', _lang);
+    });
+}
+
+async function updateUserLanguage() {
+    let newUser = {
+        idiom: _lang
+    }
+    let userId = await getUserID();
+    const url = `https://ft-transcendence.com/api/users/${userId}/edit/`;
+    let xhr = new XMLHttpRequest();
+    xhr.open('PUT', url, true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.setRequestHeader('Authorization', `Bearer ${sessionStorage.getItem('jwt')}`);
+    xhr.onreadystatechange = function () {
+        if (this.readyState !== 4)
+            return;
+        if (this.status === 400) {
+            console.log('Error updating user details', this);
+            return;
+        }
+        else if (this.status !== 200) {
+            console.log('Error updating user details', this);
+            return;
+        }
+    }
+    xhr.send(JSON.stringify(newUser));
 }

@@ -1,11 +1,14 @@
-function updateProfilePage() {
-    getUserData().then(user => {
-        document.getElementById('username').innerText = `${user.username}`;
-        createPongChart();
-        createPongGameList();
-        createSecondChart();
-        createSecondGameList();
-    });
+async function updateProfilePage() {
+    if (_user === null)
+        _user = await getUserData();
+
+    document.getElementById('username').innerText = `${_user?.username}`;
+    document.getElementById('userAvatar').src = _avatar;
+    createPongChart();
+    createPongGameList();
+    createSecondChart();
+    createSecondGameList();
+    translateAll();
 }
 
 //Create chart for pong games
@@ -13,7 +16,7 @@ function createPongChart() {
     new Chart("pongChart", {
         type: 'doughnut',
         data: {
-            labels: ['Wins', 'Losses', 'Draws'],
+            labels: [i18next.t('overview.wins'), i18next.t('overview.losses'), i18next.t('overview.draws')],
             datasets: [{
                 //TODO fetch data from backend
                 data: [3, 2, 1],
@@ -22,13 +25,12 @@ function createPongChart() {
         }
     })
 }
-
 //Create chart for the second game
 function createSecondChart() {
     new Chart("secondChart", {
         type: 'doughnut',
         data: {
-            labels: ['Wins', 'Losses', 'Draws'],
+            labels: [i18next.t('overview.wins'), i18next.t('overview.loses'), i18next.t('overview.draws')],
             datasets: [{
                 //TODO fetch data from backend
                 data: [5, 4, 2],
@@ -37,14 +39,12 @@ function createSecondChart() {
         }
     })
 }
-
 //Create list of last 5 games of pong
 function createPongGameList() {
     //TODO fetch data from backend
     let testData = ["Won against test1", " Won against test2", " Lost against test3", "Draw against test4", "Lost against test5"];
     let gameList = document.getElementById('pongGameList');
     let template = document.getElementById("gameResultTemplate");
-
     let container = template.content.querySelector("a");
     testData.forEach(game => {
         let a = document.importNode(container, true);
@@ -63,14 +63,12 @@ function createPongGameList() {
         gameList.appendChild(a);
     });
 }
-
 //Create list of last 5 games of the second game
 function createSecondGameList() {
     //TODO fetch data from backend
     let testData = ["Won against test1", " Won against test2", " Lost against test3", "Draw against test4", "Lost against test5"];
     let gameList = document.getElementById('secondGameList');
     let template = document.getElementById("gameResultTemplate");
-
     let container = template.content.querySelector("a");
     testData.forEach(game => {
         let a = document.importNode(container, true);
