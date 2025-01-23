@@ -146,14 +146,15 @@ function signup(event) {
             console.warn(response);
             return;
         }
-        else if (response.status === 201) {
+        else if (response.status === 201 || response.status === 200) {
             return response.json();
         }
-        else {
+        else{
             throw new Error('Error creating account');
         }
     }).then(data => {
         if (data !== undefined) {
+            console.log(data);
             const alertPlaceholder = document.getElementById('signupSuccessAlert');
             const appendAlert = (message, type) => {
                 const wrapper = document.createElement('div')
@@ -166,19 +167,80 @@ function signup(event) {
 
                 alertPlaceholder.append(wrapper)
             }
-            appendAlert(i18next.t('login.accountCreated'), 'success');
-            email.value = '';
-            username.value = '';
-            password.value = '';
-            confirmPassword.value = '';
+            showOTPModal();
+            //appendAlert(i18next.t('login.accountCreated'), 'success');
+            // email.value = '';
+            // username.value = '';
+            // password.value = '';
+            // confirmPassword.value = '';
         }
     }).catch(error => {
         let modal = new bootstrap.Modal(document.getElementById('signupFailModal'));
         modal.show();
         translateAll();
         //log error
+        console.error(error);
     });
 }
+
+function showOTPModal() {
+    let modal = new bootstrap.Modal(document.getElementById('signupSuccessModal'));
+    modal.show();
+    document.getElementById('signupOTP').focus();
+}
+
+//Confirm the OTP
+async function confirmSignup(){
+    let otp = document.getElementById('signupOTP').value;
+    let input = document.getElementById('signupOTP');
+    if (otp === '')
+    {
+        input.classList.add('is-invalid');
+        return;
+    }
+    input.classList.remove('is-invalid');
+    const url = 'https://ft-transcendence.com/api/auth/check_otp/';
+    await fetch(url, {
+        method: 'POST',
+        body: JSON.stringify({
+            otp: otp,
+            purpose: 'signup'
+        }),
+        headers: {
+            'Content-Type': 'application/json; charset=utf-8'
+        }
+    }).then(response => {
+        console.log(response);
+        if (response.status === 201) {
+            let r = response.json();
+            console.log(response.body);
+            return r;
+        }
+        else {
+            return null;
+        }
+    }).then(data => {
+        if (data !== null) {
+            console.log(data);
+            let modelElm = document.getElementById('signupSuccessModal');
+            let modal = bootstrap.Modal.getInstance(modelElm);
+            input.classList.remove('is-invalid');
+            input.value = '';
+            modal.hide();
+            appendAlert(i18next.t('login.accountCreated'), 'success');
+        }
+        else {
+            let input = document.getElementById('signupOTP');
+            input.classList.add('is-invalid');
+        }
+    }).catch(error => {
+        let modal = new bootstrap.Modal(document.getElementById('signupFailModal'));
+        modal.show();
+        //log error
+        console.error(error);
+    });
+}
+
 //Get user data
 //TODO change to be able to get any user instead of just the logged in user
 async function getUserData() {

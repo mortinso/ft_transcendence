@@ -12,12 +12,16 @@
         "no": "Não",
         "serverConnectionError": "Não foi possível ligar ao servidor. Por favor tenta novamente mais tarde.",
         "connectionFailed": "Ligação falhou",
-        "contentNotFound": "Conteúdo não encontrado"
+        "contentNotFound": "Conteúdo não encontrado",
+        "otp": "Código de Confirmação",
+        "invalidOTP": "Código de confirmação inválido"
     },
     "login":{
         "rememberMe": "Lembrar-me",
         "invalidCredentials": "Credenciais inválidas",
-        "accountCreated": "Conta criada com sucesso. Podes iniciar sessão agora."
+        "accountCreated": "Conta criada com sucesso. Podes iniciar sessão agora.",
+        "signupOTP": "Introduz o código de confirmação",
+        "signupOTPSent": "Foi enviado um código de confirmação para o teu email"
     },
     "header":{
         "overview": "Visão Geral",
