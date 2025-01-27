@@ -26,6 +26,27 @@
         </button>
         <button class="btn btn-secondary w-100 py-2 my-2" type="button" data-i18n="common.signup" onclick="changeContent('signup')">Sign up</button>
     </form>
+    <div class="modal fade" id="f2aModal" tabindex="-1" aria-labelledby="f2aModalLabel">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="f2aModalLabel" data-i18n="login.signupOTP"> Enter comfirmation code</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h5 data-i18n="login.signupOTPSent">A confirmation code has been sent to your email address.</h5>
+                    <div class="form-floating">
+                        <input type="text" class="form-control" id="login2FA" required>
+                        <label for="login2FA" data-i18n="common.otp">Confirmation code</label>
+                    </div>
+                    <div id="login2FAFeedback" class="invalid-feedback" data-i18n="common.invalidOTP">
+                        Invalid confirmation code
+                    </div>
+                    <button class="btn btn-primary w-100 py-2 mt-3" type="button" onclick="confirmF2A()">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="modal fade" id="loginFailModal" tabindex="-1" aria-labelledby="loginFailModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
