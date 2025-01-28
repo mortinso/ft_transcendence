@@ -228,7 +228,6 @@ function signup(event) {
     }).then(data => {
         if (data !== undefined) {
             console.log(data);
-            const alertPlaceholder = document.getElementById('signupSuccessAlert');
             showOTPModal();
         }
     }).catch(error => {
@@ -291,7 +290,7 @@ async function confirmSignup() {
                     '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
                     '</div>'
                 ].join('')
-
+                const alertPlaceholder = document.getElementById('signupSuccessAlert');
                 alertPlaceholder.append(wrapper)
             }
             appendAlert(i18next.t('login.accountCreated'), 'success');
