@@ -71,20 +71,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-9t0$i4hjzqu_cm=1@q0_7cpzgziu-xiwkqyiv2trpdeg2wyw-x'
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY') or "django-insecure-change-me"
 
-# TODO: CHANGE DEBUG
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-# DEBUG = False
+DEBUG = bool(int(os.environ.get('DEBUG', 0)))
 
 ALLOWED_HOSTS = [
-    "localhost",
-    ".127.0.0.1",
-    'backend',
-    "ft-transcendence.com",
-    '192.168.20.111',
-    ]
+	h.strip() for h in os.environ.get('ALLOWED_HOSTS', '').split(',')
+	if h.strip()
+]
 
 ALLOWED_REFERERS = [
     "https://ft-transcendence.com/",
@@ -189,7 +183,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Lisbon'
 
 USE_I18N = True
 
@@ -230,7 +224,7 @@ REST_FRAMEWORK = {
 }
 
 # CORS_ALLOW_ALL_ORIGINS = True
-# CORS_ALLOW_CREDENTIALS = True
+# CORS_ALLOW_CREDENTIALS = True # This is necessary to allow the frontend to send cookies
 
 CORS_ALLOWED_ORIGINS = [
     'https://127.0.0.1',
