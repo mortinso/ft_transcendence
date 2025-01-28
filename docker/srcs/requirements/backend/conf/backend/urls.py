@@ -18,11 +18,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
-
+from .views import oauth42_login, oauth42_callback
 
 urlpatterns = [
     path("api/users/", include("users.urls")),
     path("api/auth/", include("auth.urls")),
+    path('oauth/login/', oauth42_login, name='oauth-login'),
+    path('oauth/callback/', oauth42_callback, name='oauth-callback'),
  ]
 
 if settings.DEBUG:

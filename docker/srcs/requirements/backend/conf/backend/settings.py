@@ -301,3 +301,7 @@ EMAIL_HOST_USER = "ffttranscendence@gmail.com"  # sender's email-id
 file = open(env("EMAIL_PASSWORD_FILE"), "r")
 EMAIL_HOST_PASSWORD = file.readline()
 file.close()
+
+OAUTH_42_CLIENT_ID = 'u-s4t2ud-6f95013ff80b03205f10c6858a27d612b0471205a3be99b15a164083c741aa4f'
+OAUTH_42_CLIENT_SECRET = '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'
+OAUTH_42_REDIRECT_URI = 'https://ft-transcendence.com/oauth/callback/'
