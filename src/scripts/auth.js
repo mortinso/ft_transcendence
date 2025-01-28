@@ -34,7 +34,10 @@ async function login(event) {
             return null;
         }
     }).then(data => {
-        console.log(data);
+        if (data == null){
+            document.getElementById('loginLoading').classList.toggle('d-none');
+            return;
+        }
         if (data.detail === 'Email sent.')
         {
             let modal = new bootstrap.Modal(document.getElementById('f2aModal'));
@@ -48,10 +51,6 @@ async function login(event) {
                 localStorage.setItem('refresh', data.refresh);
             loggedIn = true;
             document.getElementById('loginLoading').classList.toggle('d-none');
-        }
-        else {
-            document.getElementById('loginLoading').classList.toggle('d-none');
-            return;
         }
     }).catch(error => {
         let modal = new bootstrap.Modal(document.getElementById('loginFailModal'));
