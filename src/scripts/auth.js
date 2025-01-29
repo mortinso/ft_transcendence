@@ -34,6 +34,16 @@ async function login(event) {
             return null;
         }
     }).then(data => {
+        if (data == null){
+            document.getElementById('loginLoading').classList.toggle('d-none');
+            return;
+        }
+        if (data.detail === 'Email sent.')
+        {
+            let modal = new bootstrap.Modal(document.getElementById('f2aModal'));
+            modal.show();
+            return;
+        }
         if (data !== null) {
             sessionStorage.setItem('jwt', data.access);
             sessionStorage.setItem('refresh', data.refresh);
@@ -41,10 +51,6 @@ async function login(event) {
                 localStorage.setItem('refresh', data.refresh);
             loggedIn = true;
             document.getElementById('loginLoading').classList.toggle('d-none');
-        }
-        else {
-            document.getElementById('loginLoading').classList.toggle('d-none');
-            return;
         }
     }).catch(error => {
         let modal = new bootstrap.Modal(document.getElementById('loginFailModal'));
@@ -54,15 +60,81 @@ async function login(event) {
         //TODO: log error
     });
 
+    postLogin();
+}
+
+//Initialize main page after login
+async function postLogin(){
     if (loggedIn) {
         document.getElementById('header').style.display = 'block';
         _user = await getUserData();
         await getNotifications();
-        await getUserAvatar(_user.id).then(avatar => { _avatar = avatar;});
+        await getUserAvatar(_user.id).then(avatar => { _avatar = avatar; });
         document.getElementById('header-avatar').src = _avatar;
         changeContent('overview', true);
         history.replaceState(pageState, null, "");
     }
+}
+
+//Confirm the 2FA code
+async function confirmF2A() {
+    const keepLoggedIn = document.getElementById('keepLogin').checked;
+    if (keepLoggedIn)
+        localStorage.setItem('keepLoggedIn', true);
+    else
+        localStorage.removeItem('keepLoggedIn');
+    let input = document.getElementById('login2FA');
+    let f2a = input?.value;
+    if (f2a === '' || f2a == undefined) {
+        input.classList.add('is-invalid');
+        return;
+    }
+    input.classList.remove('is-invalid');
+    const url = 'https://ft-transcendence.com/api/auth/check_otp/';
+    await fetch(url, {
+        method: 'POST',
+        body: JSON.stringify({
+            otp: f2a,
+            purpose: 'tfa'
+        }),
+        headers: {
+            'Content-Type': 'application/json; charset=utf-8'
+        }
+    }).then(response => {
+        if (response.status === 200) {
+            let r = response.json();
+            return r;
+        }
+        else {
+            return null;
+        }
+    }).then(data => {
+        if (data !== null) {
+            let modelElm = document.getElementById('f2aModal');
+            let modal = bootstrap.Modal.getInstance(modelElm);
+            input.classList.remove('is-invalid');
+            input.value = '';
+            modal.hide();
+
+            sessionStorage.setItem('jwt', data.access);
+            sessionStorage.setItem('refresh', data.refresh);
+            if (keepLoggedIn)
+                localStorage.setItem('refresh', data.refresh);
+            loggedIn = true;
+            document.getElementById('loginLoading').classList.toggle('d-none');
+
+            postLogin();
+        }
+        else {
+            let input = document.getElementById('login2FA');
+            input.classList.add('is-invalid');
+        }
+    }).catch(error => {
+        let modal = new bootstrap.Modal(document.getElementById('loginFailModal'));
+        modal.show();
+        //log error
+        console.error(error);
+    });
 }
 
 //Logout the user
@@ -100,6 +172,8 @@ async function logout() {
     });
     clearSession();
 }
+
+//Clear the session
 function clearSession() {
     sessionStorage.removeItem('jwt');
     sessionStorage.removeItem('refresh');
@@ -110,6 +184,7 @@ function clearSession() {
     document.getElementById('notification-area').innerHTML = '';
     changeContent('login', false);
 }
+
 //Create a new user account
 function signup(event) {
     event.preventDefault();
@@ -146,7 +221,7 @@ function signup(event) {
             console.warn(response);
             return;
         }
-        else if (response.status === 201) {
+        else if (response.status === 201 || response.status === 200) {
             return response.json();
         }
         else {
@@ -154,7 +229,57 @@ function signup(event) {
         }
     }).then(data => {
         if (data !== undefined) {
-            const alertPlaceholder = document.getElementById('signupSuccessAlert');
+            showOTPModal();
+        }
+    }).catch(error => {
+        let modal = new bootstrap.Modal(document.getElementById('signupFailModal'));
+        modal.show();
+        translateAll();
+        //log error
+        console.error(error);
+    });
+}
+
+function showOTPModal() {
+    let modal = new bootstrap.Modal(document.getElementById('signupSuccessModal'));
+    modal.show();
+    document.getElementById('signupOTP').focus();
+}
+
+//Confirm the OTP
+async function confirmSignup() {
+    let input = document.getElementById('signupOTP');
+    let otp = input?.value;
+    if (otp === '' || otp == undefined) {
+        input.classList.add('is-invalid');
+        return;
+    }
+    input.classList.remove('is-invalid');
+    const url = 'https://ft-transcendence.com/api/auth/check_otp/';
+    await fetch(url, {
+        method: 'POST',
+        body: JSON.stringify({
+            otp: otp,
+            purpose: 'signup'
+        }),
+        headers: {
+            'Content-Type': 'application/json; charset=utf-8'
+        }
+    }).then(response => {
+        if (response.status === 201) {
+            let r = response.json();
+            return r;
+        }
+        else {
+            return null;
+        }
+    }).then(data => {
+        if (data !== null) {
+            let modelElm = document.getElementById('signupSuccessModal');
+            let modal = bootstrap.Modal.getInstance(modelElm);
+            input.classList.remove('is-invalid');
+            input.value = '';
+            modal.hide();
             const appendAlert = (message, type) => {
                 const wrapper = document.createElement('div')
                 wrapper.innerHTML = [
@@ -163,22 +288,23 @@ function signup(event) {
                     '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
                     '</div>'
                 ].join('')
-
+                const alertPlaceholder = document.getElementById('signupSuccessAlert');
                 alertPlaceholder.append(wrapper)
             }
             appendAlert(i18next.t('login.accountCreated'), 'success');
-            email.value = '';
-            username.value = '';
-            password.value = '';
-            confirmPassword.value = '';
+        }
+        else {
+            let input = document.getElementById('signupOTP');
+            input.classList.add('is-invalid');
         }
     }).catch(error => {
         let modal = new bootstrap.Modal(document.getElementById('signupFailModal'));
         modal.show();
-        translateAll();
         //log error
+        console.error(error);
     });
 }
+
 //Get user data
 //TODO change to be able to get any user instead of just the logged in user
 async function getUserData() {
@@ -210,7 +336,7 @@ async function getUserData() {
 //Get the user ID from the access token
 async function getUserID() {
     try {
-        if (sessionStorage.getItem('jwt') === null) 
+        if (sessionStorage.getItem('jwt') === null)
             await refreshLogin();
         const payload = sessionStorage.getItem('jwt').split('.')[1];
         return JSON.parse(atob(payload))?.user_id;
@@ -219,6 +345,7 @@ async function getUserID() {
         return null;
     }
 }
+
 //Refresh the login token
 async function refreshLogin() {
     if (sessionStorage.getItem('refresh') !== null) {
@@ -256,7 +383,9 @@ async function refreshLogin() {
     }
     return null;
 }
-async function verifyRefreshToken(refresh){
+
+//Verify the refresh token
+async function verifyRefreshToken(refresh) {
     const url = 'https://ft-transcendence.com/api/auth/token/refresh/';
     await fetch(url, {
         method: 'POST',
@@ -272,6 +401,8 @@ async function verifyRefreshToken(refresh){
         return false;
     });
 }
+
+//Add a friend
 async function addFriendAsync(friendName) {
     const userID = await getUserID();
     if (userID === null)
@@ -293,6 +424,8 @@ async function addFriendAsync(friendName) {
     }
     return response;
 }
+
+//Get a user by ID
 async function getUserByID(userID) {
     const url = `https://ft-transcendence.com/api/users/${userID}/`;
     const response = await fetch(url, {
@@ -310,6 +443,8 @@ async function getUserByID(userID) {
     const data = await response.json();
     return data;
 }
+
+//Accept a friend request
 async function acceptFriendRequestAsync(friendID) {
     const userID = await getUserID();
     if (userID === null)
@@ -331,6 +466,8 @@ async function acceptFriendRequestAsync(friendID) {
     }
     return response;
 }
+
+//Remove a friend
 async function removeFriendAsync(friendName) {
     const userID = await getUserID();
     if (userID === null)
@@ -352,6 +489,8 @@ async function removeFriendAsync(friendName) {
     }
     return response;
 }
+
+//Reject a friend request
 async function rejectFriendRequestAsync(friendName) {
     const userID = await getUserID();
     if (userID === null)
@@ -373,6 +512,8 @@ async function rejectFriendRequestAsync(friendName) {
     }
     return response;
 }
+
+//Block a user
 async function blockUserAsync(userName) {
     const userID = await getUserID();
     if (userID === null)
@@ -395,6 +536,7 @@ async function blockUserAsync(userName) {
     return response;
 }
 
+//Get the user avatar
 async function getUserAvatar(userID) {
     let url = `https://ft-transcendence.com/api/users/${userID}/get_avatar/`;
     try {
