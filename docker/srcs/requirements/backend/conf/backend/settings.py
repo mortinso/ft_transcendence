@@ -136,6 +136,39 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'backend.wsgi.application'
 
+# Configuring Django Debug Toolbar
+
+# INTERNAL_IPS = [
+#     '172.18.0.3',
+#     '192.168.1.235',
+#     '127.0.0.1',
+#     '172.17.0.1',
+#     'localhost',
+#     'ft-transcendence.com', 
+#     'backend',
+#     '10.0.2.2',
+# ] 
+
+
+INTERNAL_IPS = ["127.0.0.1", "10.0.2.2",]
+
+if DEBUG:
+    import os
+    import socket
+    hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
+    INTERNAL_IPS += [ip[:-1] + '1' for ip in ips]
+    INSTALLED_APPS.append('debug_toolbar')
+    MIDDLEWARE.insert(0, 'debug_toolbar.middleware.DebugToolbarMiddleware')
+
+print(f'INTERNAL_IPS: {INTERNAL_IPS}')
+
+# this is the main reason for not showing up the toolbar
+import mimetypes
+mimetypes.add_type("application/javascript", ".js", True)
+
+DEBUG_TOOLBAR_CONFIG = {
+    "SHOW_TOOLBAR_CALLBACK" : lambda request: True,
+}
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
@@ -154,7 +187,6 @@ DATABASES = {
         'PORT': '5432',
     }
 }
-
 
 # TODO: enable password validation
 # TODO: change password requirements
@@ -222,6 +254,11 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
 }
+
+if not DEBUG:
+    REST_FRAMEWORK['DEFAULT_PERMISSION_CLASSES'] = [
+        'backend.permissions.IsAuthenticatedOrNotFound',
+    ]
 
 # CORS_ALLOW_ALL_ORIGINS = True
 # CORS_ALLOW_CREDENTIALS = True # This is necessary to allow the frontend to send cookies
