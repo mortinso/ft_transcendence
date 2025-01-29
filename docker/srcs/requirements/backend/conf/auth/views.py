@@ -10,7 +10,6 @@ from rest_framework import status
 from django.contrib.auth import login, logout
 from django.shortcuts import get_object_or_404
 from rest_framework_simplejwt.tokens import RefreshToken
-from django.contrib.auth.hashers import make_password
 from rest_framework.permissions import AllowAny
 from django.contrib.auth.models import update_last_login
 from users.models import User
