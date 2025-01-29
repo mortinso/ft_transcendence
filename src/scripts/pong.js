@@ -131,6 +131,15 @@
 	rrBtn.addEventListener('click', () => {
 		player1.score = 0;
 		player2.score = 0;
+
+		// move player1 paddle to the middle again
+		player1.x = 0;
+		player1.y = canvas.height / 2 - paddleHeight / 2;
+
+		// move player2 paddle to the middle again
+		player2.x = canvas.width - paddleWidth;
+		player2.y = canvas.height / 2 - paddleHeight / 2;
+
 		winnerPopup.style.display = "none";
 		ball.lastLoser = null;
 		resetBall();
