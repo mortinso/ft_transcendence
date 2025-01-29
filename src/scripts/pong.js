@@ -2,6 +2,7 @@
 
 	const canvas = document.getElementById('pong');
 	const ctx = canvas.getContext('2d');
+	const winnerPopup = document.getElementById('winnerPopup');
 	const winnerMessage = document.getElementById('winnerMessage');
 
 	const PADDLE_SPEED = 2;
@@ -92,16 +93,12 @@
 
 	function resetBall() {
 		if (ball.lastLoser === 1) {
-			ball.x = canvas.width / 2;
 			ball.vx = -1 * BALL_SPEED || -4;
-		} else if (ball.lastLoser === 2) {
-			ball.x = canvas.width / 2;
-			ball.vx = BALL_SPEED || 4;
 		} else {
-			ball.x = canvas.width / 2;
 			ball.vx = BALL_SPEED || 4;
 		}
 
+		ball.x = canvas.width / 2;
 		ball.y = canvas.height / 2;
 		ball.vy = BALL_SPEED || 4;
 		ball.hits = 0;
@@ -117,16 +114,32 @@
 	function checkWinner() {
 		if (player1.score >= maxPoints) {
 			winnerMessage.innerText = "Player 1 Wins!";
-			winnerMessage.style.display = "block";
+			winnerPopup.style.display = "block";
 			return 1;
 		}
 		if (player2.score >= maxPoints) {
 			winnerMessage.innerText = "Player 2 Wins!";
-			winnerMessage.style.display = "block";
+			winnerPopup.style.display = "block";
 			return 1;
 		}
 		return 0;
 	}
+
+	const rrBtn = document.getElementById('restartGame');
+	const homeBtn = document.getElementById('goHome');
+
+	rrBtn.addEventListener('click', () => {
+		player1.score = 0;
+		player2.score = 0;
+		winnerPopup.style.display = "none";
+		ball.lastLoser = null;
+		resetBall();
+		gameLoop();
+	});
+
+	homeBtn.addEventListener('click', () => {
+		changeContent('overview', 0);
+	});
 
 	function draw() {
 		// Clear the canvas
@@ -134,7 +147,7 @@
 
 		// Draw paddles
 		drawRect(player1.x, player1.y, paddleWidth, paddleHeight, 'green');
-		drawRect(player2.x, player2.y, paddleWidth, paddleHeight, 'blue');
+		drawRect(player2.x, player2.y, paddleWidth, paddleHeight, 'white');
 
 		// Draw ball
 		drawBall(ball.x, ball.y, ballSize, 'white');
