@@ -8,6 +8,7 @@ async function updateOverviewPage() {
     document.getElementById('losses').innerText = `${i18next.t('overview.losses')}: ${_user?.losses}`;
     document.getElementById('draws').innerText = `${i18next.t('overview.draws')}: ${_user?.draws}`;
     document.getElementById('pongPlayers').innerText = `${_user?.pong_players ?? 0} ${i18next.t('overview.playersPlaying')}`;
+    document.getElementById('ticTacToePlayers').innerText = `${_user?.tic_tac_toe_players ?? 0} ${i18next.t('overview.playersPlaying')}`;
     document.getElementById('onlineFriends').innerText = `${_user?.online_friends ?? 0} ${i18next.t('overview.friendsOnline')}`;
 
     document.querySelectorAll('[data-i18n]').forEach(element => {

@@ -376,6 +376,7 @@ async function refreshLogin() {
                 return getUserData();
             }
             else {
+                clearSession();
                 return;
             }
         });

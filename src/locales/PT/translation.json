@@ -14,7 +14,8 @@
         "connectionFailed": "Ligação falhou",
         "contentNotFound": "Conteúdo não encontrado",
         "otp": "Código de Confirmação",
-        "invalidOTP": "Código de confirmação inválido"
+        "invalidOTP": "Código de confirmação inválido",
+        "tic-tac-toe": "Jogo do Galo"
     },
     "login":{
         "rememberMe": "Lembrar-me",
@@ -44,6 +45,7 @@
         "draws": "Empates",
         "friendsOnline": "Amigos Online",
         "playPong": "Jogar Pong",
+        "playTicTacToe": "Jogar Jogo do Galo",
         "playersPlaying": "pessoas a jogar"
     },
     "profile":{
