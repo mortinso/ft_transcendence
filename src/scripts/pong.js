@@ -2,6 +2,7 @@
 
 	const canvas = document.getElementById('pong');
 	const ctx = canvas.getContext('2d');
+	const winnerMessage = document.getElementById('winnerMessage');
 
 	const PADDLE_SPEED = 2;
 	const BALL_SPEED = 2;
@@ -10,6 +11,7 @@
 	const paddleWidth = 10;
 	const paddleHeight = 80;
 	const ballSize = 10;
+	const maxPoints = 5;
 
 	let ball = { x: canvas.width / 2, y: canvas.height / 2, vx: BALL_SPEED || 4, vy: BALL_SPEED || 4, hits: 0, lastLoser: null };
 
@@ -35,6 +37,8 @@
 	}
 
 	function update() {
+		if (checkWinner()) return;
+
 		// Ball movement
 		ball.x += ball.vx;
 		ball.y += ball.vy;
@@ -108,6 +112,20 @@
 			ball.vx *= 1.2;
 			ball.vy *= 1.2;
 		}
+	}
+
+	function checkWinner() {
+		if (player1.score >= maxPoints) {
+			winnerMessage.innerText = "Player 1 Wins!";
+			winnerMessage.style.display = "block";
+			return 1;
+		}
+		if (player2.score >= maxPoints) {
+			winnerMessage.innerText = "Player 2 Wins!";
+			winnerMessage.style.display = "block";
+			return 1;
+		}
+		return 0;
 	}
 
 	function draw() {
