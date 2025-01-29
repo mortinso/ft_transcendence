@@ -54,8 +54,8 @@ https://ft-transcende.com/api/auth/check_otp/ (confirm user's one-time password)
 
 ### Signup instructions
 
-On signup, a 6-digit one time password is sent to the user email. That password must be then sent to https://192.168.20.111/api/auth/check_otp/ as 'otp', together with 'purpose' = 'signup'. If the OTP is valid, the page will return the JWT tokens.
+On signup, a 6-digit one time password is sent to the user email. That password must be then sent to https://192.168.20.111/api/auth/check_otp/ as 'otp'. If the OTP is valid, the page will return 200: OTP OK and the user is created.
 
 ### TFA instructions
 
-If the user's tfa option is active, when the user logs in, a 6-digit one time password is sent to the user email. That password must be then sent to https://192.168.20.111/api/auth/check_otp/ as 'otp', together with 'purpose' = 'tfa'. If the OTP is valid, the page will return the JWT tokens.
+If the user's tfa option is active, when the user logs in, a 6-digit one time password is sent to the user email. That password must be then sent to https://192.168.20.111/api/auth/check_otp/ as 'otp'. If the OTP is valid, the page will return the JWT tokens.
