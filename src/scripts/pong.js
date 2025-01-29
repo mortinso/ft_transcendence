@@ -8,10 +8,10 @@
 	const SPEED_HITS = 5; //! mandatory
 
 	const paddleWidth = 10;
-	const paddleHeight = 100;
+	const paddleHeight = 80;
 	const ballSize = 10;
 
-	let ball = { x: canvas.width / 2, y: canvas.height / 2, vx: BALL_SPEED || 4, vy: BALL_SPEED || 4, hits: 0 };
+	let ball = { x: canvas.width / 2, y: canvas.height / 2, vx: BALL_SPEED || 4, vy: BALL_SPEED || 4, hits: 0, lastLoser: null };
 
 	let player1 = { x: 0, y: canvas.height / 2 - paddleHeight / 2, score: 0, up: false, down: false };
 	let player2 = { x: canvas.width - paddleWidth, y: canvas.height / 2 - paddleHeight / 2, score: 0, up: false, down: false };
@@ -68,11 +68,13 @@
 		// Ball out of bounds
 		if (ball.x < 0) {
 			player2.score++;
+			ball.lastLoser = 1;
 			resetBall();
 		}
 
 		if (ball.x > canvas.width) {
 			player1.score++;
+			ball.lastLoser = 2;
 			resetBall();
 		}
 
@@ -85,10 +87,19 @@
 	}
 
 	function resetBall() {
-		ball.x = canvas.width / 2;
+		if (ball.lastLoser === 1) {
+			ball.x = canvas.width / 2;
+			ball.vx = -1 * BALL_SPEED || -4;
+		} else if (ball.lastLoser === 2) {
+			ball.x = canvas.width / 2;
+			ball.vx = BALL_SPEED || 4;
+		} else {
+			ball.x = canvas.width / 2;
+			ball.vx = BALL_SPEED || 4;
+		}
+
 		ball.y = canvas.height / 2;
-		ball.vx = BALL_SPEED;
-		ball.vy = BALL_SPEED;
+		ball.vy = BALL_SPEED || 4;
 		ball.hits = 0;
 	}
 
@@ -104,8 +115,8 @@
 		ctx.clearRect(0, 0, canvas.width, canvas.height);
 
 		// Draw paddles
-		drawRect(player1.x, player1.y, paddleWidth, paddleHeight, 'white');
-		drawRect(player2.x, player2.y, paddleWidth, paddleHeight, 'white');
+		drawRect(player1.x, player1.y, paddleWidth, paddleHeight, 'green');
+		drawRect(player2.x, player2.y, paddleWidth, paddleHeight, 'blue');
 
 		// Draw ball
 		drawBall(ball.x, ball.y, ballSize, 'white');
