@@ -13,7 +13,34 @@
 	canvas {
 		border: 2px solid white;
 	}
+
+	#winnerPopup {
+		position: fixed;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		background: white;
+		color: black;
+		padding: 20px;
+		border-radius: 10px;
+		text-align: center;
+		display: none;
+		box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.5);
+	}
+
+	#winnerPopup button {
+		margin: 10px;
+		padding: 10px;
+		border: none;
+		cursor: pointer;
+		font-size: 16px;
+	}
 </style>
 
 <canvas id="pong" width="1000" height="500"></canvas>
+<div id="winnerPopup">
+	<p id="winnerMessage"></p>
+	<button id="restartGame">Play Again</button>
+	<button id="goHome">Home</button>
+</div>
 <script src="/src/scripts/pong.js"></script>
