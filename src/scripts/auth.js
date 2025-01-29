@@ -63,6 +63,7 @@ async function login(event) {
     postLogin();
 }
 
+//Initialize main page after login
 async function postLogin(){
     if (loggedIn) {
         document.getElementById('header').style.display = 'block';
@@ -75,10 +76,15 @@ async function postLogin(){
     }
 }
 
+//Confirm the 2FA code
 async function confirmF2A() {
+    const keepLoggedIn = document.getElementById('keepLogin').checked;
+    if (keepLoggedIn)
+        localStorage.setItem('keepLoggedIn', true);
+    else
+        localStorage.removeItem('keepLoggedIn');
     let input = document.getElementById('login2FA');
     let f2a = input?.value;
-    console.log(f2a);
     if (f2a === '' || f2a == undefined) {
         input.classList.add('is-invalid');
         return;
@@ -95,10 +101,8 @@ async function confirmF2A() {
             'Content-Type': 'application/json; charset=utf-8'
         }
     }).then(response => {
-        console.log(response);
         if (response.status === 200) {
             let r = response.json();
-            console.log(response.body);
             return r;
         }
         else {
@@ -106,7 +110,6 @@ async function confirmF2A() {
         }
     }).then(data => {
         if (data !== null) {
-            console.log(data);
             let modelElm = document.getElementById('f2aModal');
             let modal = bootstrap.Modal.getInstance(modelElm);
             input.classList.remove('is-invalid');
@@ -226,7 +229,6 @@ function signup(event) {
         }
     }).then(data => {
         if (data !== undefined) {
-            console.log(data);
             showOTPModal();
         }
     }).catch(error => {
@@ -264,10 +266,8 @@ async function confirmSignup() {
             'Content-Type': 'application/json; charset=utf-8'
         }
     }).then(response => {
-        console.log(response);
         if (response.status === 201) {
             let r = response.json();
-            console.log(response.body);
             return r;
         }
         else {
@@ -275,7 +275,6 @@ async function confirmSignup() {
         }
     }).then(data => {
         if (data !== null) {
-            console.log(data);
             let modelElm = document.getElementById('signupSuccessModal');
             let modal = bootstrap.Modal.getInstance(modelElm);
             input.classList.remove('is-invalid');
