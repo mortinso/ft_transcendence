@@ -134,7 +134,6 @@
 		winnerPopup.style.display = "none";
 		ball.lastLoser = null;
 		resetBall();
-		gameLoop();
 	});
 
 	homeBtn.addEventListener('click', () => {
