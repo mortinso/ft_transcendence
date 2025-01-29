@@ -70,7 +70,6 @@ class UpdateUserSerializer(serializers.ModelSerializer):
             "confirm_password": {"write_only": True},
         }
 
-    #TODO: PASSWORD VALIDATION NOT WORKING
     def validate(self, data):
         if data.get('password') or data.get('confirm_password'):
             try:
