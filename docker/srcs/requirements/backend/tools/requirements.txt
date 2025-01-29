@@ -28,7 +28,10 @@ python-dotenv==1.0.1
 sqlparse==0.5.3
 typing_extensions==4.12.2
 
+#debugging
+django-debug-toolbar==5.0.1
+typing_extensions==4.12.2
+
 # Optional dependencies
 # django-cleanup #delete previously uploaded images
-# django-debug-toolbar #debugging
 # pyotp #2FA

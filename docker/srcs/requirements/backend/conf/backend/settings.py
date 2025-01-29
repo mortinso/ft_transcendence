@@ -71,20 +71,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-9t0$i4hjzqu_cm=1@q0_7cpzgziu-xiwkqyiv2trpdeg2wyw-x'
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY') or "django-insecure-change-me"
 
-# TODO: CHANGE DEBUG
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-# DEBUG = False
+DEBUG = bool(int(os.environ.get('DEBUG', 0)))
 
 ALLOWED_HOSTS = [
-    "localhost",
-    ".127.0.0.1",
-    'backend',
-    "ft-transcendence.com",
-    '192.168.20.111',
-    ]
+	h.strip() for h in os.environ.get('ALLOWED_HOSTS', '').split(',')
+	if h.strip()
+]
 
 ALLOWED_REFERERS = [
     "https://ft-transcendence.com/",
@@ -142,6 +136,39 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'backend.wsgi.application'
 
+# Configuring Django Debug Toolbar
+
+# INTERNAL_IPS = [
+#     '172.18.0.3',
+#     '192.168.1.235',
+#     '127.0.0.1',
+#     '172.17.0.1',
+#     'localhost',
+#     'ft-transcendence.com', 
+#     'backend',
+#     '10.0.2.2',
+# ] 
+
+
+INTERNAL_IPS = ["127.0.0.1", "10.0.2.2",]
+
+if DEBUG:
+    import os
+    import socket
+    hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
+    INTERNAL_IPS += [ip[:-1] + '1' for ip in ips]
+    INSTALLED_APPS.append('debug_toolbar')
+    MIDDLEWARE.insert(0, 'debug_toolbar.middleware.DebugToolbarMiddleware')
+
+print(f'INTERNAL_IPS: {INTERNAL_IPS}')
+
+# this is the main reason for not showing up the toolbar
+import mimetypes
+mimetypes.add_type("application/javascript", ".js", True)
+
+DEBUG_TOOLBAR_CONFIG = {
+    "SHOW_TOOLBAR_CALLBACK" : lambda request: True,
+}
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
@@ -160,7 +187,6 @@ DATABASES = {
         'PORT': '5432',
     }
 }
-
 
 # TODO: enable password validation
 # TODO: change password requirements
@@ -189,7 +215,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Lisbon'
 
 USE_I18N = True
 
@@ -229,8 +255,13 @@ REST_FRAMEWORK = {
     ],
 }
 
+if not DEBUG:
+    REST_FRAMEWORK['DEFAULT_PERMISSION_CLASSES'] = [
+        'backend.permissions.IsAuthenticatedOrNotFound',
+    ]
+
 # CORS_ALLOW_ALL_ORIGINS = True
-# CORS_ALLOW_CREDENTIALS = True
+# CORS_ALLOW_CREDENTIALS = True # This is necessary to allow the frontend to send cookies
 
 CORS_ALLOWED_ORIGINS = [
     'https://127.0.0.1',
