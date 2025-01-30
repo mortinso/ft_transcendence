@@ -32,10 +32,6 @@ typing_extensions==4.12.2
 django-debug-toolbar==5.0.1
 typing_extensions==4.12.2
 
-# oauht2 42 API
-requests
-requests-oauthlib
-
 # Optional dependencies
 # django-cleanup #delete previously uploaded images
 # pyotp #2FA
