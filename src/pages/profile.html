@@ -1,20 +1,20 @@
 <div class="row mx-5 my-1 p-4 pb-0 pe-lg-0 pt-lg-5 align-items-center rounded-3 border shadow-lg">
     <div class="col-lg-4 offset-lg-1 p-0 pb-lg-5 overflow-hidden">
-        <img class="rounded-lg-3 rounded-circle" src="https://avatars.githubusercontent.com/u/107864891?v=4"
-            alt="User picture" width="250">
+        <img id="userAvatar" class="rounded-lg-3 rounded-circle avatar-b" alt="User picture">
     </div>
     <div class="col-lg-7 p-3 p-lg-5 pt-lg-3">
         <h1 id="username" class="display-4 fw-bold lh-1 text-body-emphasis">{{USERNAME}}</h1>
         <!--Only show for other users-->
         <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
-            <button type="button" class="btn btn-primary btn-lg px-4 me-md-2 fw-bold">Add as friend</button>
-            <button type="button" disabled="true" class="btn btn-lg px-4">Message</button>
+            <button type="button" class="btn btn-primary btn-lg px-4 me-md-2 fw-bold"
+                data-i18n="profile.addAsFriend">Add as friend</button>
+            <button type="button" disabled="true" class="btn btn-lg px-4" data-i18n="profile.message">Message</button>
             <p>[DEV] shown only for other users</p>
         </div>
     </div>
 </div>
 <div class="row flex-lg-row-reverse align-items-center my-5 mx-5">
-    <h3 class="display-5 fw-bold text-body-emphasis lh-1 mb-3">Stats</h3>
+    <h3 class="display-5 fw-bold text-body-emphasis lh-1 mb-3" data-i18n="profile.stats">Stats</h3>
     <div class="col">
         <div class="card shadow-lg">
             <div class="row g-0">
@@ -24,7 +24,7 @@
                 <div class="col-md-8 shadow-left">
                     <div class="card-body">
                         <h5 class="card-title">Pong</h5>
-                        <p class="card-text">Last 5 games</p>
+                        <p class="card-text" data-i18n="profile.lastGames">Last 5 games</p>
                         <div id="pongGameList" class="list-group"></div>
                     </div>
                 </div>
@@ -37,8 +37,8 @@
                 </div>
                 <div class="col-md-8 shadow-left">
                     <div class="card-body">
-                        <h5 class="card-title">Second Game</h5>
-                        <p class="card-text">Last 5 games</p>
+                        <h5 class="card-title">[HC] Second Game</h5>
+                        <p class="card-text" data-i18n="profile.lastGames">Last 5 games</p>
                         <div id="secondGameList" class="list-group"></div>
                     </div>
                 </div>
@@ -49,7 +49,8 @@
 
 <template id="gameResultTemplate">
     <a class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
-        <img src="winner_profile_picture" alt="winner profile picture" width="32" height="32" class="rounded-circle flex-shrink-0">
+        <img src="winner_profile_picture" alt="winner profile picture" width="32" height="32"
+            class="rounded-circle flex-shrink-0">
         <div class="d-flex gap-2 w-100 justify-content-between">
             <div>
                 <h6 class="mb-0">Winner</h6>

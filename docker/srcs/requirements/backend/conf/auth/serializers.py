@@ -3,6 +3,9 @@ from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 from users.models import User
 from django.contrib.auth import authenticate
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class SignUpSerializer(serializers.ModelSerializer):
@@ -69,4 +72,4 @@ class ForgotPasswordSerializer(serializers.Serializer):
 class CheckOTPSerializer(serializers.Serializer):
     # email = serializers.EmailField()
     otp = serializers.CharField()
-    purpose = serializers.CharField(required=True)
+    # purpose = serializers.CharField(required=True)

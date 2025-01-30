@@ -1,32 +1,32 @@
 <div class="px-4">
     <form id="accountDetailsForm">
         <div class="mb-3">
-            <label for="InputUsername" class="form-label">Username</label>
+            <label for="InputUsername" class="form-label" data-i18n="common.username">Username</label>
             <div class="input-group has-validation">
                 <input id="InputUsername" class="form-control" type="text" pattern="[a-zA-Z0-9_\+\-\.\@]{1,15}"
                     title="Usernames can't contain special characters"
                     aria-describedby="usernameTakenFeedback usernameValidFeedback">
-                <div id="usernameTakenFeedback" class="invalid-feedback">
+                <div id="usernameTakenFeedback" class="invalid-feedback" data-i18n="settings.usernameTaken">
                     Username already taken
                 </div>
-                <div id="usernameValidFeedback" class="valid-feedback">
+                <div id="usernameValidFeedback" class="valid-feedback" data-i18n="settings.usernameUpdated">
                     Username updated
                 </div>
             </div>
         </div>
         <div class="mb-3">
-            <label for="InputEmail" class="form-label">Email Address</label>
+            <label for="InputEmail" class="form-label" data-i18n="common.email">Email Address</label>
             <div class="input-group has-validation">
                 <input type="email" class="form-control" id="InputEmail" aria-describedby="emailHelp">
-                <div id="emailValidFeedback" class="valid-feedback">
+                <div id="emailValidFeedback" class="valid-feedback" data-i18n="common.emailUpdated">
                     Email updated
                 </div>
             </div>
         </div>
         <div class="mb-3">
-            <label class="form-label" for="InputPicture">Profile Picture</label>
-            <input type="file" accept="image/png, image/jpeg, image/gif" class="form-control" id="InputPicture">
+            <label class="form-label" for="InputPicture" data-i18n="settings.avatar">Profile Picture</label>
+            <input type="file" lang="pt" accept="image/png, image/jpeg, image/gif" class="form-control" id="InputPicture">
         </div>
-        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="submit" class="btn btn-primary" data-i18n="common.save">Save</button>
     </form>
 </div>

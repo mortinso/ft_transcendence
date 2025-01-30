@@ -12,12 +12,16 @@
         "no": "No",
         "serverConnectionError": "Couldn't connect to server. Please try again later.",
         "connectionFailed": "Connection failed",
-        "contentNotFound": "Content not found"
+        "contentNotFound": "Content not found",
+        "otp": "Confirmation code",
+        "invalidOTP": "Invalid confirmation code"
     },
     "login":{
         "rememberMe": "Remember me",
         "invalidCredentials": "Invalid credentials",
-        "accountCreated": "Account created sucessfully. You may login now."
+        "accountCreated": "Account created sucessfully. You may login now.",
+        "signupOTP": "Enter confirmation code",
+        "signupOTPSent": "A confirmation code has been sent to your email"
     },
     "header":{
         "overview": "Overview",
@@ -78,7 +82,9 @@
         "deleteAccount": "Delete Account",
         "deleteAccountQuestion": "Are you sure you want to delete your account?",
         "deleteAccountWarning": "This action is irreversible!",
-        "deleteAccountConfirm": "Please enter your password to confirm"
+        "deleteAccountConfirm": "Please enter your password to confirm",
+        "twoFactorAuth": "Two Factor Authentication",
+        "enable2FA": "Use Two Factor Authentication"
     },
     "livechat": {
         "friends": "Friends",

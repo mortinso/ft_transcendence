@@ -1,48 +1,71 @@
 <div class="form-signin w-25 m-auto my-5">
     <form id="signupForm">
-        <h1 class="h3 mb-3 fw-normal">Please sign up</h1>
+        <h1 class="h3 mb-3 fw-normal" data-i18n="common.signup">Sign up</h1>
 
         <div class="form-floating">
             <input type="email" class="form-control" id="signupEmail" placeholder="Email Address" required>
-            <label for="signupEmail">Email Address</label>
+            <label for="signupEmail" data-i18n="common.email">Email Address</label>
         </div>
         <div class="input-group has-validation my-2">
             <div class=" form-floating">
                 <input type="text" class="form-control" id="signupUsername" pattern="[a-zA-Z0-9_\+\-\.\@]{1,15}"
                     placeholder="Username" required>
-                <label class="form-label" for="signupUsername">Username</label>
-                <div id="usernameTakenFeedback" class="invalid-feedback">
+                <label class="form-label" for="signupUsername" data-i18n="common.username">Username</label>
+                <div id="usernameTakenFeedback" class="invalid-feedback" data-i18n="settings.usernameTaken">
                     Username already taken
                 </div>
             </div>
         </div>
         <div class="form-floating my-2">
             <input type="password" class="form-control" id="signupPassword" placeholder="Password" required>
-            <label for="signupPassword">Password</label>
+            <label for="signupPassword" data-i18n="common.password">Password</label>
         </div>
         <div class="input-group has-validation my-2">
             <div class=" form-floating">
                 <input type="password" class="form-control" id="signupConfirmPassword" placeholder="Password" required>
-                <label for="signupConfirmPassword">Confirm Password</label>
-                <div id="passwordMatchFeedback" class="invalid-feedback">
+                <label for="signupConfirmPassword" data-i18n="settings.confirmPassword">Confirm Password</label>
+                <div id="passwordMatchFeedback" data-i18n="settings.passwordsDoNotMatch" class="invalid-feedback">
                     Passwords do not match
                 </div>
             </div>
         </div>
         <div id="signupSuccessAlert"></div>
-        <button class="btn btn-primary w-100 py-2 mt-3" type="submit">Sign up</button>
+        <button class="btn btn-primary w-100 py-2 mt-3" type="submit" data-i18n="common.signup">Sign up</button>
     </form>
-    <button class="btn btn-secondary w-100 py-2 my-2" type="button" onclick="changeContent('login')">Login</button>
+    <button class="btn btn-secondary w-100 py-2 my-2" type="button" data-i18n="common.login"
+        onclick="changeContent('login')">Login</button>
+    <div class="modal fade" id="signupSuccessModal" tabindex="-1" aria-labelledby="signupSuccessModalLabel">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="signupSuccessModalLabel" data-i18n="login.signupOTP"> Enter comfirmation code</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h5 data-i18n="login.signupOTPSent">A confirmation code has been sent to your email address.</h5>
+                    <div class="form-floating">
+                        <input type="text" class="form-control" id="signupOTP" required>
+                        <label for="signupOTP" data-i18n="common.otp">Confirmation code</label>
+                    </div>
+                    <div id="signupOTPFeedback" class="invalid-feedback" data-i18n="common.invalidOTP">
+                        Invalid confirmation code
+                    </div>
+                    <button class="btn btn-primary w-100 py-2 mt-3" type="button" onclick="confirmSignup()">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="modal fade" id="signupFailModal" tabindex="-1" aria-labelledby="signupFailModalLabel"
         aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="signupFailModalLabel">Connection failed</h1>
+                    <h1 class="modal-title fs-5" id="signupFailModalLabel" data-i18n="common.connectionFailed">
+                        Connection failed</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p>Couldn't connect to server. Please try again later.</p>
+                    <p data-i18n="common.serverConnectionError">Couldn't connect to server. Please try again later.</p>
                 </div>
             </div>
         </div>
