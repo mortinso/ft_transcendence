@@ -156,6 +156,10 @@ async function updateAvatar() {
     xhr.onreadystatechange = function () {
         if (this.readyState !== 4)
             return;
+        if (this.status === 413) {
+            alert(i18next.t('settings.avatarTooLarge'));
+            return;
+        }
         if (this.status !== 200) {
             console.log('Error updating user avatar', this);
             //TODO: log error
