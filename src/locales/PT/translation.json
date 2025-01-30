@@ -14,7 +14,8 @@
         "connectionFailed": "Ligação falhou",
         "contentNotFound": "Conteúdo não encontrado",
         "otp": "Código de Confirmação",
-        "invalidOTP": "Código de confirmação inválido"
+        "invalidOTP": "Código de confirmação inválido",
+        "tic-tac-toe": "Jogo do Galo"
     },
     "login":{
         "rememberMe": "Lembrar-me",
@@ -44,6 +45,7 @@
         "draws": "Empates",
         "friendsOnline": "Amigos Online",
         "playPong": "Jogar Pong",
+        "playTicTacToe": "Jogar Jogo do Galo",
         "playersPlaying": "pessoas a jogar"
     },
     "profile":{
@@ -84,7 +86,8 @@
         "deleteAccountWarning": "Esta ação é irreversível!",
         "deleteAccountConfirm": "Por favor insere a tua palavra-passe para confirmar",
         "twoFactorAuth": "Autenticação em Dois Fatores",
-        "enable2FA": "Usar Autenticação em Dois Fatores"
+        "enable2FA": "Usar Autenticação em Dois Fatores",
+        "avatarTooLarge": "A imagem de perfil é demasiado grande. O tamanho máximo é 1MB"
     },
     "livechat": {
         "friends": "Amigos",

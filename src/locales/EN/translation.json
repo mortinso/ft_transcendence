@@ -14,7 +14,8 @@
         "connectionFailed": "Connection failed",
         "contentNotFound": "Content not found",
         "otp": "Confirmation code",
-        "invalidOTP": "Invalid confirmation code"
+        "invalidOTP": "Invalid confirmation code",
+        "tic-tac-toe": "Tic Tac Toe"
     },
     "login":{
         "rememberMe": "Remember me",
@@ -44,6 +45,7 @@
         "draws": "Draws",
         "friendsOnline": "Friends Online",
         "playPong": "Play Pong",
+        "playTicTacToe": "Play Tic Tac Toe",
         "playersPlaying": "people playing"
     },
     "profile":{
@@ -84,7 +86,8 @@
         "deleteAccountWarning": "This action is irreversible!",
         "deleteAccountConfirm": "Please enter your password to confirm",
         "twoFactorAuth": "Two Factor Authentication",
-        "enable2FA": "Use Two Factor Authentication"
+        "enable2FA": "Use Two Factor Authentication",
+        "avatarTooLarge": "Avatar is too large. Maximum size is 1MB"
     },
     "livechat": {
         "friends": "Friends",
