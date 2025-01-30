@@ -1,6 +1,7 @@
 from rest_framework import permissions
 from backend.exceptions import NotFoundHTML
 
+
 class IsSelf(permissions.BasePermission):
     """
     Global permission check if user is accessing his own data.
@@ -8,6 +9,7 @@ class IsSelf(permissions.BasePermission):
 
     def has_object_permission(self, request, view, obj):
         return obj.id == request.user.id
+
 
 class IsAuthenticatedOrNotFound(permissions.BasePermission):
     def has_permission(self, request, view):

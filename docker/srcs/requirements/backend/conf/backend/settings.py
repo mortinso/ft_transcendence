@@ -76,8 +76,8 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY') or "django-insecure-change-me"
 DEBUG = bool(int(os.environ.get('DEBUG', 0)))
 
 ALLOWED_HOSTS = [
-	h.strip() for h in os.environ.get('ALLOWED_HOSTS', '').split(',')
-	if h.strip()
+    h.strip() for h in os.environ.get('ALLOWED_HOSTS', '').split(',')
+    if h.strip()
 ]
 
 ip_host = os.environ.get('IP_HOST')
@@ -158,7 +158,7 @@ import mimetypes
 mimetypes.add_type("application/javascript", ".js", True)
 
 DEBUG_TOOLBAR_CONFIG = {
-    "SHOW_TOOLBAR_CALLBACK" : lambda request: True,
+    "SHOW_TOOLBAR_CALLBACK": lambda request: True,
 }
 
 # Database
