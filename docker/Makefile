@@ -37,4 +37,7 @@ sh-backend:
 sh-postgres:
 	docker exec -it postgres /bin/bash
 
-.PHONY: all start stop down restart clean fclean re clean-docker reset dev sh-backend sh-postgres
+ip-host:
+	@srcs/requirements/backend/tools/iphost.sh
+
+.PHONY: all start stop down restart clean fclean re clean-docker reset dev sh-backend sh-postgres ip-host
