@@ -34,6 +34,27 @@
     </form>
     <button class="btn btn-secondary w-100 py-2 my-2" type="button" data-i18n="common.login"
         onclick="changeContent('login')">Login</button>
+    <div class="modal fade" id="signupSuccessModal" tabindex="-1" aria-labelledby="signupSuccessModalLabel">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="signupSuccessModalLabel" data-i18n="login.signupOTP"> Enter comfirmation code</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h5 data-i18n="login.signupOTPSent">A confirmation code has been sent to your email address.</h5>
+                    <div class="form-floating">
+                        <input type="text" class="form-control" id="signupOTP" required>
+                        <label for="signupOTP" data-i18n="common.otp">Confirmation code</label>
+                    </div>
+                    <div id="signupOTPFeedback" class="invalid-feedback" data-i18n="common.invalidOTP">
+                        Invalid confirmation code
+                    </div>
+                    <button class="btn btn-primary w-100 py-2 mt-3" type="button" onclick="confirmSignup()">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="modal fade" id="signupFailModal" tabindex="-1" aria-labelledby="signupFailModalLabel"
         aria-hidden="true">
         <div class="modal-dialog">
