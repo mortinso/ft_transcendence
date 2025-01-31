@@ -30,7 +30,7 @@ function createSecondChart() {
     new Chart("secondChart", {
         type: 'doughnut',
         data: {
-            labels: [i18next.t('overview.wins'), i18next.t('overview.loses'), i18next.t('overview.draws')],
+            labels: [i18next.t('overview.wins'), i18next.t('overview.losses'), i18next.t('overview.draws')],
             datasets: [{
                 //TODO fetch data from backend
                 data: [5, 4, 2],
