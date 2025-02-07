@@ -90,6 +90,12 @@ ALLOWED_REFERERS = [
     "https://ft-transcendence.com/",
 ]
 
+
+AUTHENTICATION_BACKENDS = [
+    'oauth2.auth.Oauth2AuthenticationBackend',
+    # 'django.contrib.auth.backends.ModelBackend',
+]
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -105,6 +111,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'corsheaders',
+    'oauth2.apps.Oauth2Config',
 ]
 
 MIDDLEWARE = [
