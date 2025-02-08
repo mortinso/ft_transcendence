@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
 from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
 import requests
-
 
 auth_urlft = (
 	"https://api.intra.42.fr/oauth/authorize?"
@@ -15,16 +15,21 @@ auth_urlft = (
 def home(request: HttpRequest) -> JsonResponse:
 	return JsonResponse({"message": "oauth2"})
 
+@login_required(login_url="/oauth2/login")
+def get_authenticated_user(request: HttpRequest):
+	return JsonResponse({"msg": "Authenticated"})
+
 def ft_login(request: HttpRequest):
 	return redirect(auth_urlft)
 
 def ft_login_redirect(request: HttpRequest):
-	code = request.GET.get("code")
-	print(code)
-	print(" <--code")
-	user = exchange_code(code)
-	authenticate(request, user=user)
-	return JsonResponse({"user": user})
+    code = request.GET.get("code")
+    user_data = exchange_code(code)
+    user = authenticate(request, user_data=user_data)
+    if user is not None:
+        login(request, user)
+        return JsonResponse({"user": user_data})
+    return JsonResponse({"error": "Authentication failed"}, status=401)
 
 def exchange_code(code: str):
 	data = {
@@ -48,7 +53,6 @@ def exchange_code(code: str):
 	})
 	print(response)
 	user = response.json()
-	# print(user)
 	filtered_user = {
 		"id": user.get("id"),
 		"email": user.get("email"),
@@ -59,4 +63,4 @@ def exchange_code(code: str):
 		"url": user.get("url")
 	}
 	print(filtered_user)
-	return user
+	return filtered_user # user

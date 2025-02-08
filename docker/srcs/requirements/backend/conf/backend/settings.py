@@ -93,7 +93,7 @@ ALLOWED_REFERERS = [
 
 AUTHENTICATION_BACKENDS = [
     'oauth2.auth.Oauth2AuthenticationBackend',
-    # 'django.contrib.auth.backends.ModelBackend',
+    'django.contrib.auth.backends.ModelBackend',
 ]
 
 # Application definition
