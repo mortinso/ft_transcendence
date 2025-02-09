@@ -31,7 +31,7 @@ class Oauth2AuthenticationBackend(BaseBackend):
                 user=user,
                 intra42_id=user_data.get("id"),
                 email=user_data.get("email"),
-                avatar=user_data.get("image", {}).get("link"),
+                avatar=user_data.get("avatar"),
                 login=user_data.get("login"),
                 first_name=user_data.get("first_name"),
                 last_name=user_data.get("last_name"),
