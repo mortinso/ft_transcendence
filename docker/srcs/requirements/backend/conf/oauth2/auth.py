@@ -1,11 +1,11 @@
 from django.contrib.auth.backends import BaseBackend
-from .models import Intra42Profile
 from django.contrib.auth import get_user_model
 import logging
 
 User = get_user_model()
 logger = logging.getLogger(__name__)
 
+# check if user exists in the database (username, id, email, 42_id)
 class Oauth2AuthenticationBackend(BaseBackend):
     def authenticate(self, request, user_data=None):
         if user_data is None:
@@ -22,20 +22,13 @@ class Oauth2AuthenticationBackend(BaseBackend):
                 return None
 
             user = User.objects.create_user(
+                email=user_data.get("email"),
                 username=user_data.get("login"),
-                email=user_data.get("email"),
                 first_name=user_data.get("first_name"),
                 last_name=user_data.get("last_name"),
-            )
-            Intra42Profile.objects.create(
-                user=user,
-                intra42_id=user_data.get("id"),
-                email=user_data.get("email"),
                 avatar=user_data.get("avatar"),
-                login=user_data.get("login"),
-                first_name=user_data.get("first_name"),
-                last_name=user_data.get("last_name"),
-                url=user_data.get("url"),
+                intra42_id=user_data.get("id"),
+                intra42_url=user_data.get("url"),
             )
         return user
 

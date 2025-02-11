@@ -18,15 +18,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
-from oauth2 import views
 
 urlpatterns = [
     path("api/users/", include("users.urls")),
     path("api/auth/", include("auth.urls")),
-    path("auth/user/", views.get_authenticated_user, name="get_authenticated_user"),
-    path("oauth2/", views.home, name="oauth2"),
-    path("oauth2/login/", views.ft_login, name="oauth-login"),
-    path("oauth2/login/redirect", views.ft_login_redirect, name="oauth-login-redirect"),
+    path("api/oauth/", include("oauth2.urls")),
 ]
 
 if settings.DEBUG:
