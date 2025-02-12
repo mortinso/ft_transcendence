@@ -16,3 +16,6 @@ docker/srcs/requirements/backend/conf/users/migrations/*
 docker/srcs/requirements/backend/conf/backend/middleware/__pycache__/*
 docker/avatars/*
 !docker/avatars/default.jpg
+
+__pycache__/
+*.pyc
