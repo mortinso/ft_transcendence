@@ -3,6 +3,7 @@ from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
+from .exceptions import OauthAuthenticationError
 import logging
 import requests
 
@@ -37,20 +38,24 @@ def login_redirect_42user(request: HttpRequest):
     if not user_data or not user_data.get("id"):
         return JsonResponse({"error": "Incomplete user data."}, status=400)
 
-    user = authenticate(request, user_data=user_data)
-    if user is not None:
+    try:
+        user = authenticate(request, user_data=user_data)
+    except OauthAuthenticationError as auth_err:
+        return JsonResponse({"error": auth_err.message}, status=auth_err.status)
+        
+    if user:
         login(request, user)
         return JsonResponse({"user": user_data})
     
     return JsonResponse({"error": "Authentication failed"}, status=401)
 
 def logout_42user(request: HttpRequest):
-    # Loga a ação (opcional)
-    logger.info(f"User {request.user} is logging out.")
-    
+    logger.info(f"User {request.user} is logging out.")    
     logout(request)
-    request.session.flush()  # Confirma que a sessão foi completamente limpa
-    return JsonResponse({"detail": "Successfully logged out."}, status=200)
+    request.session.flush()
+    response = JsonResponse({"detail": "Successfully logged out."}, status=200)
+    response.delete_cookie("sessionid")
+    return response
 
 def exchange_code_for_42user_info(code: str):
 	data = {

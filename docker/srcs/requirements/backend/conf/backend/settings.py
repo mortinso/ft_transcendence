@@ -92,7 +92,7 @@ ALLOWED_REFERERS = [
 
 
 AUTHENTICATION_BACKENDS = [
-    'oauth2.auth.Oauth2AuthenticationBackend',
+    'oauth.auth.OauthAuthenticationBackend',
     'django.contrib.auth.backends.ModelBackend',
 ]
 
@@ -111,7 +111,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'corsheaders',
-    'oauth2.apps.Oauth2Config',
+    'oauth.apps.OauthConfig',
 ]
 
 MIDDLEWARE = [

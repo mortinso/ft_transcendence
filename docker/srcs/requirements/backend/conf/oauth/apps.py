@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class Oauth2Config(AppConfig):
+class OauthConfig(AppConfig):
     default_auto_field = "django.db.models.BigAutoField"
-    name = "oauth2"
+    name = "oauth"
