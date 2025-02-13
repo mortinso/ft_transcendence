@@ -17,12 +17,20 @@ services:
       EMAIL_PASSWORD_FILE: /run/secrets/email_password
       POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
       DJANGO_SUPERUSER_FILE: /run/secrets/django_superuser_password
-      DJANGO_SECRET_KEY: /run/secrets/django_secret_key
+      DJANGO_SECRET_KEY_FILE: /run/secrets/django_secret_key
+      INTRA42_REDIRECT_URI_FILE: /run/secrets/intra42_redirect_uri
+      INTRA42_AUTH_URL_FILE: /run/secrets/intra42_auth_url
+      INTRA42_CLIENT_ID_FILE: /run/secrets/intra42_client_id
+      INTRA42_CLIENT_SECRET_FILE: /run/secrets/intra42_client_secret
     secrets:
       - django_superuser_password
       - email_password
       - postgres_password
       - django_secret_key
+      - intra42_redirect_uri
+      - intra42_auth_url
+      - intra42_client_id
+      - intra42_client_secret
     networks:
       - transcendence
     # ports:
@@ -77,3 +85,11 @@ secrets:
     file: ../secrets/email_host_password.txt
   django_secret_key:
     file: ../secrets/django_secret_key.txt
+  intra42_redirect_uri:
+    file: ../secrets/intra42_redirect_uri.txt
+  intra42_auth_url:
+    file: ../secrets/intra42_auth_url.txt
+  intra42_client_id:
+    file: ../secrets/intra42_client_id.txt
+  intra42_client_secret:
+    file: ../secrets/intra42_client_secret.txt

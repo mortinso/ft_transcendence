@@ -1,28 +1,30 @@
-from django.shortcuts import render, redirect
-from django.http import HttpRequest, HttpResponse, JsonResponse
+from django.shortcuts import redirect
+from django.http import HttpRequest, JsonResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.views.decorators.http import require_POST
 from .exceptions import OauthAuthenticationError
 import logging
 import requests
+from environs import Env
 
 
 logger = logging.getLogger(__name__)
 
-auth_urlft = (
-	"https://api.intra.42.fr/oauth/authorize?"
-    "client_id=u-s4t2ud-6f95013ff80b03205f10c6858a27d612b0471205a3be99b15a164083c741aa4f&"
-    "redirect_uri=https%3A%2F%2Fft-transcendence.com%2Fapi%2Foauth%2Flogin%2Fredirect&"
-    "response_type=code"
-)
+env = Env()
+
+auth_url = env("INTRA42_AUTH_URL")
+client_id = env("INTRA42_CLIENT_ID")
+client_secret = env("INTRA42_CLIENT_SECRET")
+redirect_uri = env("INTRA42_REDIRECT_URI")
+token_url = "https://api.intra.42.fr/oauth/token"
+get_user_url = "https://api.intra.42.fr/v2/me/"
 
 @login_required(login_url="/api/oauth/login")
 def get_authenticated_user(request: HttpRequest):
 	return JsonResponse({"msg": "Authenticated"})
 
 def login_42user(request: HttpRequest):
-	return redirect(auth_urlft)
+	return redirect(auth_url)
 
 def login_redirect_42user(request: HttpRequest):
     code = request.GET.get("code")
@@ -59,23 +61,20 @@ def logout_42user(request: HttpRequest):
 
 def exchange_code_for_42user_info(code: str):
 	data = {
-		"client_id": "u-s4t2ud-6f95013ff80b03205f10c6858a27d612b0471205a3be99b15a164083c741aa4f",
-		"client_secret": "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",
+		"client_id": client_id,
+		"client_secret": client_secret,
 		"grant_type": "authorization_code",
 		"code": code,
-		"redirect_uri": "https://ft-transcendence.com/api/oauth/login/redirect",
+		"redirect_uri": redirect_uri,
 		"scope": "public"
 	}
 	headers = { "Content-Type": "application/x-www-form-urlencoded" }
-	response = requests.post("https://api.intra.42.fr/oauth/token", data=data, headers=headers)
+	response = requests.post(token_url, data=data, headers=headers)
 	credentials = response.json()
-	print(f'RESPONSE: {response}')
-	print(f'CREDENDITALS: {credentials}')
 	access_token = credentials.get("access_token")
-	response = requests.get("https://api.intra.42.fr/v2/me/", headers={
+	response = requests.get(get_user_url, headers={
 		"Authorization": "Bearer %s" % access_token
 	})
-	print(f'RESPONSE: {response}')
 	user = response.json()
 	filtered_user = {
 		"id": user.get("id"),
