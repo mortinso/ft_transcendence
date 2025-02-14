@@ -19,18 +19,21 @@ redirect_uri = env("INTRA42_REDIRECT_URI")
 token_url = "https://api.intra.42.fr/oauth/token"
 get_user_url = "https://api.intra.42.fr/v2/me/"
 
+
 @login_required(login_url="/api/oauth/login")
 def get_authenticated_user(request: HttpRequest):
-	return JsonResponse({"msg": "Authenticated"})
+    return JsonResponse({"msg": "Authenticated"})
+
 
 def login_42user(request: HttpRequest):
-	return redirect(auth_url)
+    return redirect(auth_url)
+
 
 def login_redirect_42user(request: HttpRequest):
     code = request.GET.get("code")
     if not code:
         return JsonResponse({"error": "Authorization code missing."}, status=400)
-    
+
     try:
         user_data = exchange_code_for_42user_info(code)
     except Exception as e:
@@ -44,45 +47,47 @@ def login_redirect_42user(request: HttpRequest):
         user = authenticate(request, user_data=user_data)
     except OauthAuthenticationError as auth_err:
         return JsonResponse({"error": auth_err.message}, status=auth_err.status)
-        
+
     if user:
         login(request, user)
         return JsonResponse({"user": user_data})
-    
+
     return JsonResponse({"error": "Authentication failed"}, status=401)
 
+
 def logout_42user(request: HttpRequest):
-    logger.info(f"User {request.user} is logging out.")    
+    logger.info(f"User {request.user} is logging out.")
     logout(request)
     request.session.flush()
     response = JsonResponse({"detail": "Successfully logged out."}, status=200)
     response.delete_cookie("sessionid")
     return response
 
+
 def exchange_code_for_42user_info(code: str):
-	data = {
-		"client_id": client_id,
-		"client_secret": client_secret,
-		"grant_type": "authorization_code",
-		"code": code,
-		"redirect_uri": redirect_uri,
-		"scope": "public"
-	}
-	headers = { "Content-Type": "application/x-www-form-urlencoded" }
-	response = requests.post(token_url, data=data, headers=headers)
-	credentials = response.json()
-	access_token = credentials.get("access_token")
-	response = requests.get(get_user_url, headers={
-		"Authorization": "Bearer %s" % access_token
-	})
-	user = response.json()
-	filtered_user = {
-		"id": user.get("id"),
-		"email": user.get("email"),
-		"avatar": user.get("image", {}).get("link"),
-		"login": user.get("login"),
-		"first_name": user.get("first_name"),
-		"last_name": user.get("last_name"),
-		"url": user.get("url"),
-	}
-	return filtered_user
+    data = {
+        "client_id": client_id,
+        "client_secret": client_secret,
+        "grant_type": "authorization_code",
+        "code": code,
+        "redirect_uri": redirect_uri,
+        "scope": "public",
+    }
+    headers = {"Content-Type": "application/x-www-form-urlencoded"}
+    response = requests.post(token_url, data=data, headers=headers)
+    credentials = response.json()
+    access_token = credentials.get("access_token")
+    response = requests.get(
+        get_user_url, headers={"Authorization": "Bearer %s" % access_token}
+    )
+    user = response.json()
+    filtered_user = {
+        "id": user.get("id"),
+        "email": user.get("email"),
+        "avatar": user.get("image", {}).get("link"),
+        "login": user.get("login"),
+        "first_name": user.get("first_name"),
+        "last_name": user.get("last_name"),
+        "url": user.get("url"),
+    }
+    return filtered_user

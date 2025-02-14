@@ -6,7 +6,7 @@ import logging
 User = get_user_model()
 logger = logging.getLogger(__name__)
 
-# check if user exists in the database (username, id, email, 42_id)
+
 class OauthAuthenticationBackend(BaseBackend):
     def authenticate(self, request, user_data=None):
         if user_data is None:
@@ -33,7 +33,7 @@ class OauthAuthenticationBackend(BaseBackend):
                 user = User.objects.get(email=email)
                 if not user.intra42_id:
                     logger.error(f"User {email} has been created without 42 authentication.")
-                    raise OauthAuthenticationError("A user with this email has already been created.", status=403) 
+                    raise OauthAuthenticationError("A user with this email has already been created.", status=403)
             except User.DoesNotExist:
                 user = User.objects.create_user(
                     email=email,
