@@ -6,6 +6,8 @@ from .exceptions import OauthAuthenticationError
 import logging
 import requests
 from environs import Env
+from rest_framework_simplejwt.tokens import RefreshToken
+from django.contrib.auth.models import update_last_login
 
 
 logger = logging.getLogger(__name__)
@@ -50,8 +52,15 @@ def login_redirect_42user(request: HttpRequest):
 
     if user:
         login(request, user)
-        return JsonResponse({"user": user_data})
-
+        refresh = RefreshToken.for_user(user)
+        update_last_login(None, user)
+        return JsonResponse(
+            {
+                "refresh": str(refresh),
+                "access": str(refresh.access_token),
+            },
+            status=200,
+        )
     return JsonResponse({"error": "Authentication failed"}, status=401)
 
 
