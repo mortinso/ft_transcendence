@@ -63,6 +63,37 @@ async function login(event) {
     postLogin();
 }
 
+async function loginWith42(){
+    //window.open('/api/oauth/user', '42', 'width=800,height=600');
+    await fetch ('/api/oauth/user', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json; charset=utf-8',
+            'Access-Control-Allow-Origin': '*'
+        }
+    }).then(response => {
+        if (response.status === 200) {
+            return response.json();
+        }
+        else {
+            return null;
+        }
+    }).then(data => {
+        if (data !== null) {
+            sessionStorage.setItem('jwt', data.access);
+            sessionStorage.setItem('refresh', data.refresh);
+            loggedIn = true;
+            console.log(data);
+        }
+    }).catch(error => {
+        let modal = new bootstrap.Modal(document.getElementById('loginFailModal'));
+        modal.show();
+    });
+    postLogin();
+
+    //window.location.href = '/api/oauth/login';
+}
+
 //Initialize main page after login
 async function postLogin(){
     if (loggedIn) {
