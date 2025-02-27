@@ -165,7 +165,9 @@ import mimetypes
 mimetypes.add_type("application/javascript", ".js", True)
 
 DEBUG_TOOLBAR_CONFIG = {
-    "SHOW_TOOLBAR_CALLBACK": lambda request: True,
+    # Incompatibilidade entre psycopg3 e Django Debug Toolbar 
+    # set true para usar django-toolbar mesmo assim
+    "SHOW_TOOLBAR_CALLBACK": lambda request: False,
 }
 
 # Database

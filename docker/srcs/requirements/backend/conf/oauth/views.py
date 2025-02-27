@@ -53,17 +53,18 @@ def login_redirect_42user(request: HttpRequest):
         return JsonResponse({"error": auth_err.message}, status=auth_err.status)
 
     if user:
-        if cache.get(f"user_online_{user.id}"):
-            return JsonResponse({"error": "User already logged in."}, status=400)
+        # if cache.get(f"user_online_{user.id}"):
+        #     return redirect("/?error=user_already_logged_in")
+            # return JsonResponse({"error": "User already logged in."}, status=400)
 
         login(request, user)
-        cache.set(f"user_online_{user.id}", True, timeout=3600)
-        user.is_online = True
-        user.save()
+        # cache.set(f"user_online_{user.id}", True, timeout=3600)
+        # user.is_online = True
+        # user.save()
         refresh = RefreshToken.for_user(user)
         update_last_login(None, user)
-    redirect_url = f"/?access={str(refresh.access_token)}&refresh={str(refresh)}"
-    return redirect(redirect_url)
+        redirect_url = f"/?access={str(refresh.access_token)}&refresh={str(refresh)}"
+        return redirect(redirect_url)
     #     return JsonResponse(
     #         {
     #             "refresh": str(refresh),
@@ -77,7 +78,7 @@ def login_redirect_42user(request: HttpRequest):
 def logout_42user(request: HttpRequest):
     logger.info(f"User {request.user} is logging out.")
     user = request.user
-    cache.delete(f"user_online_{user.id}")
+    # cache.delete(f"user_online_{user.id}")
     user.is_online = False
     user.save()
     logout(request)
@@ -96,9 +97,11 @@ def exchange_code_for_42user_info(code: str):
         "redirect_uri": redirect_uri,
         "scope": "public",
     }
-    headers = {"Content-Type": "application/x-www-form-urlencoded", "Access-Control-Allow-Origin": "*"}
+    # headers = {"Content-Type": "application/x-www-form-urlencoded", "Access-Control-Allow-Origin": "*"}
     # headers = {"Content-Type": "application/x-www-form-urlencoded"}
-    response = requests.post(token_url, data=data, headers=headers)
+    # headers = {"Content-Type": "application/json; charset=utf-8"}
+    # response = requests.post(token_url, data=data, headers=headers)
+    response = requests.post(token_url, data=data)
     credentials = response.json()
     access_token = credentials.get("access_token")
     response = requests.get(
