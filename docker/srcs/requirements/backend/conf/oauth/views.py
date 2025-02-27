@@ -24,8 +24,9 @@ get_user_url = "https://api.intra.42.fr/v2/me/"
 
 @login_required(login_url="/api/oauth/login")
 def get_authenticated_user(request: HttpRequest):
-    return JsonResponse({"msg": "Authenticated"})
-
+    # return JsonResponse({"msg": "Authenticated"})
+    user = request.user  # Access the user object
+    return JsonResponse({"msg": "Authenticated", "username": user.username, "email": user.email})  # Return user info
 
 def login_42user(request: HttpRequest):
     return redirect(auth_url)
@@ -54,14 +55,16 @@ def login_redirect_42user(request: HttpRequest):
         login(request, user)
         refresh = RefreshToken.for_user(user)
         update_last_login(None, user)
-        return JsonResponse(
-            {
-                "refresh": str(refresh),
-                "access": str(refresh.access_token),
-            },
-            status=200,
-        )
-    return JsonResponse({"error": "Authentication failed"}, status=401)
+    redirect_url = f"/?access={str(refresh.access_token)}&refresh={str(refresh)}"
+    return redirect(redirect_url)
+    #     return JsonResponse(
+    #         {
+    #             "refresh": str(refresh),
+    #             "access": str(refresh.access_token),
+    #         },
+    #         status=200,
+    #     )
+    # return JsonResponse({"error": "Authentication failed"}, status=401)
 
 
 def logout_42user(request: HttpRequest):
@@ -83,6 +86,7 @@ def exchange_code_for_42user_info(code: str):
         "scope": "public",
     }
     headers = {"Content-Type": "application/x-www-form-urlencoded", "Access-Control-Allow-Origin": "*"}
+    # headers = {"Content-Type": "application/x-www-form-urlencoded"}
     response = requests.post(token_url, data=data, headers=headers)
     credentials = response.json()
     access_token = credentials.get("access_token")

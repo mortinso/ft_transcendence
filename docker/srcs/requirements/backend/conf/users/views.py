@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import User
 from .serializers import (
     ListUsersSerializer,
@@ -23,6 +23,7 @@ import hashlib
 from django.http import HttpResponse
 from rest_framework.exceptions import PermissionDenied
 import logging
+
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -116,13 +117,18 @@ class UnblockUserView(generics.RetrieveUpdateAPIView):
     queryset = User.objects.all()
     serializer_class = UnblockUserSerializer
 
-
 class GetImageView(APIView):
     def get(self, request, pk):
         user = generics.get_object_or_404(User, id=pk)
         logger.debug(f"user.avatar: {user.avatar}")
-        route = "/media/" + str(user.avatar)
-        logger.debug(f"route: {route}")
+        avatar_url = str(user.avatar)
+        
+        if avatar_url.startswith('http://') or avatar_url.startswith('https://'):
+            logger.debug(f"Redirecting to external URL: {avatar_url}")
+            return redirect(avatar_url)
+        
+        route = "/media/" + avatar_url
+        logger.debug(f"Servindo arquivo local com X-Accel-Redirect: {route}")
         response = HttpResponse()
         response["X-Accel-Redirect"] = route
         del response["Content-Type"]

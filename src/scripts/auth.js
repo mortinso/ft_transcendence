@@ -63,36 +63,56 @@ async function login(event) {
     postLogin();
 }
 
-async function loginWith42(){
-    //window.open('/api/oauth/user', '42', 'width=800,height=600');
-    await fetch ('/api/oauth/user', {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json; charset=utf-8',
-            'Access-Control-Allow-Origin': '*'
+// Adicione esta função para processar o retorno do OAuth
+function handleOAuthReturn() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const access = urlParams.get('access');
+    const refresh = urlParams.get('refresh');
+    
+    if (access && refresh) {
+        // Salvar tokens no sessionStorage
+        sessionStorage.setItem('jwt', access);
+        sessionStorage.setItem('refresh', refresh);
+        
+        // Se o usuário selecionou "manter conectado"
+        if (localStorage.getItem('keepLoggedIn') === 'true') {
+            localStorage.setItem('refresh', refresh);
         }
-    }).then(response => {
-        if (response.status === 200) {
-            return response.json();
-        }
-        else {
-            return null;
-        }
-    }).then(data => {
-        if (data !== null) {
-            sessionStorage.setItem('jwt', data.access);
-            sessionStorage.setItem('refresh', data.refresh);
-            loggedIn = true;
-            console.log(data);
-        }
-    }).catch(error => {
-        let modal = new bootstrap.Modal(document.getElementById('loginFailModal'));
-        modal.show();
-    });
-    postLogin();
-
-    //window.location.href = '/api/oauth/login';
+        
+        // Atualizar estado
+        loggedIn = true;
+        
+        // Limpar a URL para não manter os tokens expostos
+        history.replaceState({}, document.title, window.location.pathname);
+        
+        // Inicializar a página
+        postLogin();
+    }
 }
+
+async function loginWith42(){
+    window.location.href = '/api/oauth/login';
+}
+
+// Adicione este código ao evento de carregamento da página
+document.addEventListener('DOMContentLoaded', function() {
+    // Verificar se há tokens na URL (retorno de OAuth)
+    handleOAuthReturn();
+    
+    // Verificar se há um token de refresh armazenado (login anterior)
+    if (!loggedIn && (localStorage.getItem('refresh') || sessionStorage.getItem('refresh'))) {
+        const storedRefresh = localStorage.getItem('refresh') || sessionStorage.getItem('refresh');
+        sessionStorage.setItem('refresh', storedRefresh);
+        
+        // Tenta renovar o token usando o refresh token
+        refreshLogin().then(() => {
+            if (sessionStorage.getItem('jwt')) {
+                loggedIn = true;
+                postLogin();
+            }
+        });
+    }
+});
 
 //Initialize main page after login
 async function postLogin(){
