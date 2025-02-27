@@ -53,9 +53,6 @@ class LoginView(generics.GenericAPIView):
                     return Response({"error": f"Failed to send email: {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)
                 return Response({"detail": "Email sent."}, status=status.HTTP_200_OK)
             login(request, user)
-            # cache.set(f'user_online_{user.id}', True, timeout=3600)
-            # user.is_online = True
-            # user.save()
             refresh = RefreshToken.for_user(user)
             update_last_login(None, user)
             return Response(
@@ -70,7 +67,6 @@ class LoginView(generics.GenericAPIView):
 class LogoutView(APIView):
     def post(self, request):
         user = request.user
-        # cache.delete(f'user_online_{user.id}')
         user.is_online = False
         user.save()
         logout(request)
@@ -171,9 +167,6 @@ class CheckOTPView(generics.GenericAPIView):
                 return Response({"detail": "User not found."}, status=status.HTTP_400_BAD_REQUEST)
                 
             if hashlib.sha256(otp.encode()).hexdigest() == user.otp and user.otp_expiration > timezone.now():
-                # cache.set(f'user_online_{user.id}', True, timeout=3600)
-                # user.is_online = True
-                # user.save()
                 refresh = RefreshToken.for_user(user)
                 update_last_login(None, user)
                 return Response(

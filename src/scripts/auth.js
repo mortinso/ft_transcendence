@@ -63,6 +63,8 @@ async function login(event) {
     postLogin();
 }
 
+// INIT TEST LOGIN WITH 42
+
 // Adicione esta função para processar o retorno do OAuth
 function handleOAuthReturn() {
     const urlParams = new URLSearchParams(window.location.search);
@@ -113,6 +115,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+// END TEST LOGIN WITH 42
 
 //Initialize main page after login
 async function postLogin(){
