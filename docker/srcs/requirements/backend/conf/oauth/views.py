@@ -8,6 +8,7 @@ import requests
 from environs import Env
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth.models import update_last_login
+from django.core.cache import cache
 
 
 logger = logging.getLogger(__name__)
@@ -52,7 +53,13 @@ def login_redirect_42user(request: HttpRequest):
         return JsonResponse({"error": auth_err.message}, status=auth_err.status)
 
     if user:
+        if cache.get(f"user_online_{user.id}"):
+            return JsonResponse({"error": "User already logged in."}, status=400)
+
         login(request, user)
+        cache.set(f"user_online_{user.id}", True, timeout=3600)
+        user.is_online = True
+        user.save()
         refresh = RefreshToken.for_user(user)
         update_last_login(None, user)
     redirect_url = f"/?access={str(refresh.access_token)}&refresh={str(refresh)}"
@@ -69,6 +76,10 @@ def login_redirect_42user(request: HttpRequest):
 
 def logout_42user(request: HttpRequest):
     logger.info(f"User {request.user} is logging out.")
+    user = request.user
+    cache.delete(f"user_online_{user.id}")
+    user.is_online = False
+    user.save()
     logout(request)
     request.session.flush()
     response = JsonResponse({"detail": "Successfully logged out."}, status=200)

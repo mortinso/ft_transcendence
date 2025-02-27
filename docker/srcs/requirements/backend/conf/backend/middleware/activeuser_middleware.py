@@ -25,9 +25,28 @@ class ActiveUserMiddleware:
     #                        settings.USER_ONLINE_TIMEOUT)
 
     def __call__(self, request):
-        response = self.get_response(request)
         if request.user.is_authenticated:
-            user = request.user
-            user.update_last_seen()
-            user.update_is_online()
+            chat_key = f'user_online_{request.user.id}'
+            if not cache.get(chat_key):
+                user = request.user
+                user.update_last_seen()
+                user.update_is_online()
+        response = self.get_response(request)
         return response
+
+# # ALternative:
+# from django.utils import timezone
+
+# class ActiveUserMiddleware:
+#     def __init__(self, get_response):
+#         self.get_response = get_response
+
+#     def __call__(self, request):
+#         if request.user.is_authenticated:
+#             cache_key = f'user_online_{request.user.id}'
+#             if not cache.get(cache_key):
+#                 # Se não estiver no cache, mas autenticado, pode ser uma sessão antiga
+#                 request.user.is_online = False
+#                 request.user.save()
+#         response = self.get_response(request)
+#         return response
