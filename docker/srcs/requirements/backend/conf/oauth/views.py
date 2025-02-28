@@ -1,7 +1,6 @@
 from django.shortcuts import redirect
-from django.http import HttpRequest, JsonResponse
+from django.http import HttpRequest
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
 from .exceptions import OauthAuthenticationError
 import logging
 import requests
@@ -30,21 +29,21 @@ def login_42user(request: HttpRequest):
 def login_redirect_42user(request: HttpRequest):
     code = request.GET.get("code")
     if not code:
-        return JsonResponse({"error": "Authorization code missing."}, status=400)
+        return redirect(f"/?error=Authorization code missing.")
 
     try:
         user_data = exchange_code_for_42user_info(code)
     except Exception as e:
         logger.error(f"Error getting user data: {e}")
-        return JsonResponse({"error": "Failed to get user data."}, status=500)
+        return redirect(f"/?error=Failed to get user data.")
 
     if not user_data or not user_data.get("id"):
-        return JsonResponse({"error": "Incomplete user data."}, status=400)
+        return redirect(f"/?error=Incomplete user data.")
 
     try:
         user = authenticate(request, user_data=user_data)
     except OauthAuthenticationError as auth_err:
-        return JsonResponse({"error": auth_err.message}, status=auth_err.status)
+        return redirect(f"/?error={auth_err.message}")
 
     if user:
         login(request, user)
@@ -52,26 +51,18 @@ def login_redirect_42user(request: HttpRequest):
         update_last_login(None, user)
         redirect_url = f"/?access={str(refresh.access_token)}&refresh={str(refresh)}"
         return redirect(redirect_url)
-    #     return JsonResponse(
-    #         {
-    #             "refresh": str(refresh),
-    #             "access": str(refresh.access_token),
-    #         },
-    #         status=200,
-    #     )
-    # return JsonResponse({"error": "Authentication failed"}, status=401)
 
 
 def logout_42user(request: HttpRequest):
     logger.info(f"User {request.user} is logging out.")
-    user = request.user
-    user.is_online = False
-    user.save()
+    
+    if request.user.is_authenticated:
+        user = request.user
+        user.is_online = False
+        user.save()
     logout(request)
     request.session.flush()
-    response = JsonResponse({"detail": "Successfully logged out."}, status=200)
-    response.delete_cookie("sessionid")
-    return response
+    return redirect("/?logout=success")
 
 
 def exchange_code_for_42user_info(code: str):
