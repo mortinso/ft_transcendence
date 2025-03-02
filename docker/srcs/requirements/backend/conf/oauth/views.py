@@ -74,11 +74,8 @@ def exchange_code_for_42user_info(code: str):
         "redirect_uri": redirect_uri,
         "scope": "public",
     }
-    # headers = {"Content-Type": "application/x-www-form-urlencoded", "Access-Control-Allow-Origin": "*"}
-    # headers = {"Content-Type": "application/x-www-form-urlencoded"}
-    # headers = {"Content-Type": "application/json; charset=utf-8"}
-    # response = requests.post(token_url, data=data, headers=headers)
-    response = requests.post(token_url, data=data)
+    headers = {"Content-Type": "application/x-www-form-urlencoded"}
+    response = requests.post(token_url, data=data, headers=headers)
     credentials = response.json()
     access_token = credentials.get("access_token")
     response = requests.get(
