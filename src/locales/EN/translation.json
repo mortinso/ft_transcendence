@@ -22,7 +22,8 @@
         "invalidCredentials": "Invalid credentials",
         "accountCreated": "Account created sucessfully. You may login now.",
         "signupOTP": "Enter confirmation code",
-        "signupOTPSent": "A confirmation code has been sent to your email"
+        "signupOTPSent": "A confirmation code has been sent to your email",
+        "42login": "Login with 42"
     },
     "header":{
         "overview": "Overview",

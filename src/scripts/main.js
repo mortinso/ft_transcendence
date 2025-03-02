@@ -20,6 +20,7 @@ async function initialize() {
     await initTranslations();
 
     loggedIn = await checkLogin();
+    window.localStorage.setItem('loggedIn', loggedIn);
     if (!loggedIn) {
         changeContent('login', false);
         document.getElementById('header').style.display = 'none';

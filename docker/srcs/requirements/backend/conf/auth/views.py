@@ -17,6 +17,7 @@ from users.models import User
 from django.core.mail import send_mail
 from django.conf import settings
 import logging
+from django.core.cache import cache
 
 logger = logging.getLogger(__name__)
 
@@ -30,6 +31,9 @@ class LoginView(generics.GenericAPIView):
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data["user"]
         if user is not None and user.is_active:
+            if cache.get(f'user_online_{user.id}'):
+                return Response({"error": "User already logged in."}, status=status.HTTP_400_BAD_REQUEST)
+            
             if user.tfa:
                 otp = str(random.randint(100000, 999999))
                 user.otp = hashlib.sha256(otp.encode()).hexdigest()

@@ -90,6 +90,12 @@ ALLOWED_REFERERS = [
     "https://ft-transcendence.com/",
 ]
 
+
+AUTHENTICATION_BACKENDS = [
+    'oauth.auth.OauthAuthenticationBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -105,6 +111,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'corsheaders',
+    'oauth.apps.OauthConfig',
 ]
 
 MIDDLEWARE = [
@@ -158,7 +165,9 @@ import mimetypes
 mimetypes.add_type("application/javascript", ".js", True)
 
 DEBUG_TOOLBAR_CONFIG = {
-    "SHOW_TOOLBAR_CALLBACK": lambda request: True,
+    # Incompatibilidade entre psycopg3 e Django-Toolbar 
+    # set true para usar django-toolbar mesmo assim
+    "SHOW_TOOLBAR_CALLBACK": lambda request: False,
 }
 
 # Database

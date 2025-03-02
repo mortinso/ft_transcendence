@@ -50,6 +50,7 @@ async function login(event) {
             if (keepLoggedIn)
                 localStorage.setItem('refresh', data.refresh);
             loggedIn = true;
+            window.localStorage.setItem('loggedIn', loggedIn);
             document.getElementById('loginLoading').classList.toggle('d-none');
         }
     }).catch(error => {
@@ -62,6 +63,62 @@ async function login(event) {
 
     postLogin();
 }
+
+// INIT TEST LOGIN WITH 42
+
+//Handle the OAuth return
+function handleOAuthReturn() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const access = urlParams.get('access');
+    const refresh = urlParams.get('refresh');
+    
+    if (access && refresh) {
+        sessionStorage.setItem('jwt', access);
+        sessionStorage.setItem('refresh', refresh);
+        
+        if (localStorage.getItem('keepLoggedIn') === 'true') {
+            localStorage.setItem('refresh', refresh);
+        }
+        loggedIn = true;
+        window.localStorage.setItem('loggedIn', loggedIn);
+        
+        history.replaceState({}, document.title, window.location.pathname);
+        
+        postLogin();
+    }
+}
+
+async function loginWith42(){
+    window.location.href = '/api/oauth/login';
+
+}
+
+// On page load
+document.addEventListener('DOMContentLoaded', function() {
+    
+    loggedIn = window.localStorage.getItem('loggedIn') === 'true';
+    if (!loggedIn)
+        handleOAuthReturn();
+    else
+        return;
+
+    // Check for a stored refresh token (previous login)
+    if (!loggedIn && (localStorage.getItem('refresh') || sessionStorage.getItem('refresh'))) {
+        const storedRefresh = localStorage.getItem('refresh') || sessionStorage.getItem('refresh');
+        sessionStorage.setItem('refresh', storedRefresh);
+        
+        // Attempt to renew the token using the refresh token
+        refreshLogin().then(() => {
+            if (sessionStorage.getItem('jwt')) {
+                loggedIn = true;
+                window.localStorage.setItem('loggedIn', loggedIn);
+                postLogin();
+            }
+        });
+    }
+});
+
+// END TEST LOGIN WITH 42
 
 //Initialize main page after login
 async function postLogin(){
@@ -121,6 +178,7 @@ async function confirmF2A() {
             if (keepLoggedIn)
                 localStorage.setItem('refresh', data.refresh);
             loggedIn = true;
+            window.localStorage.setItem('loggedIn', loggedIn);
             document.getElementById('loginLoading').classList.toggle('d-none');
 
             postLogin();
@@ -179,6 +237,7 @@ function clearSession() {
     sessionStorage.removeItem('refresh');
     localStorage.removeItem('refresh');
     loggedIn = false;
+    window.localStorage.setItem('loggedIn', loggedIn);
     _user = null;
     document.getElementById('header').style.display = 'none';
     document.getElementById('notification-area').innerHTML = '';
@@ -216,7 +275,7 @@ function signup(event) {
         }
     }).then(response => {
         if (response.status === 400) {
-            //TODO: check if username or email is already taken
+            //TODO: make message more generic
             document.getElementById('signupUsername').classList.add('is-invalid');
             console.warn(response);
             return;

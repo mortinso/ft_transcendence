@@ -44,7 +44,7 @@
 
 ## Auth
 
-/api/auth/login/ (login)
+/api/login/ (login)
 
 /api/auth/logout/ (logout)
 
@@ -59,3 +59,13 @@ On signup, a 6-digit one time password is sent to the user email. That password 
 ### TFA instructions
 
 If the user's tfa option is active, when the user logs in, a 6-digit one time password is sent to the user email. That password must be then sent to /api/auth/check_otp/ as 'otp'. If the OTP is valid, the page will return the JWT tokens.
+
+## Oauth intra.42.fr
+
+`/api/oauth/login` (oauth2 authentication)
+
+`/api/oauth/logout` (oauth2 logout)
+
+`/api/oauth/redirect` (oauth2 redirect)
+
+`/api/oauth/user` (oauth2 check if user is logged in)

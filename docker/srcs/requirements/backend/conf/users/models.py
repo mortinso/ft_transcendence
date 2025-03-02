@@ -45,6 +45,8 @@ class User(AbstractUser):
     idiom = models.CharField(max_length=10, choices=IDIOMS, default="EN")
     otp = models.CharField(default=None, max_length=64, blank=True, null=True)
     otp_expiration = models.DateTimeField(blank=True, null=True)
+    intra42_id = models.BigIntegerField(unique=True, null=True)
+    intra42_url = models.URLField(blank=True, null=True)
 
     def __str__(self):
         return self.username
