@@ -50,6 +50,7 @@ async function login(event) {
             if (keepLoggedIn)
                 localStorage.setItem('refresh', data.refresh);
             loggedIn = true;
+            window.localStorage.setItem('loggedIn', loggedIn);
             document.getElementById('loginLoading').classList.toggle('d-none');
         }
     }).catch(error => {
@@ -65,51 +66,52 @@ async function login(event) {
 
 // INIT TEST LOGIN WITH 42
 
-// Adicione esta função para processar o retorno do OAuth
+//Handle the OAuth return
 function handleOAuthReturn() {
     const urlParams = new URLSearchParams(window.location.search);
     const access = urlParams.get('access');
     const refresh = urlParams.get('refresh');
     
     if (access && refresh) {
-        // Salvar tokens no sessionStorage
         sessionStorage.setItem('jwt', access);
         sessionStorage.setItem('refresh', refresh);
         
-        // Se o usuário selecionou "manter conectado"
         if (localStorage.getItem('keepLoggedIn') === 'true') {
             localStorage.setItem('refresh', refresh);
         }
-        
-        // Atualizar estado
         loggedIn = true;
+        window.localStorage.setItem('loggedIn', loggedIn);
         
-        // Limpar a URL para não manter os tokens expostos
         history.replaceState({}, document.title, window.location.pathname);
         
-        // Inicializar a página
         postLogin();
     }
 }
 
 async function loginWith42(){
     window.location.href = '/api/oauth/login';
+
 }
 
-// Adicione este código ao evento de carregamento da página
+// On page load
 document.addEventListener('DOMContentLoaded', function() {
-    // Verificar se há tokens na URL (retorno de OAuth)
-    handleOAuthReturn();
     
-    // Verificar se há um token de refresh armazenado (login anterior)
+    loggedIn = window.localStorage.getItem('loggedIn') === 'true';
+    if (!loggedIn)
+        handleOAuthReturn();
+    else
+        return;
+
+    // Check for a stored refresh token (previous login)
     if (!loggedIn && (localStorage.getItem('refresh') || sessionStorage.getItem('refresh'))) {
         const storedRefresh = localStorage.getItem('refresh') || sessionStorage.getItem('refresh');
         sessionStorage.setItem('refresh', storedRefresh);
         
-        // Tenta renovar o token usando o refresh token
+        // Attempt to renew the token using the refresh token
         refreshLogin().then(() => {
             if (sessionStorage.getItem('jwt')) {
                 loggedIn = true;
+                window.localStorage.setItem('loggedIn', loggedIn);
                 postLogin();
             }
         });
@@ -176,6 +178,7 @@ async function confirmF2A() {
             if (keepLoggedIn)
                 localStorage.setItem('refresh', data.refresh);
             loggedIn = true;
+            window.localStorage.setItem('loggedIn', loggedIn);
             document.getElementById('loginLoading').classList.toggle('d-none');
 
             postLogin();
@@ -234,6 +237,7 @@ function clearSession() {
     sessionStorage.removeItem('refresh');
     localStorage.removeItem('refresh');
     loggedIn = false;
+    window.localStorage.setItem('loggedIn', loggedIn);
     _user = null;
     document.getElementById('header').style.display = 'none';
     document.getElementById('notification-area').innerHTML = '';
@@ -271,7 +275,7 @@ function signup(event) {
         }
     }).then(response => {
         if (response.status === 400) {
-            //TODO: check if username or email is already taken
+            //TODO: make message more generic
             document.getElementById('signupUsername').classList.add('is-invalid');
             console.warn(response);
             return;
