@@ -65,5 +65,3 @@ If the user's tfa option is active, when the user logs in, a 6-digit one time pa
 `/api/oauth/login` (oauth2 authentication)
 
 `/api/oauth/logout` (oauth2 logout)
-
-`/api/oauth/redirect` (oauth2 redirect)
