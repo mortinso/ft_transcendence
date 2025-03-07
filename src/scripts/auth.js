@@ -28,6 +28,10 @@ async function login(event) {
         else if (response.status === 502) {
             throw new Error('Server error');
         }
+        else if (response.json().then(data => data?.error === 'User already logged in.')) {
+            alert(i18next.t('login.alreadyLoggedIn'));
+            return null;
+        }
         else {
             document.getElementById('loginUsername').classList.add('is-invalid');
             document.getElementById('loginPassword').classList.add('is-invalid');
@@ -67,7 +71,7 @@ async function login(event) {
 // INIT TEST LOGIN WITH 42
 
 //Handle the OAuth return
-function handleOAuthReturn() {
+async function handleOAuthReturn() {
     const urlParams = new URLSearchParams(window.location.search);
     const access = urlParams.get('access');
     const refresh = urlParams.get('refresh');
@@ -86,19 +90,37 @@ function handleOAuthReturn() {
         
         postLogin();
     }
+    else{
+        const error = urlParams.get('error');
+        await i18next.use(i18nextHttpBackend).init({
+            lng: _lang,
+            fallbackLng: 'EN',
+            debug: true,
+            backend: {
+                loadPath: '/src/locales/{{lng}}/{{ns}}.json'
+            }
+        });
+        await i18next.changeLanguage(_lang);
+        if (error) {
+            window.location.href = '/';
+            window.localStorage.setItem('loggedIn', false);
+            window.localStorage.removeItem('jwt');
+            window.localStorage.removeItem('refresh');
+            window.sessionStorage.setItem('42error', error);
+        }
+    }
 }
 
 async function loginWith42(){
     window.location.href = '/api/oauth/login';
-
 }
 
 // On page load
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
     
     loggedIn = window.localStorage.getItem('loggedIn') === 'true';
     if (!loggedIn)
-        handleOAuthReturn();
+        await handleOAuthReturn();
     else
         return;
 

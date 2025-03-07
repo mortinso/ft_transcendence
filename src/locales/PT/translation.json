@@ -23,7 +23,9 @@
         "accountCreated": "Conta criada com sucesso. Podes iniciar sessão agora.",
         "signupOTP": "Introduz o código de confirmação",
         "signupOTPSent": "Foi enviado um código de confirmação para o teu email",
-        "42login": "Iniciar sessão com 42"
+        "42login": "Iniciar sessão com 42",
+        "42error": "Erro ao iniciar sessão com 42",
+        "alreadyLoggedIn": "Já tens sessão iniciada noutro local"
     },
     "header":{
         "overview": "Visão Geral",
