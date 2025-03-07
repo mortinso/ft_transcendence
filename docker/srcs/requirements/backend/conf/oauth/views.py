@@ -66,7 +66,7 @@ def logout_42user(request: HttpRequest):
         user = request.user
         user.is_online = False
         user.save()
-    cache.delete(f"user_online_{user.id}")
+        cache.delete(f"user_online_{user.id}")
     logout(request)
     request.session.flush()
     return redirect("/?logout=success")

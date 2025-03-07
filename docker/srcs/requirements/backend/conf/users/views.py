@@ -23,6 +23,7 @@ import hashlib
 from django.http import HttpResponse
 from rest_framework.exceptions import PermissionDenied
 import logging
+import requests
 
 
 logging.basicConfig(level=logging.INFO)
@@ -124,12 +125,22 @@ class GetImageView(APIView):
         avatar_url = str(user.avatar)
         
         if avatar_url.startswith('http://') or avatar_url.startswith('https://'):
-            logger.debug(f"Redirecting to external URL: {avatar_url}")
-            return redirect(avatar_url)
+            try:
+                logger.debug(f"Proxying the external image: {avatar_url}")
+                img_response = requests.get(avatar_url)
+                img_response.raise_for_status()
+                
+                response = HttpResponse(
+                    content=img_response.content,
+                    content_type=img_response.headers.get('Content-Type', 'image/jpeg')
+                )
+                return response
+            except Exception as e:
+                logger.error(f"Erro ao buscar avatar externo: {e}")
+                return HttpResponse(status=404)
         
         route = "/media/" + avatar_url
-        logger.debug(f"Servindo arquivo local com X-Accel-Redirect: {route}")
+        logger.debug(f"Servindo arquivo local: {route}")
         response = HttpResponse()
         response["X-Accel-Redirect"] = route
-        del response["Content-Type"]
         return response
