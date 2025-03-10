@@ -1,4 +1,4 @@
-all:
+all: ip-host
 	docker compose -f srcs/docker-compose.yml up --build
 
 up:
