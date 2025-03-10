@@ -12,3 +12,6 @@ docker/avatars/*
 
 __pycache__/
 *.pyc
+
+secrets.sh
+create_secrets.sh

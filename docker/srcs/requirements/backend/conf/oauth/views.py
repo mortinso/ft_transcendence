@@ -46,7 +46,13 @@ def login_redirect_42user(request: HttpRequest):
         return redirect(f"/?error={auth_err.message}")
 
     if user:
+        if cache.get(f"user_online_{user.id}"):
+            return redirect(f"/?error=User already logged in.")
+        
         login(request, user)
+        cache.set(f"user_online_{user.id}", True, timeout=3600)
+        user.is_online = True
+        user.save()
         refresh = RefreshToken.for_user(user)
         update_last_login(None, user)
         redirect_url = f"/?access={str(refresh.access_token)}&refresh={str(refresh)}"
@@ -60,6 +66,7 @@ def logout_42user(request: HttpRequest):
         user = request.user
         user.is_online = False
         user.save()
+        cache.delete(f"user_online_{user.id}")
     logout(request)
     request.session.flush()
     return redirect("/?logout=success")

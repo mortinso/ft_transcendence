@@ -23,7 +23,9 @@
         "accountCreated": "Account created sucessfully. You may login now.",
         "signupOTP": "Enter confirmation code",
         "signupOTPSent": "A confirmation code has been sent to your email",
-        "42login": "Login with 42"
+        "42login": "Login with 42",
+        "42error": "Error logging in with 42",
+        "alreadyLoggedIn": "You are already logged in somewhere else"
     },
     "header":{
         "overview": "Overview",
