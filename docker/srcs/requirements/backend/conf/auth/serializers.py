@@ -51,13 +51,15 @@ class LoginSerializer(serializers.ModelSerializer):
 
         if username and password:
             user = authenticate(username=username, password=password)
-            if user:
-                if not user.is_active:
-                    raise serializers.ValidationError("User is deactivated.")
-            else:
-                raise serializers.ValidationError(
-                    "Unable to log in with provided credentials."
-                )
+            # if user:
+            #     if not user.is_active:
+            #         raise serializers.ValidationError("User is deactivated.")
+            # else:
+            #     raise serializers.ValidationError(
+            #         "Unable to log in with provided credentials."
+            #     )
+            if not user:
+                raise serializers.ValidationError("Unable to log in with provided credentials.")
         else:
             raise serializers.ValidationError("Must include 'username' and 'password'.")
 
