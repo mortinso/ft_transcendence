@@ -24,6 +24,8 @@ from django.http import HttpResponse
 from rest_framework.exceptions import PermissionDenied
 import logging
 import requests
+from django.core.cache import cache
+from django.contrib.auth import logout
 
 
 logging.basicConfig(level=logging.INFO)
@@ -63,9 +65,21 @@ class RetrieveUpdateDestroyUserView(generics.RetrieveUpdateDestroyAPIView):
         user = generics.get_object_or_404(User, id=pk)
         if request.user.id != user.id:
             raise PermissionDenied("You cannot deactivate another user's account.")
+        
+        user.is_online = False
         user.is_active = False
         user.save()
-        return Response({"detail": "user deleted."}, status=status.HTTP_200_OK)
+        
+        cache.delete(f"user_online_{user.id}")
+        
+        logout(request)
+        request.session.flush()
+
+        response = Response({"detail": "user deleted."}, status=status.HTTP_200_OK)
+        response.delete_cookie("sessionid")
+        response.delete_cookie("csrftoken")
+
+        return response
 
     serializer_class = UpdateUserSerializer
 

@@ -8,6 +8,8 @@ from environs import Env
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth.models import update_last_login
 from django.core.cache import cache
+from django.contrib.auth import get_user_model
+
 
 
 logger = logging.getLogger(__name__)
@@ -41,6 +43,16 @@ def login_redirect_42user(request: HttpRequest):
 
     if not user_data or not user_data.get("id"):
         return redirect(f"/?error=Incomplete user data.")
+    
+    User42 = get_user_model()
+
+    intra42_id = user_data.get("id")
+    try:
+        existent_user = User42.objects.get(intra42_id=intra42_id)
+        if existent_user.is_active is False:
+            return redirect(f"/?error=User is deactivated.")
+    except User42.DoesNotExist:
+        pass
 
     try:
         user = authenticate(request, user_data=user_data)
@@ -74,7 +86,11 @@ def logout_42user(request: HttpRequest):
         logout(request)
         request.session.flush()
     
-    return redirect("/?logout=success")
+    response = redirect("/?logout=success")
+    response.delete_cookie("sessionid")
+    response.delete_cookie("csrftoken")
+    
+    return response
 
 
 def exchange_code_for_42user_info(code: str, host: str):
