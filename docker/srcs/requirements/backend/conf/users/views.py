@@ -71,7 +71,7 @@ class RetrieveUpdateDestroyUserView(generics.RetrieveUpdateDestroyAPIView):
         user.save()
         
         cache.delete(f"user_online_{user.id}")
-        
+
         logout(request)
         request.session.flush()
 
