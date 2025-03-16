@@ -30,6 +30,11 @@ class LoginView(generics.GenericAPIView):
         serializer = LoginSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data["user"]
+
+        if user.is_active is False:
+            logger.warning(f"Rejected login attempt for inactive user: {user.username}")
+            return Response({"error": "User is deactivated."}, status=status.HTTP_400_BAD_REQUEST)
+
         if user is not None and user.is_active:
             if cache.get(f'user_online_{user.id}'):
                 return Response({"error": "User already logged in."}, status=status.HTTP_400_BAD_REQUEST)
@@ -77,6 +82,7 @@ class LogoutView(APIView):
         request.session.flush()
         response = Response({"detail": "Successfully logged out."}, status=status.HTTP_200_OK)
         response.delete_cookie("sessionid")
+        response.delete_cookie("csrftoken")
         return response
 
 

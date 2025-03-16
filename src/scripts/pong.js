@@ -14,10 +14,21 @@
 	const ballSize = 10;
 	const maxPoints = 5;
 
+	const paddle1Color = 'green';
+	let paddle2Color = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'white' : 'black';
+	let ballColor = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'white' : 'black';
+	let fontText = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'white' : 'black';
+
 	let ball = { x: canvas.width / 2, y: canvas.height / 2, vx: BALL_SPEED || 4, vy: BALL_SPEED || 4, hits: 0, lastLoser: null };
 
 	let player1 = { x: 0, y: canvas.height / 2 - paddleHeight / 2, score: 0, up: false, down: false };
 	let player2 = { x: canvas.width - paddleWidth, y: canvas.height / 2 - paddleHeight / 2, score: 0, up: false, down: false };
+
+	window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+		paddle2Color = e.matches ? 'white' : 'black';
+		ballColor = e.matches ? 'white' : 'black';
+		fontText = e.matches ? 'white' : 'black';
+	});
 
 	function drawRect(x, y, width, height, color) {
 		ctx.fillStyle = color;
@@ -32,7 +43,7 @@
 	}
 
 	function drawText(text, x, y, size = '20px') {
-		ctx.fillStyle = 'white';
+		ctx.fillStyle = fontText;
 		ctx.font = `${size} Arial`;
 		ctx.fillText(text, x, y);
 	}
@@ -154,11 +165,11 @@
 		ctx.clearRect(0, 0, canvas.width, canvas.height);
 
 		// Draw paddles
-		drawRect(player1.x, player1.y, paddleWidth, paddleHeight, 'green');
-		drawRect(player2.x, player2.y, paddleWidth, paddleHeight, 'white');
+		drawRect(player1.x, player1.y, paddleWidth, paddleHeight, paddle1Color);
+		drawRect(player2.x, player2.y, paddleWidth, paddleHeight, paddle2Color);
 
 		// Draw ball
-		drawBall(ball.x, ball.y, ballSize, 'white');
+		drawBall(ball.x, ball.y, ballSize, ballColor);
 
 		// Draw scores
 		drawText(player1.score, canvas.width / 4, 50);

@@ -90,7 +90,10 @@
         "deleteAccountConfirm": "Please enter your password to confirm",
         "twoFactorAuth": "Two Factor Authentication",
         "enable2FA": "Use Two Factor Authentication",
-        "avatarTooLarge": "Avatar is too large. Maximum size is 1MB"
+        "avatarTooLarge": "Avatar is too large. Maximum size is 1MB",
+        "intra42Disabled": "This feature is disabled for 42 accounts",
+        "intra42Delete": "Warning, this is a 42 linked account so if you delete it you will not be able to login with this account again!",
+        "intra42Delete2": "This doesn't affect your intra account."
     },
     "livechat": {
         "friends": "Friends",
