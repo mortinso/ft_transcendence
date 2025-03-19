@@ -19,17 +19,19 @@ async function login(event) {
         headers: {
             'Content-Type': 'application/json; charset=utf-8'
         }
-    }).then(response => {
+    }).then(async response => {
+        let data = await response.json();
         if (response.status === 200) {
             document.getElementById('loginUsername').classList.remove('is-invalid');
             document.getElementById('loginPassword').classList.remove('is-invalid');
-            return response.json();
+            return data;
         }
         else if (response.status === 502) {
             throw new Error('Server error');
         }
-        else if (response.json().then(data => data?.error === 'User already logged in.')) {
+        else if (data?.error === 'User already logged in.') {
             alert(i18next.t('login.alreadyLoggedIn'));
+            console.error('User already logged in');
             return null;
         }
         else {
@@ -92,14 +94,7 @@ async function handleOAuthReturn() {
     }
     else{
         const error = urlParams.get('error');
-        await i18next.use(i18nextHttpBackend).init({
-            lng: _lang,
-            fallbackLng: 'EN',
-            debug: true,
-            backend: {
-                loadPath: '/src/locales/{{lng}}/{{ns}}.json'
-            }
-        });
+        await i18next.loadNamespaces('translation');
         await i18next.changeLanguage(_lang);
         if (error) {
             window.location.href = '/';
