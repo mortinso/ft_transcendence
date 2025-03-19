@@ -34,6 +34,11 @@ async function login(event) {
             console.error('User already logged in');
             return null;
         }
+        else if (data?.error === 'User is deactivated.') {
+            alert(i18next.t('login.deactivated'));
+            console.error('User is deactivated');
+            return null;
+        }
         else {
             document.getElementById('loginUsername').classList.add('is-invalid');
             document.getElementById('loginPassword').classList.add('is-invalid');
