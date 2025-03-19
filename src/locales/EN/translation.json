@@ -25,7 +25,8 @@
         "signupOTPSent": "A confirmation code has been sent to your email",
         "42login": "Login with 42",
         "42error": "Error logging in with 42",
-        "alreadyLoggedIn": "You are already logged in somewhere else"
+        "alreadyLoggedIn": "You are already logged in somewhere else",
+        "deactivated": "This account has been deactivated"
     },
     "header":{
         "overview": "Overview",

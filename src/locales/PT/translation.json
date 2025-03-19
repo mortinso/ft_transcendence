@@ -25,7 +25,8 @@
         "signupOTPSent": "Foi enviado um código de confirmação para o teu email",
         "42login": "Iniciar sessão com 42",
         "42error": "Erro ao iniciar sessão com 42",
-        "alreadyLoggedIn": "Já tens sessão iniciada noutro local"
+        "alreadyLoggedIn": "Já tens sessão iniciada noutro local",
+        "deactivated": "Esta conta foi desativada"
     },
     "header":{
         "overview": "Visão Geral",

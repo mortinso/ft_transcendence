@@ -48,21 +48,27 @@ class LoginSerializer(serializers.ModelSerializer):
     def validate(self, data):
         username = data.get("username")
         password = data.get("password")
-
-        if username and password:
-            user = authenticate(username=username, password=password)
-            # if user:
-            #     if not user.is_active:
-            #         raise serializers.ValidationError("User is deactivated.")
-            # else:
-            #     raise serializers.ValidationError(
-            #         "Unable to log in with provided credentials."
-            #     )
-            if not user:
-                raise serializers.ValidationError("Unable to log in with provided credentials.")
-        else:
+        
+        if not username or not password:
             raise serializers.ValidationError("Must include 'username' and 'password'.")
-
+        
+        try:
+            user_check = User.objects.get(username=username)
+            
+            if not user_check.is_active:
+                if user_check.check_password(password):
+                    logger.warning(f"Login attempt with correct credentials for inactive user: {username}")
+                    data["user"] = user_check
+                    return data
+                else:
+                    raise serializers.ValidationError("Unable to log in with provided credentials.")
+        except User.DoesNotExist:
+            pass
+        
+        user = authenticate(username=username, password=password)
+        if not user:
+            raise serializers.ValidationError("Unable to log in with provided credentials.")
+        
         data["user"] = user
         return data
 

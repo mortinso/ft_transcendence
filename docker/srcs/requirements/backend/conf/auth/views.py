@@ -30,7 +30,7 @@ class LoginView(generics.GenericAPIView):
         serializer = LoginSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data["user"]
-
+    
         if user.is_active is False:
             logger.warning(f"Rejected login attempt for inactive user: {user.username}")
             return Response({"error": "User is deactivated."}, status=status.HTTP_400_BAD_REQUEST)
