@@ -11,36 +11,39 @@ from django.core.cache import cache
 from django.contrib.auth import get_user_model
 
 
+
 logger = logging.getLogger(__name__)
 
 env = Env()
 
-auth_url = env("INTRA42_AUTH_URL")
 client_id = env("INTRA42_CLIENT_ID")
 client_secret = env("INTRA42_CLIENT_SECRET")
-redirect_uri = env("INTRA42_REDIRECT_URI")
+auth_url = "https://api.intra.42.fr/oauth/authorize"
 token_url = "https://api.intra.42.fr/oauth/token"
 get_user_url = "https://api.intra.42.fr/v2/me/"
-
+redirect_uri = "/api/oauth/login/redirect"
 
 def login_42user(request: HttpRequest):
-    return redirect(auth_url)
+    host = request.get_host()
+    return redirect(f"{auth_url}?client_id={client_id}&redirect_uri=https%3A%2F%2F{host}{redirect_uri}&response_type=code")
 
 
 def login_redirect_42user(request: HttpRequest):
     code = request.GET.get("code")
     if not code:
         return redirect(f"/?error=Authorization code missing.")
+    
+    host = request.get_host()
 
     try:
-        user_data = exchange_code_for_42user_info(code)
+        user_data = exchange_code_for_42user_info(code, host)
     except Exception as e:
         logger.error(f"Error getting user data: {e}")
         return redirect(f"/?error=Failed to get user data.")
 
     if not user_data or not user_data.get("id"):
         return redirect(f"/?error=Incomplete user data.")
-
+    
     User42 = get_user_model()
 
     intra42_id = user_data.get("id")
@@ -73,33 +76,49 @@ def login_redirect_42user(request: HttpRequest):
 def logout_42user(request: HttpRequest):
     logger.info(f"User {request.user} is logging out.")
     
-    if request.user.is_authenticated:
-        user = request.user
-        user.is_online = False
-        user.save()
-        cache.delete(f"user_online_{user.id}")
-    logout(request)
-    request.session.flush()
-    return redirect("/?logout=success")
+    try:
+        if request.user.is_authenticated:
+            user = request.user
+            user.is_online = False
+            user.save()
+            cache.delete(f"user_online_{user.id}")
+    finally:
+        logout(request)
+        request.session.flush()
+    
+    response = redirect("/?logout=success")
+    response.delete_cookie("sessionid")
+    response.delete_cookie("csrftoken")
+    
+    return response
 
 
-def exchange_code_for_42user_info(code: str):
+def exchange_code_for_42user_info(code: str, host: str):
     data = {
         "client_id": client_id,
         "client_secret": client_secret,
         "grant_type": "authorization_code",
         "code": code,
-        "redirect_uri": redirect_uri,
+        "redirect_uri": f"https://{host}{redirect_uri}",
         "scope": "public",
     }
+    
     headers = {"Content-Type": "application/x-www-form-urlencoded"}
     response = requests.post(token_url, data=data, headers=headers)
+    response.raise_for_status()
+
     credentials = response.json()
     access_token = credentials.get("access_token")
+    if not access_token:
+        logger.error(f"Access token not found in response: {credentials}")
+        raise ValueError("Access token not found in response.")
+
     response = requests.get(
         get_user_url, headers={"Authorization": "Bearer %s" % access_token}
     )
+    
     user = response.json()
+    
     filtered_user = {
         "id": user.get("id"),
         "email": user.get("email"),
@@ -109,4 +128,5 @@ def exchange_code_for_42user_info(code: str):
         "last_name": user.get("last_name"),
         "url": user.get("url"),
     }
+
     return filtered_user

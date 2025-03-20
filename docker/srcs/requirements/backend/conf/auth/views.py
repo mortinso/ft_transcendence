@@ -18,6 +18,7 @@ from django.core.mail import send_mail
 from django.conf import settings
 import logging
 from django.core.cache import cache
+from django.contrib.auth import get_user_model
 
 logger = logging.getLogger(__name__)
 
