@@ -32,6 +32,9 @@ async function initialize() {
                 case 'User already logged in.':
                     alert(i18next.t('login.alreadyLoggedIn'));
                     break;
+                case 'User is deactivated.':
+                    alert(i18next.t('login.deactivated'));
+                    break;
                 case !undefined:
                     alert(i18next.t('login.42error'));
                     break;
