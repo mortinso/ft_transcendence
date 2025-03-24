@@ -1,9 +1,18 @@
-all: ip-host
-	docker compose -f srcs/docker-compose.yml up --build
+# TODO: make all to include elk etc
+#in case of emergency: sudo systemctl restart docker.socket docker.service
+# sudo lsof -i :80; sudo kill -9 <PID>
+
+all:
+	sudo sysctl -w vm.max_map_count=262144
+	# docker compose -f srcs/docker-compose.yml up --build backend nginx postgres
+	docker compose -f srcs/docker-compose.yml up --build -d backend nginx postgres
 
 up:
-	docker compose -f srcs/docker-compose.yml up
-	# docker compose -f srcs/docker-compose.yml up --detach
+	# docker compose -f srcs/docker-compose.yml up
+	docker compose -f srcs/docker-compose.yml up --detach
+
+elk:
+	docker compose -f srcs/docker-compose.yml up --build setup es01 kibana logstash01
 
 stop:
 	docker compose -f srcs/docker-compose.yml stop
@@ -14,14 +23,15 @@ down:
 restart: stop up
 
 clean:
-	docker compose -f srcs/docker-compose.yml down -v 
+	docker compose -f srcs/docker-compose.yml down -v
 
 fclean: clean
-	find avatars/ -type d -mindepth 1 -exec rm -rf {} +
+	find avatars/ -mindepth 1 -type d -exec rm -rf {} +
 	docker image rm transcendence-backend
-	docker image rm postgres
+	# docker image rm postgres:17.2
 	docker image rm transcendence-nginx
-	docker image prune
+	rm -rf ./srcs/requirements/elk/esbackup/*
+	# docker image prune
 
 re: fclean all
 

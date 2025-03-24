@@ -39,6 +39,12 @@ logging.config.dictConfig({
             'class': 'logging.StreamHandler',
             'formatter': 'default',
         },
+        # write log to debug.log
+        # 'file': { #COMMENT
+        #     'level': 'DEBUG',
+        #     'class': 'logging.FileHandler',
+        #     'filename': 'debug.log',
+        # },
         'django.server': DEFAULT_LOGGING['handlers']['django.server'],
     },
     'loggers': {
@@ -47,6 +53,12 @@ logging.config.dictConfig({
             'level': 'WARNING',
             'handlers': ['console'],
         },
+        # write log to debug.log
+        # 'django': { #COMMENT
+        #     'handlers': ['file'],
+        #     'level': 'DEBUG',
+        #     'propagate': True,
+        # },
         # Our application code
         'app': {
             'level': LOGLEVEL,
@@ -87,7 +99,7 @@ if ip_host:
 print(f'ALLOWED_HOSTS: {ALLOWED_HOSTS}')
 
 ALLOWED_REFERERS = [
-    "https://ft-transcendence.com/",
+    "https://192.168.20.111/",
 ]
 
 
@@ -126,8 +138,20 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
     'backend.middleware.activeuser_middleware.ActiveUserMiddleware',
+    # 'elasticapm.contrib.django.middleware.TracingMiddleware',
     # 'backend.middleware.refer_middleware.FrontendOnlyMiddleware',
 ]
+
+ELASTIC_APM = {
+  'SERVICE_NAME': 'my-service-name',
+
+  'SECRET_TOKEN': '',
+
+  'SERVER_URL': 'http://localhost:8200',
+
+  'ENVIRONMENT': 'my-environment',
+}
+
 
 ROOT_URLCONF = 'backend.urls'
 
@@ -159,6 +183,8 @@ if DEBUG:
     INTERNAL_IPS += [ip[:-1] + '1' for ip in ips]
     INSTALLED_APPS.append('debug_toolbar')
     MIDDLEWARE.insert(0, 'debug_toolbar.middleware.DebugToolbarMiddleware')
+
+# print(f'INTERNAL_IPS: {INTERNAL_IPS}')
 
 # this is the main reason for not showing up the toolbar
 import mimetypes
@@ -242,8 +268,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = "users.User"
 
-# TODO: activate default permission class
-
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
@@ -263,11 +287,11 @@ if not DEBUG:
 # CORS_ALLOW_ALL_ORIGINS = True
 # CORS_ALLOW_CREDENTIALS = True # This is necessary to allow the frontend to send cookies
 
-CORS_ALLOWED_ORIGINS = [
-    'https://127.0.0.1',
-    'https://localhost',
-    'https://ft-transcendence.com',
-]
+# CORS_ALLOWED_ORIGINS = [
+#     # 'http://127.0.0.1',
+#     # 'http://localhost',
+#     # 'https://10.0.2.15',
+# ]
 
 
 # TODO: JWT settings

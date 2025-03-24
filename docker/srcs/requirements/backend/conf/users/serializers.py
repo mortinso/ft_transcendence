@@ -21,6 +21,7 @@ class ListUsersSerializer(serializers.ModelSerializer):
             "email",
             "date_joined",
             "is_online",
+            "avatar",
             "last_seen",
             "friends",
             "friend_requests",

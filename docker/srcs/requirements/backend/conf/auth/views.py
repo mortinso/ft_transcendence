@@ -63,7 +63,6 @@ class LoginView(generics.GenericAPIView):
             user.is_online = True
             user.save()
             refresh = RefreshToken.for_user(user)
-            update_last_login(None, user)
             return Response(
                 {
                     "refresh": str(refresh),
@@ -112,8 +111,8 @@ class SignUpView(generics.CreateAPIView):
                 fail_silently=False,
             )
         except Exception as e:
-            logger.error(f"Failed to send email: {e}")
-            return Response({"error": "Failed to send email: {e}"}, status=status.HTTP_400_BAD_REQUEST)
+            logger.debug(f"Failed to send email: str{e}")
+            return Response({"error": f"Failled to send email: str{e}"}, status=status.HTTP_400_BAD_REQUEST)
         return Response({"detail": "Email sent."}, status=status.HTTP_200_OK)
 
 
@@ -182,7 +181,7 @@ class CheckOTPView(generics.GenericAPIView):
                 user.is_online = True
                 user.save()
                 refresh = RefreshToken.for_user(user)
-                update_last_login(None, user)
+                login(request, user)
                 return Response(
                     {
                         "refresh": str(refresh),

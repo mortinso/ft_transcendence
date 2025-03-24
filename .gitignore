@@ -14,4 +14,4 @@ __pycache__/
 *.pyc
 
 secrets.sh
-create_secrets.sh
+create_secrets.shdocker/srcs/requirements/elk/esbackup

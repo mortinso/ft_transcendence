@@ -2,8 +2,10 @@ name: transcendence
 
 services:
   backend:
+    platform: "linux/amd64"
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
     container_name: backend
     build: requirements/backend
     volumes:
@@ -20,6 +22,15 @@ services:
       DJANGO_SECRET_KEY_FILE: /run/secrets/django_secret_key
       INTRA42_CLIENT_ID_FILE: /run/secrets/intra42_client_id
       INTRA42_CLIENT_SECRET_FILE: /run/secrets/intra42_client_secret
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+        tag: "{{.Name}}"
+    networks:
+      - transcendence
+      - elk
     secrets:
       - django_superuser_password
       - email_password
@@ -27,23 +38,32 @@ services:
       - django_secret_key
       - intra42_client_id
       - intra42_client_secret
-    networks:
-      - transcendence
     # ports:
     #   - "8080:8000"
     
   postgres:
-    container_name: postgres
-    image: postgres
+    # container_name: postgres
+    image: postgres:17.2
     shm_size: 128mb
     restart: on-failure
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
     env_file:
       - .env
-    # TODO: POSTGRES_PASSWORD_FILE as secret
     environment:
       POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+        tag: "{{.Name}}"
     networks:
       - transcendence
+      - elk
     secrets:
       - postgres_password
 
@@ -53,23 +73,202 @@ services:
     container_name: nginx
     build: requirements/nginx
     ports:
-      # - "8081:443"
       - "443:443"
       - "80:80"
-      # - "8080:8080"
     volumes:
       - ../../:/usr/share/nginx/frontend
       - static-volume:/etc/nginx/html/static/
       - ../avatars:/etc/nginx/html/media
+      - ./requirements/nginx/conf:/etc/nginx/conf.d
+      - nginx-log-volume:/var/log/postgres
+    environment:
+      - IP_HOST=${IP_HOST}
     restart: on-failure
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+        tag: "{{.Name}}"
     networks:
       - transcendence
+      - elk
 
+  setup:
+    image: docker.elastic.co/elasticsearch/elasticsearch:${STACK_VERSION}
+    volumes:
+      - certs:/usr/share/elasticsearch/config/certs
+      - ./requirements/elk/setup_entrypoint.sh:/usr/local/bin/setup_entrypoint.sh:ro
+    user: "0"
+    environment:
+      ELASTIC_PASSWORD_FILE: /run/secrets/elasticsearch_password
+      KIBANA_PASSWORD_FILE: /run/secrets/kibana_password
+      server.ssl.enabled: true
+    secrets:
+      - elasticsearch_password
+      - kibana_password
+    entrypoint: ["/usr/local/bin/setup_entrypoint.sh"]
+    healthcheck:
+      test: ["CMD-SHELL", "[ -f config/certs/es01/es01.crt ]"]
+      interval: 1s
+      timeout: 5s
+      retries: 120
+    networks:
+      - elk
+
+  es01:
+    depends_on:
+      setup:
+        condition: service_healthy
+    image: docker.elastic.co/elasticsearch/elasticsearch:${STACK_VERSION}
+    volumes:
+      - certs:/usr/share/elasticsearch/config/certs
+      - esdata01:/usr/share/elasticsearch/data
+      - ./requirements/elk/esbackup:/usr/share/elasticsearch/backup/my_backup
+    ports:
+      # only access on localhost
+      - 127.0.0.1:9200:9200
+    environment:
+      - node.name=es01
+      - cluster.name=${CLUSTER_NAME}
+      - cluster.initial_master_nodes=es01
+      - bootstrap.memory_lock=true
+      - xpack.security.enabled=true
+      - xpack.security.http.ssl.enabled=true
+      - xpack.security.http.ssl.key=certs/es01/es01.key
+      - xpack.security.http.ssl.certificate=certs/es01/es01.crt
+      - xpack.security.http.ssl.certificate_authorities=certs/ca/ca.crt
+      - xpack.security.transport.ssl.enabled=true
+      - xpack.security.transport.ssl.key=certs/es01/es01.key
+      - xpack.security.transport.ssl.certificate=certs/es01/es01.crt
+      - xpack.security.transport.ssl.certificate_authorities=certs/ca/ca.crt
+      - xpack.security.transport.ssl.verification_mode=certificate
+      - xpack.license.self_generated.type=${LICENSE}
+      - xpack.ml.use_auto_machine_memory_percent=true
+      - path.repo=/usr/share/elasticsearch/backup
+      - ELASTIC_PASSWORD_FILE=/run/secrets/elasticsearch_password
+    secrets:
+      - elasticsearch_password
+    mem_limit: ${ES_MEM_LIMIT}
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "curl -s --cacert config/certs/ca/ca.crt https://localhost:9200 | grep -q 'missing authentication credentials'",
+        ]
+      interval: 10s
+      timeout: 10s
+      retries: 120
+    logging:
+      options:
+        tag: "{{.Name}}"
+    networks:
+      - elk
+
+
+
+  kibana:
+    depends_on:
+      es01:
+        condition: service_healthy
+    image: docker.elastic.co/kibana/kibana:${STACK_VERSION}
+    volumes:
+      - certs:/usr/share/kibana/config/certs
+      - kibanadata:/usr/share/kibana/data
+      - ./requirements/elk/kibana/kibana_entrypoint.sh:/usr/local/bin/kibana_entrypoint.sh:ro
+    ports:
+      - ${KIBANA_PORT}:5601
+      # IF PRODUCTION
+      # - 127.0.0.1:5601:5601
+    environment:
+      - SERVERNAME=kibana
+      - ELASTICSEARCH_HOSTS=https://es01:9200
+      - ELASTICSEARCH_USERNAME=kibana_system
+      - ELASTICSEARCH_PASSWORD_FILE=/run/secrets/kibana_password
+      - ELASTICSEARCH_SSL_CERTIFICATEAUTHORITIES=config/certs/ca/ca.crt
+      - ENCRYPTED_SAVED_OBJECTS_KEY_FILE=/run/secrets/kibana_encryption_key
+      - REPORTING_KEY_FILE=/run/secrets/kibana_reporting_key
+      - SECURITY_KEY_FILE=/run/secrets/kibana_security_key
+    secrets:
+      - kibana_password
+      - kibana_encryption_key
+      - kibana_reporting_key
+      - kibana_security_key
+    entrypoint: ["/usr/local/bin/kibana_entrypoint.sh"]
+    mem_limit: ${KB_MEM_LIMIT}
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "curl -s -I --cacert /usr/share/kibana/config/certs/kibana/kibana.crt https://localhost:5601 | grep -q 'HTTP/1.1 302 Found'",
+        ]
+      interval: 10s
+      timeout: 10s
+      retries: 120
+    logging:
+      options:
+        tag: "{{.Name}}"
+    networks:
+      - elk
+  
+  logstash01:
+    depends_on:
+      es01:
+        condition: service_healthy
+      kibana:
+        condition: service_healthy
+    image: docker.elastic.co/logstash/logstash:${STACK_VERSION}
+    labels:
+      co.elastic.logs/module: logstash
+    user: root
+    volumes:
+      - certs:/usr/share/logstash/certs
+      - logstashdata01:/usr/share/logstash/data
+      - "./requirements/elk/logstash/logstash.conf:/usr/share/logstash/pipeline/logstash.conf:ro"
+      - "/var/lib/docker/containers:/var/lib/docker/containers:ro"
+      - "./requirements/elk/logstash/logstash.sh:/requirements/elk/logstash/logstash.sh:ro"
+      - ./requirements/elk/logstash/logstash_entrypoint.sh:/usr/local/bin/docker-entrypoint:ro
+      - ./requirements/elk/kibana/objects:/usr/share/kibana/config/dashboards/
+    environment:
+      - xpack.monitoring.enabled=false
+      - ELASTIC_USER=elastic
+      - ELASTIC_PASSWORD_FILE=/run/secrets/elasticsearch_password
+      - ELASTIC_HOSTS=https://es01:9200
+    secrets:
+      - elasticsearch_password
+    logging:
+      options:
+        tag: "{{.Name}}"
+    networks:
+      - elk
+    command: ["/bin/bash", "-c", "/requirements/elk/logstash/logstash.sh && logstash -f /usr/share/logstash/pipeline/logstash.conf"]
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:9600/_node/stats || exit 1"]
+
+      
 volumes:
   static-volume:
+  django-log-volume:
+  postgres-log-volume:
+  nginx-log-volume:
+
+  certs:
+    driver: local
+  esdata01:
+    driver: local
+  kibanadata:
+    driver: local
+  logstashdata01:
+    driver: local
 
 networks:
   transcendence:
+    driver: bridge
+  elk:
     driver: bridge
 
 secrets:
@@ -85,3 +284,13 @@ secrets:
     file: ../secrets/intra42_client_id.txt
   intra42_client_secret:
     file: ../secrets/intra42_client_secret.txt
+  elasticsearch_password:
+    file: ../secrets/elasticsearch_password.txt
+  kibana_password:
+    file: ../secrets/kibana_password.txt
+  kibana_encryption_key:
+    file: ../secrets/kibana_encryption_key.txt
+  kibana_reporting_key:
+    file: ../secrets/kibana_reporting_key.txt
+  kibana_security_key:
+    file: ../secrets/kibana_security_key.txt
