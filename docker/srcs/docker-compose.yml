@@ -17,9 +17,9 @@ services:
       - .env
     environment:
       EMAIL_PASSWORD_FILE: /run/secrets/email_password
-      POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
-      DJANGO_SUPERUSER_FILE: /run/secrets/django_superuser_password
-      DJANGO_SECRET_KEY_FILE: /run/secrets/django_secret_key
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      DJANGO_SUPERUSER_PASSWORD: ${DJANGO_SUPERUSER_PASSWORD}
+      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
       INTRA42_CLIENT_ID_FILE: /run/secrets/intra42_client_id
       INTRA42_CLIENT_SECRET_FILE: /run/secrets/intra42_client_secret
     logging:
@@ -32,17 +32,14 @@ services:
       - transcendence
       - elk
     secrets:
-      - django_superuser_password
       - email_password
-      - postgres_password
-      - django_secret_key
       - intra42_client_id
       - intra42_client_secret
     # ports:
     #   - "8080:8000"
     
   postgres:
-    # container_name: postgres
+    container_name: postgres
     image: postgres:17.2
     shm_size: 128mb
     restart: on-failure
@@ -54,7 +51,7 @@ services:
     env_file:
       - .env
     environment:
-      POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     logging:
       driver: "json-file"
       options:
@@ -64,8 +61,6 @@ services:
     networks:
       - transcendence
       - elk
-    secrets:
-      - postgres_password
 
   nginx:
     depends_on:
@@ -272,14 +267,8 @@ networks:
     driver: bridge
 
 secrets:
-  django_superuser_password:
-    file: ../secrets/django_superuser_password.txt
-  postgres_password:
-    file: ../secrets/postgres_password.txt
   email_password:
     file: ../secrets/email_host_password.txt
-  django_secret_key:
-    file: ../secrets/django_secret_key.txt
   intra42_client_id:
     file: ../secrets/intra42_client_id.txt
   intra42_client_secret:

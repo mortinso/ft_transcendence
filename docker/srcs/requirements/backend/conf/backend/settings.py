@@ -83,7 +83,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY') or "django-insecure-change-me"
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 
 DEBUG = bool(int(os.environ.get('DEBUG', 0)))
 
@@ -199,16 +199,12 @@ DEBUG_TOOLBAR_CONFIG = {
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-file = open(env("POSTGRES_PASSWORD_FILE"), "r")
-postgres_password = file.readline()
-file.close()
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': env("POSTGRES_DB"),
         'USER': env("POSTGRES_USER"),
-        'PASSWORD': postgres_password,
+        'PASSWORD': env("POSTGRES_PASSWORD"),
         'HOST': 'postgres',
         'PORT': '5432',
     }

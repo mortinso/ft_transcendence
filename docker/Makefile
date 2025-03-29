@@ -5,7 +5,7 @@
 all:
 	sudo sysctl -w vm.max_map_count=262144
 	# docker compose -f srcs/docker-compose.yml up --build backend nginx postgres
-	docker compose -f srcs/docker-compose.yml up --build -d backend nginx postgres
+	docker compose -f srcs/docker-compose.yml up --build backend nginx postgres
 
 up:
 	# docker compose -f srcs/docker-compose.yml up
