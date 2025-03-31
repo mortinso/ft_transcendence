@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# Read the Kibana password from the secret file
-export ELASTICSEARCH_PASSWORD=$(cat $ELASTICSEARCH_PASSWORD_FILE)
-
 # Update Kibana configuration to use the generated certificates
 echo -e "\nserver.ssl.enabled: true" >> config/kibana.yml
 echo -e "\nserver.ssl.certificate: /usr/share/kibana/config/certs/kibana/kibana.crt" >> config/kibana.yml

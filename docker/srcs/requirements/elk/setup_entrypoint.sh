@@ -1,8 +1,5 @@
 #!/bin/bash
 
-export ELASTIC_PASSWORD=$(cat $ELASTIC_PASSWORD_FILE)
-export KIBANA_PASSWORD=$(cat $KIBANA_PASSWORD_FILE)
-
 if [ -z $ELASTIC_PASSWORD ]; then
   echo "Set the ELASTIC_PASSWORD environment variable in the .env file";
   exit 1;
