@@ -16,7 +16,7 @@ services:
     env_file:
       - .env
     environment:
-      EMAIL_PASSWORD_FILE: /run/secrets/email_password
+      EMAIL_PASSWORD: ${EMAIL_PASSWORD}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       DJANGO_SUPERUSER_PASSWORD: ${DJANGO_SUPERUSER_PASSWORD}
       DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
@@ -32,7 +32,6 @@ services:
       - transcendence
       - elk
     secrets:
-      - email_password
       - intra42_client_id
       - intra42_client_secret
     # ports:
@@ -267,8 +266,6 @@ networks:
     driver: bridge
 
 secrets:
-  email_password:
-    file: ../secrets/email_host_password.txt
   intra42_client_id:
     file: ../secrets/intra42_client_id.txt
   intra42_client_secret:

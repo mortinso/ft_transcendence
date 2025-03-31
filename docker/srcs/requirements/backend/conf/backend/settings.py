@@ -318,6 +318,4 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = "ffttranscendence@gmail.com"  # sender's email-id
-file = open(env("EMAIL_PASSWORD_FILE"), "r")
-EMAIL_HOST_PASSWORD = file.readline()
-file.close()
+EMAIL_HOST_PASSWORD = env("EMAIL_PASSWORD")

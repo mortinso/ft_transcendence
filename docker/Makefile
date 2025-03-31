@@ -3,7 +3,7 @@
 # sudo lsof -i :80; sudo kill -9 <PID>
 
 all:
-	sudo sysctl -w vm.max_map_count=262144
+	# sudo sysctl -w vm.max_map_count=262144
 	# docker compose -f srcs/docker-compose.yml up --build backend nginx postgres
 	docker compose -f srcs/docker-compose.yml up --build backend nginx postgres
 
