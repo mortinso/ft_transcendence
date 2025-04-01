@@ -176,13 +176,9 @@ services:
       - ELASTICSEARCH_USERNAME=kibana_system
       - ELASTICSEARCH_PASSWORD=${KIBANA_PASSWORD}
       - ELASTICSEARCH_SSL_CERTIFICATEAUTHORITIES=config/certs/ca/ca.crt
-      - ENCRYPTED_SAVED_OBJECTS_KEY_FILE=/run/secrets/kibana_encryption_key
-      - REPORTING_KEY_FILE=/run/secrets/kibana_reporting_key
-      - SECURITY_KEY_FILE=/run/secrets/kibana_security_key
-    secrets:
-      - kibana_encryption_key
-      - kibana_reporting_key
-      - kibana_security_key
+      - ENCRYPTED_SAVED_OBJECTS_KEY=${KIBANA_ENCRYPTION_KEY}
+      - REPORTING_KEY=${KIBANA_REPORTING_KEY}
+      - SECURITY_KEY=${KIBANA_SECURITY_KEY}
     entrypoint: ["/usr/local/bin/kibana_entrypoint.sh"]
     mem_limit: ${KB_MEM_LIMIT}
     healthcheck:
@@ -253,11 +249,3 @@ networks:
     driver: bridge
   elk:
     driver: bridge
-
-secrets:
-  kibana_encryption_key:
-    file: ../secrets/kibana_encryption_key.txt
-  kibana_reporting_key:
-    file: ../secrets/kibana_reporting_key.txt
-  kibana_security_key:
-    file: ../secrets/kibana_security_key.txt
