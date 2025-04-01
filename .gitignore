@@ -14,6 +14,7 @@ __pycache__/
 *.pyc
 
 secrets.sh
+env-file.sh
 create_secrets.shdocker/srcs/requirements/elk/esbackup
 .env
 docker/srcs/.env
