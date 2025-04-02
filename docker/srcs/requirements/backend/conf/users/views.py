@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import User
 from .serializers import (
     ListUsersSerializer,
@@ -23,6 +23,10 @@ import hashlib
 from django.http import HttpResponse
 from rest_framework.exceptions import PermissionDenied
 import logging
+import requests
+from django.core.cache import cache
+from django.contrib.auth import logout
+
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -61,9 +65,21 @@ class RetrieveUpdateDestroyUserView(generics.RetrieveUpdateDestroyAPIView):
         user = generics.get_object_or_404(User, id=pk)
         if request.user.id != user.id:
             raise PermissionDenied("You cannot deactivate another user's account.")
+        
+        user.is_online = False
         user.is_active = False
         user.save()
-        return Response({"detail": "user deleted."}, status=status.HTTP_200_OK)
+        
+        cache.delete(f"user_online_{user.id}")
+
+        logout(request)
+        request.session.flush()
+
+        response = Response({"detail": "user deleted."}, status=status.HTTP_200_OK)
+        response.delete_cookie("sessionid")
+        response.delete_cookie("csrftoken")
+
+        return response
 
     serializer_class = UpdateUserSerializer
 
@@ -116,14 +132,29 @@ class UnblockUserView(generics.RetrieveUpdateAPIView):
     queryset = User.objects.all()
     serializer_class = UnblockUserSerializer
 
-
 class GetImageView(APIView):
     def get(self, request, pk):
         user = generics.get_object_or_404(User, id=pk)
         logger.debug(f"user.avatar: {user.avatar}")
-        route = "/media/" + str(user.avatar)
-        logger.debug(f"route: {route}")
+        avatar_url = str(user.avatar)
+        
+        if avatar_url.startswith('http://') or avatar_url.startswith('https://'):
+            try:
+                logger.debug(f"Proxying the external image: {avatar_url}")
+                img_response = requests.get(avatar_url)
+                img_response.raise_for_status()
+                
+                response = HttpResponse(
+                    content=img_response.content,
+                    content_type=img_response.headers.get('Content-Type', 'image/jpeg')
+                )
+                return response
+            except Exception as e:
+                logger.error(f"Erro ao buscar avatar externo: {e}")
+                return HttpResponse(status=404)
+        
+        route = "/media/" + avatar_url
+        logger.debug(f"Servindo arquivo local: {route}")
         response = HttpResponse()
         response["X-Accel-Redirect"] = route
-        del response["Content-Type"]
         return response

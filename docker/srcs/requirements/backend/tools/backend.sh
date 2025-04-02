@@ -2,11 +2,6 @@
 
 cd transcendence
 
-export DJANGO_SUPERUSER_PASSWORD=$(cat $DJANGO_SUPERUSER_FILE)
-export DJANGO_SECRET_KEY=$(cat $DJANGO_SECRET_KEY)
-export EMAIL_PASSWORD=$(cat $EMAIL_PASSWORD_FILE)
-export POSTGRES_PASSWORD=$(cat $POSTGRES_PASSWORD_FILE)
-
 if [ "$DEBUG" = "1" ]; then
     pip install -r requirements-dev.txt
 else

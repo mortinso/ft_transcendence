@@ -17,7 +17,7 @@ if [ -f "$ENV_FILE" ]; then
     # Remove existing line with IP_HOST if present
     sed -i '/^IP_HOST=/d' "$ENV_FILE"
     # Add a new line with IP_HOST
-    echo -e "\nIP_HOST=\"$IP_HOST\"" >> "$ENV_FILE"
+    echo -e "IP_HOST=\"$IP_HOST\"" >> "$ENV_FILE"
     # echo "IP_HOST added to $ENV_FILE"
 else
     echo "File $ENV_FILE not found."

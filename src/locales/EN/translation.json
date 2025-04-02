@@ -22,7 +22,11 @@
         "invalidCredentials": "Invalid credentials",
         "accountCreated": "Account created sucessfully. You may login now.",
         "signupOTP": "Enter confirmation code",
-        "signupOTPSent": "A confirmation code has been sent to your email"
+        "signupOTPSent": "A confirmation code has been sent to your email",
+        "42login": "Login with 42",
+        "42error": "Error logging in with 42",
+        "alreadyLoggedIn": "You are already logged in somewhere else",
+        "deactivated": "This account has been deactivated"
     },
     "header":{
         "overview": "Overview",
@@ -87,7 +91,10 @@
         "deleteAccountConfirm": "Please enter your password to confirm",
         "twoFactorAuth": "Two Factor Authentication",
         "enable2FA": "Use Two Factor Authentication",
-        "avatarTooLarge": "Avatar is too large. Maximum size is 1MB"
+        "avatarTooLarge": "Avatar is too large. Maximum size is 1MB",
+        "intra42Disabled": "This feature is disabled for 42 accounts",
+        "intra42Delete": "Warning, this is a 42 linked account so if you delete it you will not be able to login with this account again!",
+        "intra42Delete2": "This doesn't affect your intra account."
     },
     "livechat": {
         "friends": "Friends",

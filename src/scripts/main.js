@@ -20,9 +20,29 @@ async function initialize() {
     await initTranslations();
 
     loggedIn = await checkLogin();
+    window.localStorage.setItem('loggedIn', loggedIn);
     if (!loggedIn) {
         changeContent('login', false);
         document.getElementById('header').style.display = 'none';
+        await new Promise(resolve => setTimeout(resolve, 100));
+        if (window.sessionStorage.getItem('42error') !== null) {
+            const error = window.sessionStorage.getItem('42error');
+            console.log(error);
+            switch (error) {
+                case 'User already logged in.':
+                    alert(i18next.t('login.alreadyLoggedIn'));
+                    break;
+                case 'User is deactivated.':
+                    alert(i18next.t('login.deactivated'));
+                    break;
+                case !undefined:
+                    alert(i18next.t('login.42error'));
+                    break;
+                default:
+                    break;
+            }
+            window.sessionStorage.removeItem('42error');
+        }
     }
     else {
         history.replaceState(pageState, null, "");

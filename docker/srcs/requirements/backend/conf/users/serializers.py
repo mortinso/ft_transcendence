@@ -21,6 +21,7 @@ class ListUsersSerializer(serializers.ModelSerializer):
             "email",
             "date_joined",
             "is_online",
+            "avatar",
             "last_seen",
             "friends",
             "friend_requests",
@@ -31,6 +32,7 @@ class ListUsersSerializer(serializers.ModelSerializer):
             "games_played",
             "tfa",
             "idiom",
+            "intra42_id",
         )
         extra_kwargs = {"password": {"write_only": True, "required": False}}
 

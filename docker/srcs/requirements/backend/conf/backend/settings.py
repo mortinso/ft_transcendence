@@ -39,6 +39,12 @@ logging.config.dictConfig({
             'class': 'logging.StreamHandler',
             'formatter': 'default',
         },
+        # write log to debug.log
+        # 'file': { #COMMENT
+        #     'level': 'DEBUG',
+        #     'class': 'logging.FileHandler',
+        #     'filename': 'debug.log',
+        # },
         'django.server': DEFAULT_LOGGING['handlers']['django.server'],
     },
     'loggers': {
@@ -47,6 +53,12 @@ logging.config.dictConfig({
             'level': 'WARNING',
             'handlers': ['console'],
         },
+        # write log to debug.log
+        # 'django': { #COMMENT
+        #     'handlers': ['file'],
+        #     'level': 'DEBUG',
+        #     'propagate': True,
+        # },
         # Our application code
         'app': {
             'level': LOGLEVEL,
@@ -71,7 +83,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY') or "django-insecure-change-me"
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 
 DEBUG = bool(int(os.environ.get('DEBUG', 0)))
 
@@ -87,7 +99,13 @@ if ip_host:
 print(f'ALLOWED_HOSTS: {ALLOWED_HOSTS}')
 
 ALLOWED_REFERERS = [
-    "https://ft-transcendence.com/",
+    "https://192.168.20.111/",
+]
+
+
+AUTHENTICATION_BACKENDS = [
+    'oauth.auth.OauthAuthenticationBackend',
+    'django.contrib.auth.backends.ModelBackend',
 ]
 
 # Application definition
@@ -105,6 +123,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'corsheaders',
+    'oauth.apps.OauthConfig',
 ]
 
 MIDDLEWARE = [
@@ -120,8 +139,20 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
     'backend.middleware.activeuser_middleware.ActiveUserMiddleware',
+    # 'elasticapm.contrib.django.middleware.TracingMiddleware',
     # 'backend.middleware.refer_middleware.FrontendOnlyMiddleware',
 ]
+
+ELASTIC_APM = {
+  'SERVICE_NAME': 'my-service-name',
+
+  'SECRET_TOKEN': '',
+
+  'SERVER_URL': 'http://localhost:8200',
+
+  'ENVIRONMENT': 'my-environment',
+}
+
 
 ROOT_URLCONF = 'backend.urls'
 
@@ -154,27 +185,27 @@ if DEBUG:
     INSTALLED_APPS.append('debug_toolbar')
     MIDDLEWARE.insert(0, 'debug_toolbar.middleware.DebugToolbarMiddleware')
 
+# print(f'INTERNAL_IPS: {INTERNAL_IPS}')
+
 # this is the main reason for not showing up the toolbar
 import mimetypes
 mimetypes.add_type("application/javascript", ".js", True)
 
 DEBUG_TOOLBAR_CONFIG = {
-    "SHOW_TOOLBAR_CALLBACK": lambda request: True,
+    # Incompatibilidade entre psycopg3 e Django-Toolbar 
+    # set true para usar django-toolbar mesmo assim
+    "SHOW_TOOLBAR_CALLBACK": lambda request: False,
 }
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-
-file = open(env("POSTGRES_PASSWORD_FILE"), "r")
-postgres_password = file.readline()
-file.close()
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': env("POSTGRES_DB"),
         'USER': env("POSTGRES_USER"),
-        'PASSWORD': postgres_password,
+        'PASSWORD': env("POSTGRES_PASSWORD"),
         'HOST': 'postgres',
         'PORT': '5432',
     }
@@ -234,8 +265,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = "users.User"
 
-# TODO: activate default permission class
-
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
@@ -255,11 +284,11 @@ if not DEBUG:
 # CORS_ALLOW_ALL_ORIGINS = True
 # CORS_ALLOW_CREDENTIALS = True # This is necessary to allow the frontend to send cookies
 
-CORS_ALLOWED_ORIGINS = [
-    'https://127.0.0.1',
-    'https://localhost',
-    'https://ft-transcendence.com',
-]
+# CORS_ALLOWED_ORIGINS = [
+#     # 'http://127.0.0.1',
+#     # 'http://localhost',
+#     # 'https://10.0.2.15',
+# ]
 
 # Security
 
@@ -300,6 +329,4 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = "ffttranscendence@gmail.com"  # sender's email-id
-file = open(env("EMAIL_PASSWORD_FILE"), "r")
-EMAIL_HOST_PASSWORD = file.readline()
-file.close()
+EMAIL_HOST_PASSWORD = env("EMAIL_PASSWORD")

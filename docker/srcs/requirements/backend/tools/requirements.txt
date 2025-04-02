@@ -32,6 +32,14 @@ typing_extensions==4.12.2
 django-debug-toolbar==5.0.1
 typing_extensions==4.12.2
 
+# oauht2
+requests==2.32.3
+charset-normalizer==3.4.1
+idna==3.10
+urllib3==2.3.0
+certifi==2025.1.31
+
 # Optional dependencies
 # django-cleanup #delete previously uploaded images
 # pyotp #2FA
+
