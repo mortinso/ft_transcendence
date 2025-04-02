@@ -1,10 +1,7 @@
 #!/bin/bash -e
 
-# Read the Elasticstash password from the secret file
-export ELASTIC_PASSWORD=$(cat $ELASTIC_PASSWORD_FILE)
-
 #Import kibana Dashboard
-curl --cacert certs/kibana/kibana.crt -X POST https://kibana:5601/api/saved_objects/_import?createNewCopies=true -H "kbn-xsrf: true" -u "${ELASTIC_USER}:$(cat $ELASTIC_PASSWORD_FILE)" --form file=@/usr/share/kibana/config/dashboards/dashboard.ndjson
+curl --cacert certs/kibana/kibana.crt -X POST https://kibana:5601/api/saved_objects/_import?createNewCopies=true -H "kbn-xsrf: true" -u "${ELASTIC_USER}:${ELASTIC_PASSWORD}" --form file=@/usr/share/kibana/config/dashboards/dashboard.ndjson
 
 # Map environment variables to entries in logstash.yml.
 # Note that this will mutate logstash.yml in place if any such settings are found.

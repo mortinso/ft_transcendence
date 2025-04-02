@@ -16,12 +16,12 @@ services:
     env_file:
       - .env
     environment:
-      EMAIL_PASSWORD_FILE: /run/secrets/email_password
-      POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
-      DJANGO_SUPERUSER_FILE: /run/secrets/django_superuser_password
-      DJANGO_SECRET_KEY_FILE: /run/secrets/django_secret_key
-      INTRA42_CLIENT_ID_FILE: /run/secrets/intra42_client_id
-      INTRA42_CLIENT_SECRET_FILE: /run/secrets/intra42_client_secret
+      EMAIL_PASSWORD: ${EMAIL_PASSWORD}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      DJANGO_SUPERUSER_PASSWORD: ${DJANGO_SUPERUSER_PASSWORD}
+      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
+      INTRA42_CLIENT_ID: ${INTRA42_CLIENT_ID}
+      INTRA42_CLIENT_SECRET: ${INTRA42_CLIENT_SECRET}
     logging:
       driver: "json-file"
       options:
@@ -31,18 +31,11 @@ services:
     networks:
       - transcendence
       - elk
-    secrets:
-      - django_superuser_password
-      - email_password
-      - postgres_password
-      - django_secret_key
-      - intra42_client_id
-      - intra42_client_secret
     # ports:
     #   - "8080:8000"
     
   postgres:
-    # container_name: postgres
+    container_name: postgres
     image: postgres:17.2
     shm_size: 128mb
     restart: on-failure
@@ -54,7 +47,7 @@ services:
     env_file:
       - .env
     environment:
-      POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     logging:
       driver: "json-file"
       options:
@@ -64,8 +57,6 @@ services:
     networks:
       - transcendence
       - elk
-    secrets:
-      - postgres_password
 
   nginx:
     depends_on:
@@ -101,12 +92,9 @@ services:
       - ./requirements/elk/setup_entrypoint.sh:/usr/local/bin/setup_entrypoint.sh:ro
     user: "0"
     environment:
-      ELASTIC_PASSWORD_FILE: /run/secrets/elasticsearch_password
-      KIBANA_PASSWORD_FILE: /run/secrets/kibana_password
+      ELASTIC_PASSWORD: ${ELASTIC_PASSWORD}
+      KIBANA_PASSWORD: ${KIBANA_PASSWORD}
       server.ssl.enabled: true
-    secrets:
-      - elasticsearch_password
-      - kibana_password
     entrypoint: ["/usr/local/bin/setup_entrypoint.sh"]
     healthcheck:
       test: ["CMD-SHELL", "[ -f config/certs/es01/es01.crt ]"]
@@ -146,9 +134,7 @@ services:
       - xpack.license.self_generated.type=${LICENSE}
       - xpack.ml.use_auto_machine_memory_percent=true
       - path.repo=/usr/share/elasticsearch/backup
-      - ELASTIC_PASSWORD_FILE=/run/secrets/elasticsearch_password
-    secrets:
-      - elasticsearch_password
+      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
     mem_limit: ${ES_MEM_LIMIT}
     ulimits:
       memlock:
@@ -188,16 +174,11 @@ services:
       - SERVERNAME=kibana
       - ELASTICSEARCH_HOSTS=https://es01:9200
       - ELASTICSEARCH_USERNAME=kibana_system
-      - ELASTICSEARCH_PASSWORD_FILE=/run/secrets/kibana_password
+      - ELASTICSEARCH_PASSWORD=${KIBANA_PASSWORD}
       - ELASTICSEARCH_SSL_CERTIFICATEAUTHORITIES=config/certs/ca/ca.crt
-      - ENCRYPTED_SAVED_OBJECTS_KEY_FILE=/run/secrets/kibana_encryption_key
-      - REPORTING_KEY_FILE=/run/secrets/kibana_reporting_key
-      - SECURITY_KEY_FILE=/run/secrets/kibana_security_key
-    secrets:
-      - kibana_password
-      - kibana_encryption_key
-      - kibana_reporting_key
-      - kibana_security_key
+      - ENCRYPTED_SAVED_OBJECTS_KEY=${KIBANA_ENCRYPTION_KEY}
+      - REPORTING_KEY=${KIBANA_REPORTING_KEY}
+      - SECURITY_KEY=${KIBANA_SECURITY_KEY}
     entrypoint: ["/usr/local/bin/kibana_entrypoint.sh"]
     mem_limit: ${KB_MEM_LIMIT}
     healthcheck:
@@ -236,10 +217,8 @@ services:
     environment:
       - xpack.monitoring.enabled=false
       - ELASTIC_USER=elastic
-      - ELASTIC_PASSWORD_FILE=/run/secrets/elasticsearch_password
+      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
       - ELASTIC_HOSTS=https://es01:9200
-    secrets:
-      - elasticsearch_password
     logging:
       options:
         tag: "{{.Name}}"
@@ -270,27 +249,3 @@ networks:
     driver: bridge
   elk:
     driver: bridge
-
-secrets:
-  django_superuser_password:
-    file: ../secrets/django_superuser_password.txt
-  postgres_password:
-    file: ../secrets/postgres_password.txt
-  email_password:
-    file: ../secrets/email_host_password.txt
-  django_secret_key:
-    file: ../secrets/django_secret_key.txt
-  intra42_client_id:
-    file: ../secrets/intra42_client_id.txt
-  intra42_client_secret:
-    file: ../secrets/intra42_client_secret.txt
-  elasticsearch_password:
-    file: ../secrets/elasticsearch_password.txt
-  kibana_password:
-    file: ../secrets/kibana_password.txt
-  kibana_encryption_key:
-    file: ../secrets/kibana_encryption_key.txt
-  kibana_reporting_key:
-    file: ../secrets/kibana_reporting_key.txt
-  kibana_security_key:
-    file: ../secrets/kibana_security_key.txt
