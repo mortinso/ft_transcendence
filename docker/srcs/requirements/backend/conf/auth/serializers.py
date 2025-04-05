@@ -78,6 +78,4 @@ class ForgotPasswordSerializer(serializers.Serializer):
 
 
 class CheckOTPSerializer(serializers.Serializer):
-    # email = serializers.EmailField()
     otp = serializers.CharField()
-    # purpose = serializers.CharField(required=True)

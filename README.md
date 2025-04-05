@@ -17,22 +17,34 @@
 
 - `/api/users/whoami` (retrieves current user)
 
-- `/api/users/1/edit` (update/destroy user1, if user 1 is current user, else show 404) - 'username', 'email', 'old_password', 'password', 'confirm_password', 'first_name', 'last_name'
+- `/api/users/<uuid>/edit` (update/destroy user1, if user 1 is current user, else show 404) - 'username', 'email', 'old_password', 'password', 'confirm_password', 'first_name', 'last_name'
 
-- `/api/users/1/add_avatar` (add or update avatar) - 'avatar'
+- `/api/users/<uuid>/add_avatar` (add or update avatar) - 'avatar'
 
 ### Friends
-- `/api/users/1/invite_friend` (send friend request from user 1)
+- `/api/users/<uuid>/invite_friend` (send friend request from user 1)
 
-- `/api/users/1/accept_friend` (accept friend requests)
+- `/api/users/<uuid>/accept_friend` (accept friend requests)
 
-- `/api/users/1/remove_friend` (remove friend)
+- `/api/users/<uuid>/remove_friend` (remove friend)
 
-- `/api/users/1/remove_friend_request` (remove friend request)
+- `/api/users/<uuid>/remove_friend_request` (remove friend request)
 
-- `/api/users/1/block` (block user)
+- `/api/users/<uuid>/block` (block user)
 
-- `/api/users/1/unblock` (unblock user)
+- `/api/users/<uuid>/unblock` (unblock user)
+
+### Invite to games
+
+Invite or accept user requests to play games by using the following endpoints and the variables: `user_to_invite` (to invite a user to play) or `user_to_accept` (to accept a user's request to play a game)
+
+- `/api/users/<uuid>/invite_to_pong` (send request to play pong)
+
+- `/api/users/<uuid>/invite_to_ttt` (send request to play tic-tac-toe)
+
+- `/api/users/<uuid>/accept_pong_invite` (accept pong invite)
+
+- `/api/users/<uuid>/accept_ttt_invite` (accept tic-tac-toe invite)
 
 ### Images
 - `/api/users/<uuid:pk>/add_avatar/` (add user avatar)
