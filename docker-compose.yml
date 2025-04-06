@@ -7,9 +7,9 @@ services:
       postgres:
         condition: service_healthy
     container_name: backend
-    build: requirements/backend
+    build: docker/srcs/backend
     volumes:
-      - ./requirements/backend/conf:/transcendence/backend
+      - ./docker/srcs/backend/conf:/transcendence/backend
       - static-volume:/transcendence/backend/staticfiles
       - ../avatars:/transcendence/backend/mediafiles
     restart: on-failure
@@ -62,18 +62,18 @@ services:
     depends_on:
       - backend
     container_name: nginx
-    build: requirements/nginx
+    build: docker/srcs/nginx
     ports:
       - "443:443"
       - "80:80"
     volumes:
-      - ../../:/usr/share/nginx/frontend
+      - ./:/usr/share/nginx/frontend
       - static-volume:/etc/nginx/html/static/
-      - ../avatars:/etc/nginx/html/media
-      - ./requirements/nginx/conf:/etc/nginx/conf.d
+      - ./docker/avatars:/etc/nginx/html/media
+      - ./docker/srcs/nginx/conf:/etc/nginx/conf.d
       - nginx-log-volume:/var/log/postgres
     environment:
-      - IP_HOST=${IP_HOST}
+      IP_HOST: ${IP_HOST}
     restart: on-failure
     logging:
       driver: "json-file"
@@ -89,7 +89,7 @@ services:
     image: docker.elastic.co/elasticsearch/elasticsearch:${STACK_VERSION}
     volumes:
       - certs:/usr/share/elasticsearch/config/certs
-      - ./requirements/elk/setup_entrypoint.sh:/usr/local/bin/setup_entrypoint.sh:ro
+      - ./docker/srcs/elk/setup_entrypoint.sh:/usr/local/bin/setup_entrypoint.sh:ro
     user: "0"
     environment:
       ELASTIC_PASSWORD: ${ELASTIC_PASSWORD}
@@ -112,7 +112,7 @@ services:
     volumes:
       - certs:/usr/share/elasticsearch/config/certs
       - esdata01:/usr/share/elasticsearch/data
-      - ./requirements/elk/esbackup:/usr/share/elasticsearch/backup/my_backup
+      - ./docker/srcs/elk/esbackup:/usr/share/elasticsearch/backup/my_backup
     ports:
       # only access on localhost
       - 127.0.0.1:9200:9200
@@ -165,7 +165,7 @@ services:
     volumes:
       - certs:/usr/share/kibana/config/certs
       - kibanadata:/usr/share/kibana/data
-      - ./requirements/elk/kibana/kibana_entrypoint.sh:/usr/local/bin/kibana_entrypoint.sh:ro
+      - ./docker/srcs/elk/kibana/kibana_entrypoint.sh:/usr/local/bin/kibana_entrypoint.sh:ro
     ports:
       - ${KIBANA_PORT}:5601
       # IF PRODUCTION
@@ -209,11 +209,11 @@ services:
     volumes:
       - certs:/usr/share/logstash/certs
       - logstashdata01:/usr/share/logstash/data
-      - "./requirements/elk/logstash/logstash.conf:/usr/share/logstash/pipeline/logstash.conf:ro"
+      - "./docker/srcs/elk/logstash/logstash.conf:/usr/share/logstash/pipeline/logstash.conf:ro"
       - "/var/lib/docker/containers:/var/lib/docker/containers:ro"
-      - "./requirements/elk/logstash/logstash.sh:/requirements/elk/logstash/logstash.sh:ro"
-      - ./requirements/elk/logstash/logstash_entrypoint.sh:/usr/local/bin/docker-entrypoint:ro
-      - ./requirements/elk/kibana/objects:/usr/share/kibana/config/dashboards/
+      - "./docker/srcs/elk/logstash/logstash.sh:/requirements/elk/logstash/logstash.sh:ro"
+      - ./docker/srcs/elk/logstash/logstash_entrypoint.sh:/usr/local/bin/docker-entrypoint:ro
+      - ./docker/srcs/elk/kibana/objects:/usr/share/kibana/config/dashboards/
     environment:
       - xpack.monitoring.enabled=false
       - ELASTIC_USER=elastic

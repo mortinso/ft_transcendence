@@ -57,7 +57,7 @@ class LoginView(generics.GenericAPIView):
                 except Exception as e:
                     return Response({"error": f"Failed to send email: {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)
                 return Response({"detail": "Email sent."}, status=status.HTTP_200_OK)
-            login(request, user)
+            login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             cache.set(f'user_online_{user.id}', True, timeout=3600)
             user.is_online = True
             user.save()
@@ -180,7 +180,7 @@ class CheckOTPView(generics.GenericAPIView):
                 user.is_online = True
                 user.save()
                 refresh = RefreshToken.for_user(user)
-                login(request, user)
+                login(request, user, backend='django.contrib.auth.backends.ModelBackend')
                 return Response(
                     {
                         "refresh": str(refresh),

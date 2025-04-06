@@ -4,33 +4,33 @@
 
 all:
 	sudo sysctl -w vm.max_map_count=262144
-	# docker compose -f srcs/docker-compose.yml up --build backend nginx postgres
-	docker compose -f srcs/docker-compose.yml up --build backend nginx postgres
+	# docker compose up --build backend nginx postgres
+	docker compose up -d --build backend nginx postgres
 
 up:
-	# docker compose -f srcs/docker-compose.yml up
-	docker compose -f srcs/docker-compose.yml up --detach
+	# docker compose up
+	docker compose up --detach
 
 elk:
-	docker compose -f srcs/docker-compose.yml up --build setup es01 kibana logstash01
+	docker compose up --build setup es01 kibana logstash01
 
 stop:
-	docker compose -f srcs/docker-compose.yml stop
+	docker compose stop
 
 down:
-	docker compose -f srcs/docker-compose.yml down
+	docker compose down
 
 restart: stop up
 
 clean:
-	docker compose -f srcs/docker-compose.yml down -v
+	docker compose down -v
 
 fclean: clean
-	find avatars/ -mindepth 1 -type d -exec rm -rf {} +
+	sudo find docker/avatars/ -mindepth 1 -type d -exec rm -rf {} +
 	docker image rm transcendence-backend
 	# docker image rm postgres:17.2
 	docker image rm transcendence-nginx
-	rm -rf ./srcs/requirements/elk/esbackup/*
+	rm -rf .docker/srcs/elk/esbackup/*
 	# docker image prune
 
 re: fclean all
@@ -48,6 +48,6 @@ sh-postgres:
 	docker exec -it postgres /bin/bash
 
 ip-host:
-	@srcs/requirements/backend/tools/iphost.sh
+	@docker/srcs/backend/tools/iphost.sh
 
 .PHONY: all start stop down restart clean fclean re clean-docker reset dev sh-backend sh-postgres ip-host
