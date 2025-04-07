@@ -10,7 +10,7 @@ from rest_framework import status
 from django.contrib.auth import login, logout
 from django.shortcuts import get_object_or_404
 from rest_framework_simplejwt.tokens import RefreshToken
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.contrib.auth.models import update_last_login
 from users.models import User
 from django.core.mail import send_mail
@@ -18,6 +18,7 @@ from django.conf import settings
 import logging
 from django.core.cache import cache
 from django.contrib.auth import get_user_model
+
 
 logger = logging.getLogger(__name__)
 
@@ -36,8 +37,12 @@ class LoginView(generics.GenericAPIView):
             return Response({"error": "User is deactivated."}, status=status.HTTP_400_BAD_REQUEST)
 
         if user is not None and user.is_active:
+            current_timestamp = int(timezone.now().timestamp())
+            cache.set(f"last_valid_login_{user.id}", current_timestamp, timeout=86400)  # 24hs
+
             if cache.get(f'user_online_{user.id}'):
-                return Response({"error": "User already logged in."}, status=status.HTTP_400_BAD_REQUEST)
+                logger.info(f"User {user.id} ({user.username}) was already online. Forcing logout of previous session.")
+                cache.delete(f'user_online_{user.id}')
             
             if user.tfa:
                 otp = str(random.randint(100000, 999999))
@@ -57,11 +62,13 @@ class LoginView(generics.GenericAPIView):
                 except Exception as e:
                     return Response({"error": f"Failed to send email: {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)
                 return Response({"detail": "Email sent."}, status=status.HTTP_200_OK)
+            
             login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             cache.set(f'user_online_{user.id}', True, timeout=3600)
             user.is_online = True
             user.save()
             refresh = RefreshToken.for_user(user)
+            refresh["login_timestamp"] = current_timestamp
             return Response(
                 {
                     "refresh": str(refresh),
@@ -191,3 +198,20 @@ class CheckOTPView(generics.GenericAPIView):
             else:
                 return Response({"detail": "Invalid or expired OTP."}, status=status.HTTP_400_BAD_REQUEST)
         return Response({"detail": "Invalid or expired OTP."}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class CheckSessionView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user_id = request.user.id
+        token_timestamp = request.auth.get('iat', 0)
+        last_valid_login = cache.get(f"last_valid_login_{user_id}", 0)
+        
+        if token_timestamp < last_valid_login:
+            return Response(
+                {"detail": "Your session has expired because you are logged in elsewhere"},
+                status=401
+            )
+        
+        return Response({"valid": True})

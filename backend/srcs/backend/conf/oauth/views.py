@@ -9,6 +9,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth.models import update_last_login
 from django.core.cache import cache
 from django.contrib.auth import get_user_model
+from django.utils import timezone
 
 
 
@@ -60,14 +61,19 @@ def login_redirect_42user(request: HttpRequest):
         return redirect(f"/?error={auth_err.message}")
 
     if user:
+        current_timestamp = int(timezone.now().timestamp())
+        cache.set(f"last_valid_login_{user.id}", current_timestamp, timeout=86400)  # 24hs
+        
         if cache.get(f"user_online_{user.id}"):
-            return redirect(f"/?error=User already logged in.")
+            cache.delete(f'user_online_{user.id}')
         
         login(request, user)
         cache.set(f"user_online_{user.id}", True, timeout=3600)
         user.is_online = True
         user.save()
         refresh = RefreshToken.for_user(user)
+        refresh["login_timestamp"] = current_timestamp
+
         update_last_login(None, user)
         redirect_url = f"/?access={str(refresh.access_token)}&refresh={str(refresh)}"
         return redirect(redirect_url)

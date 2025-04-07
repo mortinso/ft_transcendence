@@ -83,7 +83,7 @@ async function handleOAuthReturn() {
     const access = urlParams.get('access');
     const refresh = urlParams.get('refresh');
     
-    if (access && refresh) {
+    if (access && refresh && access.length > 20 && refresh.length > 20) {
         sessionStorage.setItem('jwt', access);
         sessionStorage.setItem('refresh', refresh);
         
@@ -96,6 +96,7 @@ async function handleOAuthReturn() {
         history.replaceState({}, document.title, window.location.pathname);
         
         postLogin();
+        return true;
     }
     else{
         const error = urlParams.get('error');
@@ -108,6 +109,7 @@ async function handleOAuthReturn() {
             window.localStorage.removeItem('refresh');
             window.sessionStorage.setItem('42error', error);
         }
+        return false;
     }
 }
 
@@ -119,6 +121,11 @@ async function loginWith42(){
 document.addEventListener('DOMContentLoaded', async function() {
     
     loggedIn = window.localStorage.getItem('loggedIn') === 'true';
+    
+    if (loggedIn && sessionStorage.getItem('jwt')) {
+        startSessionCheck();
+    }
+    
     if (!loggedIn)
         await handleOAuthReturn();
     else
@@ -152,8 +159,56 @@ async function postLogin(){
         document.getElementById('header-avatar').src = _avatar;
         changeContent('overview', true);
         history.replaceState(pageState, null, "");
+
+        startSessionCheck();
     }
 }
+
+// Periodic session verification
+let sessionCheckInterval;
+
+function checkSessionValidity() {
+    const token = sessionStorage.getItem('jwt');
+    if (!token) return;
+    
+    fetch('/api/auth/check_session/', {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            return response.json().then(data => {
+                console.log('Invalid Session:', data);
+                alert(data.detail || i18next.t('login.sessionExpired', 'Your session has expired because you are logged in elsewhere'));
+                clearSession();
+                window.location.href = '/?error=session_expired';
+            });
+        }
+        return response.json();
+    })
+    .catch(error => {
+        console.error('Error checking session:', error);
+    });
+}
+
+function startSessionCheck() {
+    if (sessionCheckInterval) 
+        clearInterval(sessionCheckInterval);
+    // Set recheck every 15 seconds
+    sessionCheckInterval = setInterval(checkSessionValidity, 15000);
+    checkSessionValidity();
+}
+
+function stopSessionCheck() {
+    if (sessionCheckInterval) {
+        clearInterval(sessionCheckInterval);
+        sessionCheckInterval = null;
+    }
+}
+
 
 //Confirm the 2FA code
 async function confirmF2A() {
@@ -219,6 +274,8 @@ async function confirmF2A() {
 
 //Logout the user
 async function logout() {
+    stopSessionCheck();
+
     const url = '/api/auth/logout/';
     await fetch(url, {
         method: 'POST',
@@ -255,6 +312,8 @@ async function logout() {
 
 //Clear the session
 function clearSession() {
+    stopSessionCheck();
+
     sessionStorage.removeItem('jwt');
     sessionStorage.removeItem('refresh');
     localStorage.removeItem('refresh');
