@@ -103,7 +103,7 @@ async function initTranslations() {
         fallbackLng: 'EN',
         debug: true,
         backend: {
-            loadPath: '/src/locales/{{lng}}/{{ns}}.json'
+            loadPath: '/frontend/locales/{{lng}}/{{ns}}.json'
         }
     });
     translateAll();
@@ -124,7 +124,7 @@ function changeContent(page, pushState = true) {
     var oldScripts = document.querySelectorAll('script[data-dynamic]');
     oldScripts.forEach(script => script.remove());
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', `/src/pages/${page}.html`, true);
+    xhr.open('GET', `/frontend/pages/${page}.html`, true);
     xhr.onreadystatechange = function () {
         if (this.readyState !== 4)
             return;

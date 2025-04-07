@@ -1,20 +1,19 @@
 .vscode
-docker/secrets/*
-docker/srcs/requirements/backend/venv/
-docker/srcs/requirements/backend/conf/auth/migrations/*
-!docker/srcs/requirements/backend/conf/auth/migrations/__init__.py
-docker/srcs/requirements/backend/conf/games/migrations/*
-!docker/srcs/requirements/backend/conf/games/migrations/__init__.py
-docker/srcs/requirements/backend/conf/users/migrations/*
-!docker/srcs/requirements/backend/conf/users/migrations/__init__.py
-docker/avatars/*
-!docker/avatars/default.jpg
+backend/srcs/backend/venv/
+backend/srcs/backend/conf/auth/migrations/*
+!backend/srcs/backend/conf/auth/migrations/__init__.py
+backend/srcs/backend/conf/games/migrations/*
+!backend/srcs/backend/conf/games/migrations/__init__.py
+backend/srcs/backend/conf/users/migrations/*
+!backend/srcs/backend/conf/users/migrations/__init__.py
+backend/avatars/*
+!backend/avatars/default.jpg
 
 __pycache__/
 *.pyc
 
 secrets.sh
 env-file.sh
-create_secrets.shdocker/srcs/requirements/elk/esbackup
+create_secrets.sh
 .env
-docker/srcs/.env
+backend/srcs/requirements/elk/esbackup

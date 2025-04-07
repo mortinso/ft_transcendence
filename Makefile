@@ -5,7 +5,7 @@
 all:
 	sudo sysctl -w vm.max_map_count=262144
 	# docker compose up --build backend nginx postgres
-	docker compose up -d --build backend nginx postgres
+	docker compose up --build backend nginx postgres
 
 up:
 	# docker compose up
@@ -26,11 +26,11 @@ clean:
 	docker compose down -v
 
 fclean: clean
-	sudo find docker/avatars/ -mindepth 1 -type d -exec rm -rf {} +
+	sudo find backend/avatars/ -mindepth 1 -type d -exec rm -rf {} +
 	docker image rm transcendence-backend
 	# docker image rm postgres:17.2
 	docker image rm transcendence-nginx
-	rm -rf .docker/srcs/elk/esbackup/*
+	rm -rf .backend/srcs/elk/esbackup/*
 	# docker image prune
 
 re: fclean all
@@ -48,6 +48,6 @@ sh-postgres:
 	docker exec -it postgres /bin/bash
 
 ip-host:
-	@docker/srcs/backend/tools/iphost.sh
+	@backend/srcs/backend/tools/iphost.sh
 
 .PHONY: all start stop down restart clean fclean re clean-docker reset dev sh-backend sh-postgres ip-host
