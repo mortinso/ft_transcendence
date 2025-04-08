@@ -11,7 +11,7 @@ services:
     volumes:
       - ./backend/srcs/backend/conf:/transcendence/backend
       - static-volume:/transcendence/backend/staticfiles
-      - ../avatars:/transcendence/backend/mediafiles
+      - ./backend/avatars:/transcendence/backend/mediafiles
     restart: on-failure
     env_file:
       - .env
