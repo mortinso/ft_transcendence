@@ -14,7 +14,7 @@ async function updateSettingsPage() {
 function loadAccountSettings() {
     var contentDiv = document.getElementById('settings-container');
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', `/src/components/settings-account.html`, true);
+    xhr.open('GET', `/frontend/components/settings-account.html`, true);
     xhr.onreadystatechange = function () {
         if (this.readyState !== 4)
             return;
@@ -186,7 +186,7 @@ async function updateAvatar() {
 function loadSecuritySettings() {
     var contentDiv = document.getElementById('settings-container');
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', `/src/components/settings-security.html`, true);
+    xhr.open('GET', `/frontend/components/settings-security.html`, true);
     xhr.onreadystatechange = function () {
         if (this.readyState !== 4)
             return;
@@ -410,7 +410,7 @@ async function confirmPassword(password) {
 function loadGeneralSettings() {
     var contentDiv = document.getElementById('settings-container');
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', `/src/components/settings-general.html`, true);
+    xhr.open('GET', `/frontend/components/settings-general.html`, true);
     xhr.onreadystatechange = function () {
         if (this.readyState !== 4)
             return;
