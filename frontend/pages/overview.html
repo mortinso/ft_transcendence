@@ -27,21 +27,37 @@
             </ul>
         </div>
     </div>
-    <div class="bg-body-tertiary w-50 me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden">
+    <div class="bg-body-tertiary w-50 me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden overview-card" onclick="changeContent('pong')">
         <div class="my-3 p-3">
             <h2 class="display-5" data-i18n="overview.playPong">Play Pong</h2>
             <p id="pongPlayers" class="lead">{{0}} people playing</p>
         </div>
-        <div class="bg-dark shadow-sm mx-auto" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;"></div>
+        <div class="bg-dark shadow-sm mx-auto" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;">  
+            <ul class="list-group list-group-flush d-flex  justify-content-center h-100">
+                <li id="pong-games-played" class="list-group-item quick-stat" style="background-color: transparent;">Games
+                    played: {{GAMES_PLAYED}}</li>
+                <li id="pong-wins" class="list-group-item quick-stat">Wins: {{PONG_WINS}}</li>
+                <li id="pong-losses" class="list-group-item quick-stat">Losses: {{PONG_LOSSES}}</li>
+                <li id="pong-draws" class="list-group-item quick-stat">Draws: {{PONG_DRAWS}}</li>
+            </ul>
+        </div>
     </div>
 </div>
 <div class="d-md-flex flex-md-equal w-100 my-md-3 ps-md-3">
-    <div class="bg-body-tertiary w-50 me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden">
+    <div class="bg-body-tertiary w-50 me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden overview-card" onclick="changeContent('game2')">
         <div class="my-3 p-3">
             <h2 class="display-5" data-i18n="overview.playTicTacToe"></h2>
             <p id="ticTacToePlayers" class="lead">{{0}} people playing</p>
         </div>
-        <div class="bg-dark shadow-sm mx-auto" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;"></div>
+        <div class="bg-dark shadow-sm mx-auto" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;">
+            <ul class="list-group list-group-flush d-flex  justify-content-center h-100">
+                <li id="ttt-games-played" class="list-group-item quick-stat" style="background-color: transparent;">Games
+                    played: {{GAMES_PLAYED}}</li>
+                <li id="ttt-wins" class="list-group-item quick-stat">Wins: {{TTT_WINS}}</li>
+                <li id="ttt-losses" class="list-group-item quick-stat">Losses: {{TTT_LOSSES}}</li>
+                <li id="ttt-draws" class="list-group-item quick-stat">Draws: {{TTT_DRAWS}}</li>
+            </ul>
+        </div>
     </div>
     <div class="text-bg-primary w-50 me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden">
         <div class="my-3 py-3">

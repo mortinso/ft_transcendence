@@ -42,6 +42,35 @@ html, body {
   cursor: pointer;
 }
 
+.overview-card{
+  cursor: pointer;
+  animation: shrink 1s forwards;
+}
+
+.overview-card:hover{
+  cursor: pointer;
+  box-shadow: 0px 0px 20px 1px var(--bs-primary);
+  animation: grow 1s forwards alternate;
+}
+
+@keyframes grow {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.01);
+  }
+}
+
+@keyframes shrink {
+  0% {
+    transform: scale(1.01);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
 .settings-card:hover {
   cursor: pointer;
   box-shadow: 0px 15px 30px -5px rgba(0,0,0,0.2);

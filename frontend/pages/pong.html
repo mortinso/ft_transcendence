@@ -1,15 +1,15 @@
 <style>
-	body {
-		margin: 0;
+	#canvasWrapper {
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		height: 100vh;
-		overflow: hidden;
+		height: 100%;
 	}
 
 	canvas {
 		border: 2px solid black;
+		width: 60%;
+		height: auto;
 	}
 
 	[data-bs-theme="dark"] canvas {
@@ -51,9 +51,18 @@
 		cursor: pointer;
 		font-size: 16px;
 	}
+
+	h1 {
+		text-align: center;
+		margin-top: 20px;
+		margin-bottom: 0px;
+	}
 </style>
 
-<canvas id="pong" width="1000" height="500"></canvas>
+<h1>Pong</h1>
+<div id="canvasWrapper">
+	<canvas id="pong" width="1000" height="500"></canvas>
+</div>
 <div id="winnerPopup">
 	<p id="winnerMessage"></p>
 	<button id="restartGame">Play Again</button>
