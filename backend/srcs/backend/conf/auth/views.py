@@ -64,7 +64,7 @@ class LoginView(generics.GenericAPIView):
                 return Response({"detail": "Email sent."}, status=status.HTTP_200_OK)
             
             login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-            cache.set(f'user_online_{user.id}', True, timeout=3600)
+            cache.set(f'user_online_{user.id}', True, timeout=18000)
             user.is_online = True
             user.save()
             refresh = RefreshToken.for_user(user)
@@ -183,7 +183,7 @@ class CheckOTPView(generics.GenericAPIView):
                 return Response({"detail": "User not found."}, status=status.HTTP_400_BAD_REQUEST)
                 
             if hashlib.sha256(otp.encode()).hexdigest() == user.otp and user.otp_expiration > timezone.now():
-                cache.set(f'user_online_{user.id}', True, timeout=3600)
+                cache.set(f'user_online_{user.id}', True, timeout=18000)
                 user.is_online = True
                 user.save()
                 refresh = RefreshToken.for_user(user)
