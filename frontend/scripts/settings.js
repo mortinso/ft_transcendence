@@ -421,6 +421,7 @@ function loadGeneralSettings() {
         contentDiv.innerHTML = this.responseText;
         translateAll();
         languageSelector();
+        themeSelector();
     }
     xhr.send();
 }
@@ -433,9 +434,26 @@ function languageSelector() {
         _lang = langSelector.value;
         _user.idiom = _lang;
         i18next.changeLanguage(_lang);
-        translateAll();
-        updateUserLanguage();
         localStorage.setItem('lang', _lang);
+        updateUserLanguage();
+        translateAll();
+    });
+}
+
+//Theme selector
+function themeSelector(){
+    let themeSelector = document.getElementById('themeSelector');
+    let savedTheme = localStorage.getItem('theme');
+    if (savedTheme !== null && savedTheme !== undefined)
+        themeSelector.value = savedTheme;
+    else
+        themeSelector.value = 'system';
+    themeSelector?.addEventListener('change', function () {
+        if (themeSelector.value !== 'system')
+            localStorage.setItem('theme', themeSelector.value);
+        else
+            localStorage.removeItem('theme');
+        applyColorScheme();
     });
 }
 

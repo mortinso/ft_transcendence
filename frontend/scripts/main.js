@@ -3,6 +3,7 @@ let loggedIn = false;
 let _user = null;
 let _avatar = null;
 let _lang = 'EN';
+var _running = false;
 
 //Handle back and forward navigation events
 window.onpopstate = function (event) {
@@ -80,18 +81,25 @@ async function checkLogin() {
 }
 //Set the color scheme based on the user's browser settings
 function applyColorScheme() {
-    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        document.body.setAttribute('data-bs-theme', 'dark');
+    if (localStorage.getItem('theme') !== null) {
+        document.body.setAttribute('data-bs-theme', localStorage.getItem('theme'));
     }
     else {
-        document.body.setAttribute('data-bs-theme', 'light');
-    }
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
-        if (e.matches) {
+        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
             document.body.setAttribute('data-bs-theme', 'dark');
         }
         else {
             document.body.setAttribute('data-bs-theme', 'light');
+        }
+    }
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+        if (localStorage.getItem('theme') === null) {
+            if (e.matches) {
+                document.body.setAttribute('data-bs-theme', 'dark');
+            }
+            else {
+                document.body.setAttribute('data-bs-theme', 'light');
+            }
         }
     });
 }
@@ -175,6 +183,11 @@ function changeContent(page, pushState = true) {
                 break;
         }
         updateHeaderButton(page);
+        if (_running !== undefined)
+        {
+            if (_running && page !== 'pong')
+                _running = false;
+        }
     }
     xhr.send();
 }
@@ -183,12 +196,12 @@ function updateHeaderButton(page) {
     let overviewButton = document.getElementById('header-overview');
     let pongButton = document.getElementById('header-pong');
     let game2Button = document.getElementById('header-game2');
-    let livechatButton = document.getElementById('header-livechat');
+    let friendsButton = document.getElementById('header-friends');
     let buttons = {
         'overview': overviewButton,
         'pong': pongButton,
         'game2': game2Button,
-        'livechat': livechatButton
+        'friends': friendsButton
     };
     for (let key in buttons) {
         if (key === page) {

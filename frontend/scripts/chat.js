@@ -140,19 +140,3 @@ async function rejectFriendRequest(button){
     _user = await getUserData();
     fillFriendList();
 }
-
-function showBlockUserModal(button){
-    const userName = button.parentElement.parentElement.parentElement.querySelector('h6').innerText;
-    let removeUserModal = new bootstrap.Modal(document.getElementById('del-block-friend-modal'));
-    removeUserModal._element.querySelector('h1').innerText = i18next.t('livechat.blockUser');
-    removeUserModal._element.querySelector('p').innerText = `${i18next.t('livechat.blockUserQuestion')} "${userName}"?`;
-    removeUserModal._element.querySelector('.btn-danger').addEventListener('click', () => blockUser(button));
-    removeUserModal.show();
-}
-
-async function blockUser(button){
-    const userName = button.parentElement.parentElement.parentElement.querySelector('h6').innerText;
-    await blockUserAsync(userName);
-    _user = await getUserData();
-    fillFriendList();
-}

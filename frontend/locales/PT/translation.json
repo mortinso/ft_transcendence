@@ -30,7 +30,7 @@
     },
     "header":{
         "overview": "Visão Geral",
-        "livechat": "Chat",
+        "friends": "Amigos",
         "notifications": "Notificações",
         "profile": "Perfil",
         "settings": "Definições",
@@ -50,7 +50,8 @@
         "friendsOnline": "Amigos Online",
         "playPong": "Jogar Pong",
         "playTicTacToe": "Jogar Jogo do Galo",
-        "playersPlaying": "pessoas a jogar"
+        "playersPlaying": "pessoas a jogar",
+        "tournament": "Torneio"
     },
     "profile":{
         "addAsFriend": "Adicionar como amigo",
@@ -94,8 +95,12 @@
         "avatarTooLarge": "A imagem de perfil é demasiado grande. O tamanho máximo é 1MB",
         "intra42Disabled": "Esta funcionalidade está desativada para contas 42",
         "intra42Delete": "Atenção, esta é uma conta ligada à 42, se a apagares não vais poder iniciar sessão com esta conta novamente!",
-        "intra42Delete2": "Isto não afeta a tua conta no intra."
-        
+        "intra42Delete2": "Isto não afeta a tua conta no intra.",
+        "theme": "Tema",
+        "themeInfo": "Escolhe entre o tema claro e escuro",
+        "light": "⚪ Claro",
+        "dark": "⚫ Escuro",
+        "system": "◐ Sistema"
     },
     "livechat": {
         "friends": "Amigos",
