@@ -53,6 +53,11 @@ html, body {
   animation: grow 1s forwards alternate;
 }
 
+.card-details{
+  width: 80%;
+  border-radius: 21px 21px 0 0;
+}
+
 @keyframes grow {
   0% {
     transform: scale(1);

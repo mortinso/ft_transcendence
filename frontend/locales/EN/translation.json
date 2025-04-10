@@ -30,7 +30,7 @@
     },
     "header":{
         "overview": "Overview",
-        "livechat": "Live Chat",
+        "friends": "Friends",
         "notifications": "Notifications",
         "profile": "Profile",
         "settings": "Settings",
@@ -50,7 +50,8 @@
         "friendsOnline": "Friends Online",
         "playPong": "Play Pong",
         "playTicTacToe": "Play Tic Tac Toe",
-        "playersPlaying": "people playing"
+        "playersPlaying": "people playing",
+        "tournament": "Tournament"
     },
     "profile":{
         "addAsFriend": "Add as friend",
@@ -94,7 +95,12 @@
         "avatarTooLarge": "Avatar is too large. Maximum size is 1MB",
         "intra42Disabled": "This feature is disabled for 42 accounts",
         "intra42Delete": "Warning, this is a 42 linked account so if you delete it you will not be able to login with this account again!",
-        "intra42Delete2": "This doesn't affect your intra account."
+        "intra42Delete2": "This doesn't affect your intra account.",
+        "theme": "Theme",
+        "themeInfo": "Choose between light and dark theme",
+        "light": "⚪ Light",
+        "dark": "⚫ Dark",
+        "system": "◐ System"
     },
     "livechat": {
         "friends": "Friends",

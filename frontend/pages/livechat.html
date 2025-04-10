@@ -11,31 +11,6 @@
         <hr>
         <ul id="friend-list" class="list-group"></ul>
     </div>
-    <div id="chat-area" class="d-none container-fluid bg-body-secondary h-100 p-3 d-flex flex-column">
-        <h4 id="selected-friend"></h4>
-        <hr>
-        <div class="container-fluid bg-body d-flex flex-column p-3 flex-grow-1">
-            <ul class="list-group flex-grow-1 overflow-auto mb-3">
-                <li class="list-group-item p-2">
-                    <p>Message</p>
-                    <span class="opacity-50">user-time</span>
-                </li>
-                <li class="list-group-item p-2 text-end">
-                    <p>Message</p>
-                    <span class="opacity-50">user-time</span>
-                </li>
-                <li class="list-group-item p-2">
-                    <p>Message</p>
-                    <span class="opacity-50">user-time</span>
-                </li>
-            </ul>
-            <div class="input-group">
-                <input id="chat-input" type="text" class="form-control" placeholder="Type a message" aria-label="Message input"
-                    aria-describedby="send-message-button">
-                <button class="btn btn-outline-secondary" type="button" id="send-message-button" data-i18n="livechat.send">Send</button>
-            </div>
-        </div>
-    </div>
     <div class="modal fade" id="add-friend-modal" tabindex="-1" aria-labelledby="add-friend-modal-label"
         aria-hidden="true">
         <div class="modal-dialog">
@@ -95,14 +70,6 @@
                         <span class="m-0" data-i18n="livechat.remove">Remove</span>
                     </a>
                 </li>
-                <li onclick="showBlockUserModal(this)">
-                    <a class="dropdown-item">
-                        <svg width="16" height="16" class="me-2 mb-1">
-                            <use xlink:href="#block-icon"></use>
-                        </svg>
-                        <span class="m-0" data-i18n="livechat.block">Block</span>
-                    </a>
-                </li>
             </ul>
         </button>
     </li>
@@ -131,12 +98,5 @@
                 </button>
             </div>
         </div>
-    </li>
-</template>
-
-<template id="chatTemplate">
-    <li class="list-group-item p-2">
-        <p>Message</p>
-        <span class="opacity-50">user-time</span>
     </li>
 </template>

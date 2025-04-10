@@ -17,24 +17,19 @@
                 <option value="PT">🇵🇹 Português</option>
                 <option value="ES">🇪🇸 Español</option>
             </select>
-    </div>
-    <div>
-        <h4 data-i18n="settings.blockedUsers">Blocked users</h4>
-        <p data-i18n="settings.blockedUsersInfo">Here you can see a list of users you have blocked.</p>
-        <ul id="blockedUsers" class="list-group">
-            <li class="list-group-item d-flex gap-3 py-3">
-                <img alt="user avatar" width="50" height="50" class="rounded-circle flex-shrink-0"
-                    onerror="this.style.display='none'" style="object-fit: cover;">
-                <h5 class="my-auto">[HC] Username</h5>
-                <button class="btn btn-primary pb-0 ms-auto">
-                    <svg class="mb-1" width="24" height="24">
-                        <use xlink:href="#unblock"></use>
-                    </svg>
-                    [HC] Unblock
-                </button>
-            </li>
-        </ul>
-    </div>
+        </div>
+        <div>
+            <h4 data-i18n="settings.theme">Theme</h4>
+            <p data-i18n="settings.themeInfo">Site theme</p>
+            <div class="mb-5">
+                <label for="theme" class="form-label" data-i18n="settings.theme">Theme</label>
+                <select class="form-select" id="themeSelector">
+                    <option value="dark" data-i18n="settings.dark">Dark</option>
+                    <option value="light" data-i18n="settings.light">Light</option>
+                    <option value="system" data-i18n="settings.system">System</option>
+                </select>
+            </div>
+        </div>
 </div>
 <template>
     <li class="list-group-item d-flex gap-3 py-3">
