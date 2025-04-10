@@ -37,6 +37,7 @@ class ListUsersSerializer(serializers.ModelSerializer):
             "ttt_draws",
             "ttt_games_played",
             "is_playing",
+            "game_type",
             "tfa",
             "idiom",
             "intra42_id",
@@ -70,6 +71,7 @@ class UpdateUserSerializer(serializers.ModelSerializer):
             "last_name",
             "tfa",
             "idiom",
+            "game_type",
         )
         extra_kwargs = {
             "username": {"required": False},
