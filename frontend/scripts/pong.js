@@ -6,6 +6,7 @@
 	const ctx = canvas.getContext('2d');
 	const winnerPopup = document.getElementById('winnerPopup');
 	const winnerMessage = document.getElementById('winnerMessage');
+	const pauseBtn = document.getElementById('PauseBtn');
 
 	const PADDLE_SPEED = 2;
 	const BALL_SPEED = 2;
@@ -180,6 +181,10 @@
 
 	homeBtn.addEventListener('click', () => {
 		changeContent('overview', 0);
+	});
+
+	pauseBtn.addEventListener('click', () => {
+		paused = !paused;
 	});
 
 	function draw() {
