@@ -1,6 +1,7 @@
 (function () {
-	_running = true;
-	
+
+	let paused = false;
+
 	const canvas = document.getElementById('pong');
 	const ctx = canvas.getContext('2d');
 	const winnerPopup = document.getElementById('winnerPopup');
@@ -198,9 +199,7 @@
 	}
 
 	function gameLoop() {
-		if (_running === false)
-			return;
-		update();
+		if (!paused) update();
 		draw();
 		requestAnimationFrame(gameLoop);
 	}
@@ -210,6 +209,7 @@
 		if (e.key === 's') player1.down = true;
 		if (e.key === 'ArrowUp') player2.up = true;
 		if (e.key === 'ArrowDown') player2.down = true;
+		if (e.key.toLocaleLowerCase() == 'p') paused = !paused;
 	});
 
 	window.addEventListener('keyup', (e) => {
@@ -219,8 +219,4 @@
 		if (e.key === 'ArrowDown') player2.down = false;
 	});
 
-	if (_running)
-		gameLoop();
-	else
-		return;
 })();
