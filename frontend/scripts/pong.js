@@ -1,5 +1,7 @@
 (function () {
 
+	_running = true;
+
 	let paused = false;
 
 	const canvas = document.getElementById('pong');
@@ -204,6 +206,7 @@
 	}
 
 	function gameLoop() {
+		if (_running === false) return;
 		if (!paused) update();
 		draw();
 		requestAnimationFrame(gameLoop);
@@ -223,5 +226,8 @@
 		if (e.key === 'ArrowUp') player2.up = false;
 		if (e.key === 'ArrowDown') player2.down = false;
 	});
+
+	if (_running) gameLoop();
+	else return;
 
 })();
