@@ -215,3 +215,4 @@ class CheckSessionView(APIView):
             )
         
         return Response({"valid": True})
+
