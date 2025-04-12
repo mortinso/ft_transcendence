@@ -215,16 +215,16 @@
 	window.addEventListener('keydown', (e) => {
 		if (e.key.toLocaleLowerCase() === 'w') player1.up = true;
 		if (e.key.toLocaleLowerCase() === 's') player1.down = true;
-		if (e.key.toLocaleLowerCase() === 'ArrowUp') player2.up = true;
-		if (e.key.toLocaleLowerCase() === 'ArrowDown') player2.down = true;
+		if (e.key === 'ArrowUp') player2.up = true;
+		if (e.key === 'ArrowDown') player2.down = true;
 		if (e.key.toLocaleLowerCase() == 'p') paused = !paused;
 	});
 
 	window.addEventListener('keyup', (e) => {
 		if (e.key.toLocaleLowerCase() === 'w') player1.up = false;
 		if (e.key.toLocaleLowerCase() === 's') player1.down = false;
-		if (e.key.toLocaleLowerCase() === 'ArrowUp') player2.up = false;
-		if (e.key.toLocaleLowerCase() === 'ArrowDown') player2.down = false;
+		if (e.key === 'ArrowUp') player2.up = false;
+		if (e.key === 'ArrowDown') player2.down = false;
 	});
 
 	if (_running) gameLoop();
