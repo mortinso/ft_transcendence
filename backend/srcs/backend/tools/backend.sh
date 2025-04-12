@@ -12,7 +12,7 @@ cd backend
 
 python3 manage.py collectstatic --noinput
 
-python3 manage.py makemigrations
+python3 manage.py makemigrations users games --noinput
 
 python3 manage.py migrate
 
