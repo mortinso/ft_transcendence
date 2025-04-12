@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from games.models import Game
 from django.core.files.storage import default_storage
 import os
 from django.core.cache import cache
@@ -28,6 +29,7 @@ IDIOMS = (
 )
 
 
+
 class User(AbstractUser):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     email = models.EmailField(unique=True)
@@ -37,6 +39,7 @@ class User(AbstractUser):
     blocked = models.ManyToManyField("self", symmetrical=False, related_name="blocked_set")
     pong_requests = models.ManyToManyField("self", symmetrical=False, related_name="pong_requests_set")
     ttt_requests = models.ManyToManyField("self", symmetrical=False, related_name="ttt_requests_set")
+    game_list = models.ManyToManyField(Game, related_name="players")
     pong_wins = models.IntegerField(default=0)
     pong_losses = models.IntegerField(default=0)
     pong_draws = models.IntegerField(default=0)

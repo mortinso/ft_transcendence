@@ -23,6 +23,7 @@ urlpatterns = [
     path("api/users/", include("users.urls")),
     path("api/auth/", include("auth.urls")),
     path("api/oauth/", include("oauth.urls")),
+    path("api/users/games/", include("games.urls")),
 ]
 
 if settings.DEBUG:

@@ -68,7 +68,7 @@ def login_redirect_42user(request: HttpRequest):
             cache.delete(f'user_online_{user.id}')
         
         login(request, user)
-        cache.set(f"user_online_{user.id}", True, timeout=3600)
+        cache.set(f"user_online_{user.id}", True, timeout=18000) # 5hs
         user.is_online = True
         user.save()
         refresh = RefreshToken.for_user(user)

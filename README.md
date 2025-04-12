@@ -72,6 +72,16 @@ On signup, a 6-digit one time password is sent to the user email. That password 
 
 If the user's tfa option is active, when the user logs in, a 6-digit one time password is sent to the user email. That password must be then sent to /api/auth/check_otp/ as 'otp'. If the OTP is valid, the page will return the JWT tokens.
 
+
+## Games
+
+- `/api/<uuid:user_pk>/games/create/` (create game - returns game info, including game_id number)
+- `/api/<uuid:user_pk>/games/` (list user's game history)
+- `<uuid:pk>/games/<uuid:game_pk>/edit/` (edit specific game using game_id number)
+
+
+
+
 # ELK
 
 ## Import dashboard to Kibana:
