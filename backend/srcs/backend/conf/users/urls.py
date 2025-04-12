@@ -1,4 +1,9 @@
-from django.urls import path
+from django.urls import path, inlcude
+from games.views import (
+    ListGamesView,
+    # GameDetailsView,
+    RetrieveUpdateGameView,
+)
 from .views import (
     ListUsersView,
     UserDetailsView,
@@ -35,4 +40,5 @@ urlpatterns = [
     path("<uuid:pk>/get_avatar/", GetImageView.as_view(), name="get_avatar"),
     path("<uuid:pk>/", UserDetailsView.as_view(), name="user_details"),
     path("", ListUsersView.as_view(), name="user_list"),
+    path("<uuid:pk>/games/edit/", RetrieveUpdateGameView.as_view(), name="game_update"),
 ]
