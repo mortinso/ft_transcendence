@@ -75,8 +75,6 @@ async function login(event) {
     postLogin();
 }
 
-// INIT TEST LOGIN WITH 42
-
 //Handle the OAuth return
 async function handleOAuthReturn() {
     const urlParams = new URLSearchParams(window.location.search);
@@ -147,13 +145,17 @@ document.addEventListener('DOMContentLoaded', async function() {
     }
 });
 
-// END TEST LOGIN WITH 42
-
 //Initialize main page after login
 async function postLogin(){
     if (loggedIn) {
         document.getElementById('header').style.display = 'block';
         _user = await getUserData();
+        if (_user !== null)
+        {
+            _lang = _user.idiom;
+            localStorage.setItem('lang', _lang);
+            await i18next.changeLanguage(_lang);
+        }
         await getNotifications();
         await getUserAvatar(_user.id).then(avatar => { _avatar = avatar; });
         document.getElementById('header-avatar').src = _avatar;

@@ -444,6 +444,9 @@ function languageSelector() {
 function themeSelector(){
     let themeSelector = document.getElementById('themeSelector');
     let savedTheme = localStorage.getItem('theme');
+    console.log(savedTheme);
+    if (savedTheme === 'auto')
+        savedTheme = 'system';
     if (savedTheme !== null && savedTheme !== undefined)
         themeSelector.value = savedTheme;
     else
