@@ -166,7 +166,6 @@ async function postLogin(){
 // Periodic session verification
 let sessionCheckInterval;
 
-let time = 0;
 function checkSessionValidity() {
     const token = sessionStorage.getItem('jwt');
     if (!token) return;
