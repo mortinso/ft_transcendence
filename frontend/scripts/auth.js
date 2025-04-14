@@ -31,12 +31,10 @@ async function login(event) {
         }
         else if (data?.error === 'User already logged in.') {
             alert(i18next.t('login.alreadyLoggedIn'));
-            console.error('User already logged in');
             return null;
         }
         else if (data?.error === 'User is deactivated.') {
             alert(i18next.t('login.deactivated'));
-            console.error('User is deactivated');
             return null;
         }
         else {
@@ -69,7 +67,6 @@ async function login(event) {
         modal.show();
         document.getElementById('loginLoading').classList.toggle('d-none');
         translateAll();
-        //TODO: log error
     });
 
     postLogin();
@@ -276,8 +273,6 @@ async function confirmF2A() {
     }).catch(error => {
         let modal = new bootstrap.Modal(document.getElementById('loginFailModal'));
         modal.show();
-        //log error
-        console.error(error);
     });
 }
 
@@ -307,14 +302,12 @@ async function logout() {
             return;
         }
         else {
-            alert('Logout failed!');
             return;
         }
     }).catch(error => {
         let modal = new bootstrap.Modal(document.getElementById('loginFailModal'));
         modal.show();
         document.getElementById('loginLoading').classList.toggle('d-none');
-        //log error
     });
     clearSession();
 }
@@ -365,9 +358,7 @@ function signup(event) {
         }
     }).then(response => {
         if (response.status === 400) {
-            //TODO: make message more generic
             document.getElementById('signupUsername').classList.add('is-invalid');
-            console.warn(response);
             return;
         }
         else if (response.status === 201 || response.status === 200) {
@@ -384,8 +375,6 @@ function signup(event) {
         let modal = new bootstrap.Modal(document.getElementById('signupFailModal'));
         modal.show();
         translateAll();
-        //log error
-        console.error(error);
     });
 }
 
@@ -449,13 +438,10 @@ async function confirmSignup() {
     }).catch(error => {
         let modal = new bootstrap.Modal(document.getElementById('signupFailModal'));
         modal.show();
-        //log error
-        console.error(error);
     });
 }
 
 //Get user data
-//TODO change to be able to get any user instead of just the logged in user
 async function getUserData() {
     const userID = await getUserID();
     if (userID === null)
@@ -474,7 +460,6 @@ async function getUserData() {
         return data;
     }
     if (response.status !== 200) {
-        console.error('Error fetching user data');
         logout();
         return;
     };
@@ -513,7 +498,6 @@ async function refreshLogin() {
                 return response.json();
             }
             else {
-                console.error('Error refreshing token', response);
                 return null;
             }
         }).then(data => {
@@ -701,11 +685,9 @@ async function getUserAvatar(userID) {
             const objectURL = URL.createObjectURL(blob);
             return objectURL;
         } else {
-            console.error('Error fetching avatar');
             return null;
         }
     } catch (error) {
-        console.error('Error fetching avatar', error);
         return null;
     }
 }

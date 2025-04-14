@@ -62,6 +62,14 @@
         <button class="btn btn-outline dropdown-toggle px-1 pe-2 py-0" data-bs-toggle="dropdown"
             onclick="showFriendOptions(event)">
             <ul class="dropdown-menu">
+                <li onclick="showProfile(this)">
+                    <a class="dropdown-item">
+                        <svg width="16" height="16" class="me-2 mb-1">
+                            <use xlink:href="#profile-icon"></use>
+                        </svg>
+                        <span class="m-0" data-i18n="livechat.profile">Profile</span>
+                    </a>
+                </li>
                 <li onclick="showRemoveFriendModal(this)">
                     <a class="dropdown-item">
                         <svg width="16" height="16" class="me-2 mb-1">

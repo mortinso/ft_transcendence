@@ -28,7 +28,6 @@ async function initialize() {
         await new Promise(resolve => setTimeout(resolve, 100));
         if (window.sessionStorage.getItem('42error') !== null) {
             const error = window.sessionStorage.getItem('42error');
-            console.log(error);
             switch (error) {
                 case 'User already logged in.':
                     alert(i18next.t('login.alreadyLoggedIn'));
@@ -131,7 +130,7 @@ function translateAll() {
 }
 
 //Change the content of the page
-function changeContent(page, pushState = true) {
+function changeContent(page, pushState = true, params=null) {
     var contentDiv = document.getElementById('content');
     // Remove previously added scripts
     var oldScripts = document.querySelectorAll('script[data-dynamic]');
@@ -169,7 +168,7 @@ function changeContent(page, pushState = true) {
                 updateOverviewPage();
                 break;
             case 'profile':
-                updateProfilePage();
+                updateProfilePage(params);
                 break;
             case 'livechat':
                 initChatPage();
