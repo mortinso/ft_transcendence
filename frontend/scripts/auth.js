@@ -177,18 +177,27 @@ function checkSessionValidity() {
             'Content-Type': 'application/json'
         }
     })
-    .then(response => {
-        if (!response.ok) {
-            return response.json().then(data => {
+    .then(async response => {
+        if (response.status == 401) {
+            const data = await response.json().catch(() => ({}));
+            
+            if (data.code === 'token_not_valid' && 
+                data.detail === 'Given token not valid for any token type') {
+                    return;
+            }
+            else {
                 alert(data.detail || i18next.t('login.sessionExpired', 'Your session has expired because you are logged in elsewhere'));
                 clearSession();
                 window.location.href = '/?error=session_expired';
-            });
+            }
         }
-        return response.json();
+        else if (response.status == 200) {
+            return;
+        }
     })
     .catch();
 }
+
 
 function startSessionCheck() {
     if (sessionCheckInterval) 
