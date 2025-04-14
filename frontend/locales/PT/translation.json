@@ -55,6 +55,7 @@
     },
     "profile":{
         "addAsFriend": "Adicionar como amigo",
+        "removeFriend": "Remover amigo",
         "message": "Enviar mensagem",
         "stats": "Estatísticas",
         "lastGames": "Últimos 5 jogos",
@@ -119,6 +120,7 @@
         "blockUser": "Bloquear Utilizador",
         "blockUserQuestion": "Tens a certeza que queres bloquear",
         "chatPlaceholder": "Escreve a tua mensagem aqui",
-        "send": "Enviar"
+        "send": "Enviar",
+        "profile": "Mostrar Perfil"
     }
 }

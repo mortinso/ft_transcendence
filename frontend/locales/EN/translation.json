@@ -55,6 +55,7 @@
     },
     "profile":{
         "addAsFriend": "Add as friend",
+        "removeFriend": "Remove friend",
         "message": "Message",
         "stats": "Stats",
         "lastGames": "Last 5 games",
@@ -119,6 +120,7 @@
         "blockUser": "Block User",
         "blockUserQuestion": "Are you sure you want to block",
         "chatPlaceholder": "Type your message here",
-        "send": "Send"
+        "send": "Send",
+        "profile": "Show Profile"
     }
 }

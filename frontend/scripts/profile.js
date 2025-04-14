@@ -1,9 +1,29 @@
-async function updateProfilePage() {
-    if (_user === null)
-        _user = await getUserData();
+let userProfile = null;
 
-    document.getElementById('username').innerText = `${_user?.username}`;
-    document.getElementById('userAvatar').src = _avatar;
+async function updateProfilePage(user=null) {
+    if (user === null)
+    {
+        if (_user === null)
+            _user = await getUserData();
+    
+        document.getElementById('username').innerText = `${_user?.username}`;
+        document.getElementById('userAvatar').src = _avatar;
+    }
+    else
+    {
+        userProfile = await getUserByID(user);
+        document.getElementById('username').innerText = `${userProfile?.username}`;
+        document.getElementById('userAvatar').src = userProfile?.avatar;
+
+        document.getElementById('add-friend-btn').classList.remove('d-none');
+        if (_user.friends.includes(userProfile.id))
+        {
+            let btn = document.getElementById('add-friend-btn');
+            btn.setAttribute('data-i18n', i18next.t('profile.removeFriend'));
+            btn.classList.add('btn-danger');
+            btn.onclick = () => changeContent('livechat');
+        }
+    }
     createPongChart();
     createPongGameList();
     createSecondChart();
@@ -13,32 +33,34 @@ async function updateProfilePage() {
 
 //Create chart for pong games
 function createPongChart() {
+    let user = userProfile === null ? _user : userProfile;
     new Chart("pongChart", {
         type: 'doughnut',
         data: {
             labels: [i18next.t('overview.wins'), i18next.t('overview.losses'), i18next.t('overview.draws')],
             datasets: [{
-                //TODO fetch data from backend
-                data: [3, 2, 1],
+                data: [user?.pong_wins, user?.pong_losses, user?.pong_draws],
                 backgroundColor: ['green', 'red', 'grey']
             }]
         }
     })
 }
+
 //Create chart for the second game
 function createSecondChart() {
+    let user = userProfile === null ? _user : userProfile;
     new Chart("secondChart", {
         type: 'doughnut',
         data: {
             labels: [i18next.t('overview.wins'), i18next.t('overview.losses'), i18next.t('overview.draws')],
             datasets: [{
-                //TODO fetch data from backend
-                data: [5, 4, 2],
+                data: [user?.ttt_wins, user?.ttt_losses, user?.ttt_draws],
                 backgroundColor: ['green', 'red', 'grey']
             }]
         }
     })
 }
+
 //Create list of last 5 games of pong
 function createPongGameList() {
     //TODO fetch data from backend
@@ -63,6 +85,7 @@ function createPongGameList() {
         gameList.appendChild(a);
     });
 }
+
 //Create list of last 5 games of the second game
 function createSecondGameList() {
     //TODO fetch data from backend
