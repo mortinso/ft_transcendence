@@ -169,84 +169,37 @@ async function postLogin(){
 // Periodic session verification
 let sessionCheckInterval;
 
-function isTokenExpired(token) {
-    try {
-        const payload = JSON.parse(atob(token.split('.')[1]));
-        const now = Math.floor(Date.now() / 1000);
-        return payload.exp && payload.exp < now;
-    } catch (e) {
-        return true;
-    }
-}
-
-// async function checkSessionValidity() {
-//     const token = sessionStorage.getItem('jwt');
-//     if (!token) return;
-    
-//     console.log('Checking Token JWT: ', token);
-    
-//     fetch('/api/auth/check_session/', {
-//         method: 'GET',
-//         headers: {
-//             'Authorization': `Bearer ${token}`,
-//             'Content-Type': 'application/json'
-//         }
-//     })
-//     .then(response => {
-//         if (response.status === 401) {
-//             await refreshLogin();
-//             token = sessionStorage.getItem('jwt');
-//             if (!token) return;
-//         }
-//         if (!response.ok) {
-//             return response.json().then(data => {
-//                 console.log('Invalid Session:', data);
-//                 alert(data.detail || i18next.t('login.sessionExpired', 'Your session has expired because you are logged in elsewhere'));
-//                 clearSession();
-//                 window.location.href = '/?error=session_expired';
-//             });
-//         }
-//         return response.json();
-//     })
-//     .catch(error => {
-//         console.error('Error checking session:', error);
-//     });
-// }
-
-async function checkSessionValidity() {
-    let token = sessionStorage.getItem('jwt');
+let time = 0;
+function checkSessionValidity() {
+    const token = sessionStorage.getItem('jwt');
     if (!token) return;
     
-    console.log('Checking Token JWT: ', token);
-    
-    try {
-        const response = await fetch('/api/auth/check_session/', {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
-            }
-        });
-        
-        if (response.status === 401) {
-            await refreshLogin();
-            token = sessionStorage.getItem('jwt');
-            if (!token) return;
+    fetch('/api/auth/check_session/', {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
         }
-        
-        if (!response.ok) {
-            const data = await response.json();
-            console.log('Invalid Session:', data);
-            alert(data.detail || i18next.t('login.sessionExpired', 'Your session has expired because you are logged in elsewhere'));
-            clearSession();
-            window.location.href = '/?error=session_expired';
+    })
+    .then(async response => {
+        if (response.status == 401) {
+            const data = await response.json().catch(() => ({}));
+            
+            if (data.code === 'token_not_valid' && 
+                data.detail === 'Given token not valid for any token type') {
+                    return;
+            }
+            else {
+                alert(data.detail || i18next.t('login.sessionExpired', 'Your session has expired because you are logged in elsewhere'));
+                clearSession();
+                window.location.href = '/?error=session_expired';
+            }
+        }
+        else if (response.status == 200) {
             return;
         }
-        
-        return await response.json();
-    } catch (error) {
-        console.error('Error checking session:', error);
-    }
+    })
+    .catch();
 }
 
 
@@ -254,8 +207,7 @@ function startSessionCheck() {
     if (sessionCheckInterval) 
         clearInterval(sessionCheckInterval);
     // Set recheck every 15 seconds
-    sessionCheckInterval = setInterval(() => checkSessionValidity(), 15000);
-    // sessionCheckInterval = setInterval(checkSessionValidity, 15000);
+    sessionCheckInterval = setInterval(checkSessionValidity, 15000);
     checkSessionValidity();
 }
 

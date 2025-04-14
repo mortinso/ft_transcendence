@@ -48,6 +48,11 @@ async function initialize() {
     else {
         history.replaceState(pageState, null, "");
         _user = await getUserData();
+        if (!_user) {
+            clearSession();
+            window.location.href = '/?error=session_expired';
+            return;
+        } 
         _lang = _user.idiom;
         await getNotifications();
         await getUserAvatar(_user.id).then(avatar => { _avatar = avatar; });
