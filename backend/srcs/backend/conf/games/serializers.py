@@ -18,6 +18,7 @@ class ListGamesSerializer(serializers.ModelSerializer):
         fields = (
             "game_id",
             "date",
+            "user",
             "player1",
             "player2",
             "result",
@@ -33,6 +34,7 @@ class UpdateGameSerializer(serializers.ModelSerializer):
         fields = (
             "game_id",
             "date",
+            "user",
             "player1",
             "player2",
             "result",
@@ -47,6 +49,7 @@ class CreateGameSerializer(serializers.ModelSerializer):
         fields = (
             "game_id",
             "date",
+            "user",
             "player1",
             "player2",
             "result",

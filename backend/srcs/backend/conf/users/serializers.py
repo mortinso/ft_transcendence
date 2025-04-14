@@ -26,6 +26,7 @@ class ListUsersSerializer(serializers.ModelSerializer):
             "friends",
             "friend_requests",
             "blocked",
+            "game_list",
             "pong_requests",
             "ttt_requests",
             "pong_wins",
