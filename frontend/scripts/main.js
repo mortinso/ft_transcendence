@@ -63,12 +63,11 @@ async function initialize() {
 //Check if the user is logged in
 async function checkLogin() {
     const jwt = sessionStorage.getItem('jwt');
-    const refresh = localStorage.getItem('refresh');
+    const refresh = localStorage.getItem('keepLoggedIn') === 'true' ? localStorage.getItem('refresh') : sessionStorage.getItem('refresh');
     if (refresh !== null) {
         await verifyRefreshToken(refresh).then(valid => {
-            if (!valid) {
+            if (valid === false) {
                 localStorage.removeItem('refresh');
-                localStorage.removeItem('keepLoggedIn');
                 return false;
             }
         });

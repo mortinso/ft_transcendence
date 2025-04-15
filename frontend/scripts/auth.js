@@ -4,9 +4,9 @@ async function login(event) {
     const username = document.getElementById('loginUsername').value;
     const password = document.getElementById('loginPassword').value;
     const keepLoggedIn = document.getElementById('keepLogin').checked;
-    if (keepLoggedIn)
+    if (keepLoggedIn === true)
         localStorage.setItem('keepLoggedIn', true);
-    else
+    else if (keepLoggedIn === false && localStorage.getItem('keepLoggedIn') !== null)
         localStorage.removeItem('keepLoggedIn');
     const url = '/api/auth/login/';
     document.getElementById('loginLoading').classList.toggle('d-none');
@@ -503,7 +503,7 @@ async function refreshLogin() {
             if (data !== null) {
                 sessionStorage.setItem('jwt', data.access);
                 sessionStorage.setItem('refresh', data.refresh);
-                if (localStorage.getItem('keepLoggedIn') === true)
+                if (localStorage.getItem('keepLoggedIn') === 'true')
                     localStorage.setItem('refresh', data.refresh);
                 return getUserData();
             }
