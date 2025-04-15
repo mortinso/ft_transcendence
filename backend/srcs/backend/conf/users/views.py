@@ -10,10 +10,10 @@ from .serializers import (
     BlockUserSerializer,
     UnblockUserSerializer,
     AddAvatarSerializer,
-    InviteToPongSerializer,
-    AcceptPongSerializer,
-    InviteToTTTSerializer,
-    AcceptTTTSerializer,
+    # InviteToPongSerializer,
+    # AcceptPongSerializer,
+    # InviteToTTTSerializer,
+    # AcceptTTTSerializer,
 )
 from rest_framework import generics
 from rest_framework.views import APIView
@@ -136,31 +136,31 @@ class UnblockUserView(generics.RetrieveUpdateAPIView):
     queryset = User.objects.all()
     serializer_class = UnblockUserSerializer
 
-class InvitePongView(generics.RetrieveUpdateAPIView):
-    permission_classes = [IsSelf]
+# class InvitePongView(generics.RetrieveUpdateAPIView):
+#     permission_classes = [IsSelf]
 
-    queryset = User.objects.all()
-    serializer_class = InviteToPongSerializer
-
-
-class AcceptPongView(generics.RetrieveUpdateAPIView):
-    permission_classes = [IsSelf]
-
-    queryset = User.objects.all()
-    serializer_class = AcceptPongSerializer
-
-class InviteTTTView(generics.RetrieveUpdateAPIView):
-    permission_classes = [IsSelf]
-
-    queryset = User.objects.all()
-    serializer_class = InviteToTTTSerializer
+#     queryset = User.objects.all()
+#     serializer_class = InviteToPongSerializer
 
 
-class AcceptTTTView(generics.RetrieveUpdateAPIView):
-    permission_classes = [IsSelf]
+# class AcceptPongView(generics.RetrieveUpdateAPIView):
+#     permission_classes = [IsSelf]
 
-    queryset = User.objects.all()
-    serializer_class = AcceptTTTSerializer
+#     queryset = User.objects.all()
+#     serializer_class = AcceptPongSerializer
+
+# class InviteTTTView(generics.RetrieveUpdateAPIView):
+#     permission_classes = [IsSelf]
+
+#     queryset = User.objects.all()
+#     serializer_class = InviteToTTTSerializer
+
+
+# class AcceptTTTView(generics.RetrieveUpdateAPIView):
+#     permission_classes = [IsSelf]
+
+#     queryset = User.objects.all()
+#     serializer_class = AcceptTTTSerializer
 
 class GetImageView(APIView):
     def get(self, request, pk):

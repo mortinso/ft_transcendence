@@ -51,6 +51,7 @@ class ListGamesView(generics.ListAPIView):
 
 class GameDetailsView(generics.RetrieveAPIView):
     serializer_class = ListGamesSerializer
+    permission_classes = [IsGameOwner]
 
     def get_queryset(self):
         user_pk = self.kwargs.get("user_pk")
