@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from .models import Game
 from .serializers import (
     ListGamesSerializer,
-    UpdateGameSerializer,
+    RetrieveUpdateGameSerializer,
     CreateGameSerializer,
 )
 from rest_framework import generics
@@ -22,51 +22,33 @@ import requests
 from django.core.cache import cache
 from django.contrib.auth import logout
 from rest_framework.permissions import BasePermission
+from backend.permissions import IsGameOwner
+from backend.permissions import IsSelf
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
 
-class IsGameOwner(BasePermission):
-    """
-    Custom permission to allow only the owner of the game to create or edit it.
-    """
-
-    def has_permission(self, request, view):
-        # Check if the user is authenticated
-        if not request.user.is_authenticated:
-            return False
-
-        # Check if the user_pk in the URL matches the logged-in user's ID
-        user_pk = view.kwargs.get("user_pk")
-        return request.user.id == user_pk
-
 class ListGamesView(generics.ListAPIView):
     serializer_class = ListGamesSerializer
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         user_pk = self.kwargs.get("user_pk")
+        logger.info(f"Listing games for user {user_pk} .")
         return Game.objects.filter(user__id=user_pk)
 
 
-class GameDetailsView(generics.RetrieveAPIView):
-    serializer_class = ListGamesSerializer
-    permission_classes = [IsGameOwner]
-
-    def get_queryset(self):
-        user_pk = self.kwargs.get("user_pk")
-        game_pk = self.kwargs.get("game_pk")
-        return Game.objects.filter(user__id=user_pk, game_id=game_pk)
-
-
-class RetrieveUpdateGameView(generics.RetrieveUpdateAPIView):
-    serializer_class = UpdateGameSerializer
+class RetrieveUpdateGameView(generics.UpdateAPIView):
+    serializer_class = RetrieveUpdateGameSerializer
     lookup_field = "game_id"
     lookup_url_kwarg = "game_pk"
-    permission_classes = [IsGameOwner]
+    permission_classes = [IsGameOwner, IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         user_pk = self.kwargs.get("user_pk")
+        logger.info(f"user {user_pk} {self.request.user.id}.")
         return Game.objects.filter(user__id=user_pk)
 
 def add_game_to_user(user_id, game):
@@ -82,7 +64,7 @@ def add_game_to_user(user_id, game):
 
 class CreateGameView(generics.CreateAPIView):
     serializer_class = CreateGameSerializer
-    permission_classes = [IsGameOwner]
+    permission_classes = [IsGameOwner, IsAuthenticated]
 
     def perform_create(self, serializer):
         from users.models import User

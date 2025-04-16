@@ -20,8 +20,8 @@ class Game(models.Model):
     # active = models.BooleanField()
     player1 = models.CharField(max_length=10, default="Player1")
     player2 = models.CharField(max_length=10, default="Player2")
-    result = models.CharField(max_length=3, default=None, null=True, blank=True, editable=False)
-    winner = models.CharField(max_length=10, default=None, null=True, blank=True, editable=False)
+    result = models.CharField(max_length=3, default=None, null=True, blank=True)
+    winner = models.CharField(max_length=10, default=None, null=True, blank=True)
     game_type = models.CharField(max_length=10, choices=GAME_TYPES, default=None, null=True, blank=True)
 
     def __str__(self):

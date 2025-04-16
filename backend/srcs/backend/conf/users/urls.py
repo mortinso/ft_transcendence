@@ -1,7 +1,7 @@
 from django.urls import path, include
 from games.views import (
     ListGamesView,
-    GameDetailsView,
+    # GameDetailsView,
     RetrieveUpdateGameView,
     CreateGameView,
 )
@@ -37,10 +37,10 @@ urlpatterns = [
     path("<uuid:pk>/get_avatar/", GetImageView.as_view(), name="get_avatar"),
     path("<uuid:pk>/", UserDetailsView.as_view(), name="user_details"),
     path("", ListUsersView.as_view(), name="user_list"),
-    path("<uuid:pk>/games/", ListGamesView.as_view(), name="games_list"),
+    path("<uuid:user_pk>/games/", ListGamesView.as_view(), name="games_list"),
     path("<uuid:user_pk>/games/create/", CreateGameView.as_view(), name="create_game"),
-    path("<uuid:pk>/games/<uuid:game_pk>", GameDetailsView.as_view(), name="game_details"),
-    path("<uuid:pk>/games/<uuid:game_pk>/edit/", RetrieveUpdateGameView.as_view(), name="game_update"),
+    # path("<uuid:user_pk>/games/<uuid:game_pk>", GameDetailsView.as_view(), name="game_details"),
+    path("<uuid:user_pk>/games/<uuid:game_pk>/edit/", RetrieveUpdateGameView.as_view(), name="game_update"),
     # path("<uuid:pk>/invite_to_pong/", InvitePongView.as_view(), name="invite_pong"),
     # path("<uuid:pk>/accept_pong_invite/", AcceptPongView.as_view(), name="accept_pong"),
     # path("<uuid:pk>/invite_to_ttt/", InviteTTTView.as_view(), name="invite_ttt"),

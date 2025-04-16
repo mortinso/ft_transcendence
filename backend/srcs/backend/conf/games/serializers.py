@@ -27,7 +27,7 @@ class ListGamesSerializer(serializers.ModelSerializer):
         )
 
 
-class UpdateGameSerializer(serializers.ModelSerializer):
+class RetrieveUpdateGameSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Game
@@ -41,6 +41,12 @@ class UpdateGameSerializer(serializers.ModelSerializer):
             "winner",
             "game_type",
         )
+
+    def validate(self, data):
+        # Prevent updates if a winner is already set
+        if self.instance and self.instance.winner is not None and self.instance.result is not None:
+            raise serializers.ValidationError("This game is locked because a winner and result have already been set.")
+        return data
 
 
 class CreateGameSerializer(serializers.ModelSerializer):
