@@ -75,7 +75,7 @@
 	}
 
 	function update() {
-		if (checkWinner()) return;
+		if (checkWinner()) return 1;
 
 		// Ball movement
 		ball.x += ball.vx;
@@ -189,6 +189,7 @@
 		winnerPopup.style.display = "none";
 		ball.lastLoser = null;
 		resetBall();
+		startCountdown();
 	});
 
 	homeBtn.addEventListener('click', () => {
@@ -217,7 +218,9 @@
 
 	function gameLoop() {
 		if (_running === false) return;
-		if (!paused) update();
+		if (!paused)
+			if (update())
+				return;
 		draw();
 		requestAnimationFrame(gameLoop);
 	}
@@ -243,7 +246,7 @@
 	});
 
 	var timer;
-	var timeLeft = 4; // seconds
+	var timeLeft; // seconds
 
 	function updateTimer() {
 		timeLeft = timeLeft - 1;
@@ -261,6 +264,7 @@
 	function startCountdown() {
 		// every N milliseconds (1 second = 1000 ms)
 		timer = setInterval(updateTimer, 1000);
+		timeLeft = 4;
 
 		document.getElementById('countdownBlock').style.display = 'block';
 		updateTimer();
