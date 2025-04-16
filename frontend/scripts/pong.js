@@ -31,6 +31,13 @@
 
 	let collisionCooldown = 0;
 
+	if(window.matchMedia("(pointer: coarse)").matches){
+		document.getElementById('mobileWarning').classList.remove('d-none');
+		document.getElementById('canvasWrapper').classList.add('d-none');
+		translateAll();
+		return;
+	}
+
 	window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
 		paddle2Color = e.matches ? 'white' : 'black';
 		ballColor = e.matches ? 'white' : 'black';

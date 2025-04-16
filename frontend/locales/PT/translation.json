@@ -15,7 +15,8 @@
         "contentNotFound": "Conteúdo não encontrado",
         "otp": "Código de Confirmação",
         "invalidOTP": "Código de confirmação inválido",
-        "tic-tac-toe": "Jogo do Galo"
+        "tic-tac-toe": "Jogo do Galo",
+        "mobileWarning": "Desculpa, este jogo não está disponível em dispositivos móveis."
     },
     "login":{
         "rememberMe": "Lembrar-me",
@@ -26,7 +27,8 @@
         "42login": "Iniciar sessão com 42",
         "42error": "Erro ao iniciar sessão com 42",
         "alreadyLoggedIn": "Já tens sessão iniciada noutro local",
-        "deactivated": "Esta conta foi desativada"
+        "deactivated": "Esta conta foi desativada",
+        "userTaken": "Nome de utilizador/Email já em uso"
     },
     "header":{
         "overview": "Visão Geral",

@@ -15,7 +15,8 @@
         "contentNotFound": "Content not found",
         "otp": "Confirmation code",
         "invalidOTP": "Invalid confirmation code",
-        "tic-tac-toe": "Tic Tac Toe"
+        "tic-tac-toe": "Tic Tac Toe",
+        "mobileWarning": "Sorry, this game is not available on mobile devices."
     },
     "login":{
         "rememberMe": "Remember me",
@@ -26,7 +27,8 @@
         "42login": "Login with 42",
         "42error": "Error logging in with 42",
         "alreadyLoggedIn": "You are already logged in somewhere else",
-        "deactivated": "This account has been deactivated"
+        "deactivated": "This account has been deactivated",
+        "userTaken": "Username/Email already taken"
     },
     "header":{
         "overview": "Overview",
