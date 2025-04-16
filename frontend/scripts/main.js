@@ -28,7 +28,6 @@ async function initialize() {
         await new Promise(resolve => setTimeout(resolve, 100));
         if (window.sessionStorage.getItem('42error') !== null) {
             const error = window.sessionStorage.getItem('42error');
-            console.log(error);
             switch (error) {
                 case 'User already logged in.':
                     alert(i18next.t('login.alreadyLoggedIn'));
@@ -48,6 +47,11 @@ async function initialize() {
     else {
         history.replaceState(pageState, null, "");
         _user = await getUserData();
+        if (!_user) {
+            clearSession();
+            window.location.href = '/?error=session_expired';
+            return;
+        } 
         _lang = _user.idiom;
         await getNotifications();
         await getUserAvatar(_user.id).then(avatar => { _avatar = avatar; });
@@ -59,12 +63,11 @@ async function initialize() {
 //Check if the user is logged in
 async function checkLogin() {
     const jwt = sessionStorage.getItem('jwt');
-    const refresh = localStorage.getItem('refresh');
+    const refresh = localStorage.getItem('keepLoggedIn') === 'true' ? localStorage.getItem('refresh') : sessionStorage.getItem('refresh');
     if (refresh !== null) {
         await verifyRefreshToken(refresh).then(valid => {
-            if (!valid) {
+            if (valid === false) {
                 localStorage.removeItem('refresh');
-                localStorage.removeItem('keepLoggedIn');
                 return false;
             }
         });
@@ -126,7 +129,7 @@ function translateAll() {
 }
 
 //Change the content of the page
-function changeContent(page, pushState = true) {
+function changeContent(page, pushState = true, params=null) {
     var contentDiv = document.getElementById('content');
     // Remove previously added scripts
     var oldScripts = document.querySelectorAll('script[data-dynamic]');
@@ -164,7 +167,7 @@ function changeContent(page, pushState = true) {
                 updateOverviewPage();
                 break;
             case 'profile':
-                updateProfilePage();
+                updateProfilePage(params);
                 break;
             case 'livechat':
                 initChatPage();

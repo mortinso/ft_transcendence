@@ -39,6 +39,7 @@ async function fillFriendList() {
         let friend = await getUserByID(friendID);
         let clone = friendListTemplate.content.cloneNode(true);
         clone.querySelector('h6').textContent = friend.username;
+        clone.querySelector('h6').setAttribute('data-userid', friend.id);
         clone.querySelector('small').textContent = friend.is_online === true ? '🟢' : '⚫';
         clone.querySelector('img').src = friend.avatar;
         friendList.appendChild(clone);
@@ -94,9 +95,7 @@ async function addFriend() {
             return;
         }
     }
-    let result = await addFriendAsync(friendName.value).catch(error => {
-        console.error(error);
-    });
+    let result = await addFriendAsync(friendName.value).catch();
     if (result.status === 404) {
         friendName.classList.add('is-invalid');
         document.getElementById('friend-name-error').innerText = i18next.t('livechat.unkownUserError');
@@ -139,4 +138,12 @@ async function rejectFriendRequest(button){
     await rejectFriendRequestAsync(friendName);
     _user = await getUserData();
     fillFriendList();
+}
+
+async function showProfile(button) {
+    const friend = button.parentElement.parentElement.parentElement.querySelector('h6');
+    const friendID = friend?.getAttribute('data-userid');
+    if (friendID !== undefined) {
+        changeContent('profile', true, friendID);
+    }
 }

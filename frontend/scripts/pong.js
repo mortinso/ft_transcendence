@@ -1,10 +1,14 @@
 (function () {
+
 	_running = true;
-	
+
+	let paused = false;
+
 	const canvas = document.getElementById('pong');
 	const ctx = canvas.getContext('2d');
 	const winnerPopup = document.getElementById('winnerPopup');
 	const winnerMessage = document.getElementById('winnerMessage');
+	const pauseBtn = document.getElementById('PauseBtn');
 
 	const PADDLE_SPEED = 2;
 	const BALL_SPEED = 2;
@@ -181,6 +185,10 @@
 		changeContent('overview', 0);
 	});
 
+	pauseBtn.addEventListener('click', () => {
+		paused = !paused;
+	});
+
 	function draw() {
 		// Clear the canvas
 		ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -198,29 +206,28 @@
 	}
 
 	function gameLoop() {
-		if (_running === false)
-			return;
-		update();
+		if (_running === false) return;
+		if (!paused) update();
 		draw();
 		requestAnimationFrame(gameLoop);
 	}
 
 	window.addEventListener('keydown', (e) => {
-		if (e.key === 'w') player1.up = true;
-		if (e.key === 's') player1.down = true;
+		if (e.key.toLocaleLowerCase() === 'w') player1.up = true;
+		if (e.key.toLocaleLowerCase() === 's') player1.down = true;
 		if (e.key === 'ArrowUp') player2.up = true;
 		if (e.key === 'ArrowDown') player2.down = true;
+		if (e.key.toLocaleLowerCase() == 'p') paused = !paused;
 	});
 
 	window.addEventListener('keyup', (e) => {
-		if (e.key === 'w') player1.up = false;
-		if (e.key === 's') player1.down = false;
+		if (e.key.toLocaleLowerCase() === 'w') player1.up = false;
+		if (e.key.toLocaleLowerCase() === 's') player1.down = false;
 		if (e.key === 'ArrowUp') player2.up = false;
 		if (e.key === 'ArrowDown') player2.down = false;
 	});
 
-	if (_running)
-		gameLoop();
-	else
-		return;
+	if (_running) gameLoop();
+	else return;
+
 })();
