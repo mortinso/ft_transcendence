@@ -13,7 +13,13 @@ async function updateProfilePage(user=null) {
     {
         userProfile = await getUserByID(user);
         document.getElementById('username').innerText = `${userProfile?.username}`;
-        document.getElementById('userAvatar').src = userProfile?.avatar;
+        if (userProfile?.avatar.includes('https%3A')){
+            let avatar = userProfile.avatar.split('https%3A')[1];
+            document.getElementById('userAvatar').src = `https:/${avatar}`;
+            document.getElementById('userAvatar').style.objectFit = 'cover';
+        }
+        else
+            document.getElementById('userAvatar').src = userProfile?.avatar;
 
         document.getElementById('add-friend-btn').classList.remove('d-none');
         if (_user.friends.includes(userProfile.id))

@@ -298,6 +298,8 @@ function getUpdatedSecuriyDetails() {
     let confirmPassword = document.getElementById('InputPasswordConfirm');
     let currentPassword = document.getElementById('InputCurrentPassword');
 
+    document.getElementById('InputCurrentPassword').classList.remove('is-invalid');
+
     if (password.value === '' || confirmPassword.value === '' || currentPassword.value === '')
         return;
 
@@ -428,6 +430,9 @@ function languageSelector() {
         localStorage.setItem('lang', _lang);
         updateUserLanguage();
         translateAll();
+        const date = new Date(_user.date_joined);
+        const formattedDate = new Intl.DateTimeFormat(_lang).format(date);
+        document.getElementById('userJoinDate').innerText = `${i18next.t('settings.joinDate')} ${formattedDate}`;
     });
 }
 

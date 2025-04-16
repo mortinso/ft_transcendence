@@ -357,6 +357,7 @@ function signup(event) {
         }
     }).then(response => {
         if (response.status === 400) {
+            document.getElementById('signupEmail').classList.add('is-invalid');
             document.getElementById('signupUsername').classList.add('is-invalid');
             return;
         }
