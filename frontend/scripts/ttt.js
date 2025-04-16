@@ -38,10 +38,10 @@
 
 		if (winner) {
 			gameActive = false;
-			message.textContent = winner === 'Tie' ? "It's a Tie!" : `Player ${winner} Wins!`;
+			message.textContent = winner === 'Tie' ? i18next.t('games.tie') : `${i18next.t('games.player')} ${winner} ${i18next.t('games.wins')}`;
 		} else {
 			currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
-			message.textContent = `Player ${currentPlayer}'s turn`;
+			message.textContent = `${i18next.t('games.playerTurn')}: ${currentPlayer}`;
 		}
 	}
 
@@ -49,7 +49,7 @@
 		gameState.fill(null);
 		currentPlayer = 'X';
 		gameActive = true;
-		message.textContent = "Player X's turn";
+		message.textContent = `${i18next.t('games.playerTurn')}: ${currentPlayer}`;
 		board.innerHTML = '';
 		createBoard();
 	}
@@ -66,5 +66,6 @@
 
 	resetButton.addEventListener('click', resetGame);
 	createBoard();
+	translateAll();
 
 })();

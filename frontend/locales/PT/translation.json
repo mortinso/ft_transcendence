@@ -124,5 +124,15 @@
         "chatPlaceholder": "Escreve a tua mensagem aqui",
         "send": "Enviar",
         "profile": "Mostrar Perfil"
+    },
+    "games":{
+        "wins": "ganhou!",
+        "playAgain": "Jogar novamente",
+        "home": "Início",
+        "playerTurn": "É a vez do jogador",
+        "reset": "Reiniciar Jogo",
+        "tie": "É um empate!",
+        "player": "Jogador",
+        "pause": "Pausa"
     }
 }
