@@ -9,6 +9,7 @@
 	const winnerPopup = document.getElementById('winnerPopup');
 	const winnerMessage = document.getElementById('winnerMessage');
 	const pauseBtn = document.getElementById('PauseBtn');
+	const playButton = document.getElementById('playButton');
 
 	const PADDLE_SPEED = 2;
 	const BALL_SPEED = 2;
@@ -235,8 +236,35 @@
 		if (e.key === 'ArrowUp') player2.up = false;
 		if (e.key === 'ArrowDown') player2.down = false;
 	});
+	
+	playButton.addEventListener('click', () => {
+		playButton.style.display = 'none';
+		startCountdown();
+	});
 
-	if (_running) gameLoop();
-	else return;
+	var timer;
+	var timeLeft = 4; // seconds
 
+	function updateTimer() {
+		timeLeft = timeLeft - 1;
+		if (timeLeft > 0)
+			document.getElementById('countdown').innerText = timeLeft;
+		else if (timeLeft == 0)
+			document.getElementById('countdown').innerText = 'Go!';
+		else {
+			document.getElementById('countdownBlock').style.display = 'none';
+			clearInterval(timer);
+			gameLoop();
+		}
+	}
+
+	function startCountdown() {
+		// every N milliseconds (1 second = 1000 ms)
+		timer = setInterval(updateTimer, 1000);
+
+		document.getElementById('countdownBlock').style.display = 'block';
+		updateTimer();
+	}
+
+	draw();
 })();

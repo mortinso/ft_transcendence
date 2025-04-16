@@ -57,6 +57,46 @@
 		margin-top: 20px;
 		margin-bottom: 0px;
 	}
+
+	#playButton {
+		position: fixed;
+		top: 50%;
+		left: 50%;
+		font-size: xx-large;
+	}
+
+	#countdownBlock {
+		position: fixed;
+		width: 100%;
+		height: 100%;
+		display: none;
+	}
+
+	#countdown {
+		display: block;
+		position: fixed;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		font-weight: bolder;
+		font-size: 200px;
+		background-image: linear-gradient(90deg, #3d3d3d, #181818);
+		background-clip: text;
+		color: transparent;
+	}
+
+	[data-bs-theme="dark"] #countdown {
+		display: block;
+		position: fixed;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		font-weight: bolder;
+		font-size: 200px;
+		background-image: linear-gradient(90deg, #cacaca, #818181);
+		background-clip: text;
+		color: transparent;
+	}
 </style>
 
 <h2>Pong</h2>
@@ -67,6 +107,8 @@
 	<button id="PauseBtn" class="btn btn-primary mb-3" data-i18n="games.pause" type="button">Pause</button>
 	<canvas id="pong" width="1000" height="500"></canvas>
 </div>
+<div id="countdownBlock"><span id="countdown">0</span></div>
+<button id="playButton" data-i18n="games.play">Play</button>
 <div id="winnerPopup">
 	<p id="winnerMessage"></p>
 	<button id="restartGame" data-i18n="games.playAgain">Play Again</button>
