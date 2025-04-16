@@ -15,7 +15,8 @@
           "contentNotFound": "Contenido no encontrado",
           "otp": "Código de Confirmación",
           "invalidOTP": "Código de confirmación inválido",
-          "tic-tac-toe": "Tres en Raya"
+          "tic-tac-toe": "Tres en Raya",
+          "mobileWarning": "Lo sentimos, este juego no está disponible en dispositivos móviles."
      },
      "login":{
           "rememberMe": "Recuérdame",
@@ -26,7 +27,8 @@
           "42login": "Iniciar sesión con 42",
           "42error": "Error al iniciar sesión con 42",
           "alreadyLoggedIn": "Ya tienes una sesión iniciada en otro lugar",
-          "deactivated": "Esta cuenta ha sido desactivada"
+          "deactivated": "Esta cuenta ha sido desactivada",
+          "userTaken": "Nombre de usuario/correo electrónico ya en uso"
      },
      "header":{
           "overview": "Resumen",
@@ -55,6 +57,7 @@
      },
      "profile":{
           "addAsFriend": "Añadir como amigo",
+          "removeFriend": "Eliminar amigo",
           "message": "Enviar mensaje",
           "stats": "Estadísticas",
           "lastGames": "Últimos 5 juegos",
@@ -119,6 +122,7 @@
           "blockUser": "Bloquear Usuario",
           "blockUserQuestion": "¿Estás seguro de que deseas bloquear a",
           "chatPlaceholder": "Escribe tu mensaje aquí",
-          "send": "Enviar"
+          "send": "Enviar",
+          "profile": "Mostrar Perfil"
      }
 }

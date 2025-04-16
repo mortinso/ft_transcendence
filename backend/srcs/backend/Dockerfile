@@ -1,10 +1,10 @@
 FROM debian:latest
 
-RUN apt update && apt upgrade -y
+RUN apt-get update && apt-get upgrade -y
 
 RUN mkdir transcendence
 
-RUN apt install python3 -y && apt install python3-pip -y
+RUN apt-get install python3 -y && apt-get install python3-pip -y
 
 RUN rm /usr/lib/python*/EXTERNALLY-MANAGED
 

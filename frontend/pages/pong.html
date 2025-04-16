@@ -60,8 +60,15 @@
 </style>
 
 <h2>Pong</h2>
+<div id="mobileWarning" class="w-100 h-100 d-none justify-content-center align-items-center">
+	<h4 class="m-5" data-i18n="common.mobileWarning">Sorry, this game is not available on mobile devices.</h4>
+</div>
 <div id="canvasWrapper">
 	<canvas id="pong" width="1000" height="500"></canvas>
+	<br>
+	<span>
+		<button id="PauseBtn" type="button">Pause</button>
+	</span>
 </div>
 <div id="winnerPopup">
 	<p id="winnerMessage"></p>

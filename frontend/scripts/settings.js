@@ -66,7 +66,6 @@ async function updateAccountDetails() {
             return;
         }
         else if (this.status !== 200) {
-            console.log('Error updating user details', this);
             return;
         }
         showUpdatedValues();
@@ -167,8 +166,6 @@ async function updateAvatar() {
             return;
         }
         if (this.status !== 200) {
-            console.log('Error updating user avatar', this);
-            //TODO: log error
             return;
         }
         else {
@@ -238,11 +235,9 @@ async function update2FA(f2aSwitch) {
         if (this.readyState !== 4)
             return;
         if (this.status === 400) {
-            console.log('Error updating user details', this);
             return;
         }
         else if (this.status !== 200) {
-            console.log('Error updating user details', this);
             return;
         }
     }
@@ -266,11 +261,9 @@ async function updateSecurityDetails() {
         if (this.status === 400) {
             document.getElementById('InputCurrentPassword').classList.remove('is-valid');
             document.getElementById('InputCurrentPassword').classList.add('is-invalid');
-            console.warn(this);
             return;
         }
         else if (this.status !== 200) {
-            console.log('Error updating user details', this);
             return;
         }
         showSucessfulSave();
@@ -304,6 +297,8 @@ function getUpdatedSecuriyDetails() {
     let password = document.getElementById('InputPassword');
     let confirmPassword = document.getElementById('InputPasswordConfirm');
     let currentPassword = document.getElementById('InputCurrentPassword');
+
+    document.getElementById('InputCurrentPassword').classList.remove('is-invalid');
 
     if (password.value === '' || confirmPassword.value === '' || currentPassword.value === '')
         return;
@@ -374,8 +369,6 @@ async function deleteAccountConfirmed() {
                 return;
             if (this.status !== 200) {
                 document.getElementById('inputDelAccountPassword').classList.add('is-invalid');
-                console.log('Error deleting user', this);
-                //TODO: log error
                 return;
             }
             sessionStorage.removeItem('jwt');
@@ -437,6 +430,9 @@ function languageSelector() {
         localStorage.setItem('lang', _lang);
         updateUserLanguage();
         translateAll();
+        const date = new Date(_user.date_joined);
+        const formattedDate = new Intl.DateTimeFormat(_lang).format(date);
+        document.getElementById('userJoinDate').innerText = `${i18next.t('settings.joinDate')} ${formattedDate}`;
     });
 }
 
@@ -444,6 +440,8 @@ function languageSelector() {
 function themeSelector(){
     let themeSelector = document.getElementById('themeSelector');
     let savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'auto')
+        savedTheme = 'system';
     if (savedTheme !== null && savedTheme !== undefined)
         themeSelector.value = savedTheme;
     else
@@ -472,11 +470,9 @@ async function updateUserLanguage() {
         if (this.readyState !== 4)
             return;
         if (this.status === 400) {
-            console.log('Error updating user details', this);
             return;
         }
         else if (this.status !== 200) {
-            console.log('Error updating user details', this);
             return;
         }
     }

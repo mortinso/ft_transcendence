@@ -133,3 +133,23 @@ html, body {
   width: 32px;
   height: 32px;
 }
+
+.login_signup_width{
+  width: 25% !important;
+}
+
+@media (max-width: 768px) {
+  .login_signup_width{
+    width: 50% !important;
+  }
+}
+
+.overview-card-width{
+  width: 50%;
+}
+
+@media (max-width: 768px) {
+  .overview-card-width{
+    width: 100%;
+  }
+}

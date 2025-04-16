@@ -1,5 +1,5 @@
 <div class="d-flex flex-nowrap w-100 h-100">
-    <div class="d-flex flex-column flex-shrink-0 p-3 bg-body-tertiary" style="width: 20%;">
+    <div class="d-flex flex-column flex-shrink-0 p-3 bg-body-tertiary w-100">
         <div class="d-flex">
             <h5 class="mt-auto" data-i18n="livechat.friends">Friends</h5>
             <button class="btn btn-outline-primary ms-auto" type="button" onclick="showAddFriendModal()">
@@ -52,16 +52,23 @@
 </div>
 
 <template id="friend-list-template">
-    <li class="list-group-item list-group-item-action d-flex gap-3 py-3 dropdown-center" aria-current="true"
-        onclick="toggleSelectedFriend(this)">
+    <li class="list-group-item list-group-item-action d-flex gap-3 py-3 dropdown-center" aria-current="true">
         <img alt="user avatar" width="50" height="50" class="rounded-circle flex-shrink-0" onerror="this.style.display='none'" style="object-fit: cover;">
-        <div class="d-flex gap-2 w-100 justify-content-between align-items-center">
-            <h6 class="mb-0">{{FRIEND NAME}}</h6>
+        <div class="d-flex gap-2 w-100 align-items-center">
             <small class="opacity-50 text-nowrap tooltip mx-2">🟢</small>
+            <h6 class="mb-0">{{FRIEND NAME}}</h6>
         </div>
         <button class="btn btn-outline dropdown-toggle px-1 pe-2 py-0" data-bs-toggle="dropdown"
             onclick="showFriendOptions(event)">
             <ul class="dropdown-menu">
+                <li onclick="showProfile(this)">
+                    <a class="dropdown-item">
+                        <svg width="16" height="16" class="me-2 mb-1">
+                            <use xlink:href="#profile-icon"></use>
+                        </svg>
+                        <span class="m-0" data-i18n="livechat.profile">Profile</span>
+                    </a>
+                </li>
                 <li onclick="showRemoveFriendModal(this)">
                     <a class="dropdown-item">
                         <svg width="16" height="16" class="me-2 mb-1">

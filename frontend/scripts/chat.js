@@ -29,7 +29,13 @@ async function fillFriendList() {
             let clone = friendRequestTemplate.content.cloneNode(true);
             let user = (await getUserByID(request));
             clone.querySelector('h6').textContent = user.username;
-            clone.querySelector('img').src = user.avatar;
+            if (user.avatar.includes('https%3A')){
+                let avatar = user.avatar.split('https%3A')[1];
+                clone.querySelector('img').src = `https:/${avatar}`;
+                clone.querySelector('img').style.objectFit = 'cover';
+            }
+            else
+                clone.querySelector('img').src = user.avatar;
             friendList.appendChild(clone);
         }
         friendList.appendChild(document.createElement('hr'));
@@ -37,28 +43,20 @@ async function fillFriendList() {
 
     for (let friendID of _user.friends) {
         let friend = await getUserByID(friendID);
+        console.log(friend);
         let clone = friendListTemplate.content.cloneNode(true);
         clone.querySelector('h6').textContent = friend.username;
+        clone.querySelector('h6').setAttribute('data-userid', friend.id);
         clone.querySelector('small').textContent = friend.is_online === true ? '🟢' : '⚫';
-        clone.querySelector('img').src = friend.avatar;
+        if (friend.avatar.includes('https%3A')){
+                let avatar = friend.avatar.split('https%3A')[1];
+                clone.querySelector('img').src = `https:/${avatar}`;
+                clone.querySelector('img').style.objectFit = 'cover';
+            }
+            else
+                clone.querySelector('img').src = friend.avatar;
         friendList.appendChild(clone);
     }
-}
-
-function toggleSelectedFriend(element) {
-    const friendList = document.getElementById('friend-list');
-    for (let friend of friendList.children) {
-        friend.classList.remove('active');
-    }
-    element.classList.add('active');
-    document.getElementById('selected-friend').innerText = element.querySelector('h6').innerText;
-    let chatArea = document.getElementById('chat-area');
-    if (chatArea.classList.contains('d-none')) {
-        chatArea.classList.remove('d-none');
-    }
-    let input = document.getElementById('chat-input');
-    input?.focus();
-    input?.setAttribute('placeholder', i18next.t('livechat.chatPlaceholder'));
 }
 
 function showFriendOptions(event) {
@@ -94,9 +92,7 @@ async function addFriend() {
             return;
         }
     }
-    let result = await addFriendAsync(friendName.value).catch(error => {
-        console.error(error);
-    });
+    let result = await addFriendAsync(friendName.value).catch();
     if (result.status === 404) {
         friendName.classList.add('is-invalid');
         document.getElementById('friend-name-error').innerText = i18next.t('livechat.unkownUserError');
@@ -139,4 +135,12 @@ async function rejectFriendRequest(button){
     await rejectFriendRequestAsync(friendName);
     _user = await getUserData();
     fillFriendList();
+}
+
+async function showProfile(button) {
+    const friend = button.parentElement.parentElement.parentElement.querySelector('h6');
+    const friendID = friend?.getAttribute('data-userid');
+    if (friendID !== undefined) {
+        changeContent('profile', true, friendID);
+    }
 }
