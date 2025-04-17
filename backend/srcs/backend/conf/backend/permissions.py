@@ -1,6 +1,10 @@
 from rest_framework import permissions
 from backend.exceptions import NotFoundHTML
+from rest_framework.permissions import BasePermission
+import logging
 
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
 
 class IsSelf(permissions.BasePermission):
     """
@@ -16,3 +20,15 @@ class IsAuthenticatedOrNotFound(permissions.BasePermission):
         if request.user and request.user.is_authenticated:
             return True
         raise NotFoundHTML(detail="Not found.")
+
+
+class IsGameOwner(BasePermission):
+    """
+    Custom permission to allow only the owner of the game to create or edit it.
+    """
+    def has_permission(self, request, view):
+        user_pk = view.kwargs.get("user_pk")
+        
+        if not request.user.is_authenticated:
+            return False
+        return request.user.id == user_pk
