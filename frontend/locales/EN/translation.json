@@ -124,5 +124,16 @@
         "chatPlaceholder": "Type your message here",
         "send": "Send",
         "profile": "Show Profile"
+    },
+    "games":{
+        "wins": "wins!",
+        "playAgain": "Play again",
+        "home": "Home",
+        "playerTurn": "Player turn",
+        "reset": "Reset Game",
+        "tie": "It's a tie!",
+        "player": "Player",
+        "pause": "Pause"
     }
+
 }

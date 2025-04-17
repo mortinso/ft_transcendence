@@ -26,8 +26,8 @@
 
 	let ball = { x: canvas.width / 2, y: canvas.height / 2, vx: BALL_SPEED || 4, vy: BALL_SPEED || 4, hits: 0, lastLoser: null };
 
-	let player1 = { x: 0, y: canvas.height / 2 - paddleHeight / 2, score: 0, up: false, down: false };
-	let player2 = { x: canvas.width - paddleWidth, y: canvas.height / 2 - paddleHeight / 2, score: 0, up: false, down: false };
+	let player1 = { x: 0, y: canvas.height / 2 - paddleHeight / 2, score: 0, up: false, down: false, name: _user.username };
+	let player2 = { x: canvas.width - paddleWidth, y: canvas.height / 2 - paddleHeight / 2, score: 0, up: false, down: false, name: "Player 2" };
 
 	let collisionCooldown = 0;
 
@@ -156,13 +156,15 @@
 
 	function checkWinner() {
 		if (player1.score >= maxPoints) {
-			winnerMessage.innerText = "Player 1 Wins!";
+			winnerMessage.innerText = `${player1.name} ${i18next.t("games.wins")}`;
 			winnerPopup.style.display = "block";
+			translateAll();
 			return 1;
 		}
 		if (player2.score >= maxPoints) {
-			winnerMessage.innerText = "Player 2 Wins!";
+			winnerMessage.innerText = `${player2.name} ${i18next.t("games.wins")}`;
 			winnerPopup.style.display = "block";
+			translateAll();
 			return 1;
 		}
 		return 0;

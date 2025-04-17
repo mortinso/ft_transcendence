@@ -8,12 +8,25 @@ function initChatPage() {
     translateAll();
 }
 
+async function anyFriendActive(){
+    //check if at least one friend is active
+    let oneActive = false;
+    for (let friendID of _user.friends) {
+        let friend = await getUserByID(friendID);
+        if (friend.is_active === true) {
+            oneActive = true;
+            break;
+        }
+    }
+    return oneActive;
+}
+
 async function fillFriendList() {
     const friendList = document.getElementById('friend-list');
     friendList.innerHTML = '';
 
     let friendListTemplate = document.getElementById('friend-list-template');
-    if (_user.friends.length === 0 && _user.friend_requests.length === 0) {
+    if ((await anyFriendActive() === false || _user.friends.length === 0) && _user.friend_requests.length === 0) {
         let clone = friendListTemplate.content.cloneNode(true);
         clone.querySelector('h6').textContent = i18next.t('livechat.noFriends');
         clone.querySelector('small').classList.add('d-none');
@@ -43,7 +56,8 @@ async function fillFriendList() {
 
     for (let friendID of _user.friends) {
         let friend = await getUserByID(friendID);
-        console.log(friend);
+        if (friend.is_active === false)
+            continue;
         let clone = friendListTemplate.content.cloneNode(true);
         clone.querySelector('h6').textContent = friend.username;
         clone.querySelector('h6').setAttribute('data-userid', friend.id);
