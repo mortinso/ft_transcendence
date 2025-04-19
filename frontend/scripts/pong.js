@@ -28,7 +28,7 @@
 	let ball = { x: canvas.width / 2, y: canvas.height / 2, vx: BALL_SPEED || 4, vy: BALL_SPEED || 4, hits: 0, lastLoser: null };
 
 	let player1 = { x: 0, y: canvas.height / 2 - paddleHeight / 2, score: 0, up: false, down: false, name: _user.username };
-	let player2 = { x: canvas.width - paddleWidth, y: canvas.height / 2 - paddleHeight / 2, score: 0, up: false, down: false, name: "Player 2" };
+	let player2 = { x: canvas.width - paddleWidth, y: canvas.height / 2 - paddleHeight / 2, score: 0, up: false, down: false, name: i18next.t('games.player2') };
 
 	let collisionCooldown = 0;
 
@@ -155,17 +155,52 @@
 		}
 	}
 
+	async function SaveStats(winner){
+		await fetch(`/api/users/${_user.id}/games/create/`, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				'Authorization': `Bearer ${sessionStorage.getItem('jwt')}`
+			},
+			body: JSON.stringify({
+				winner: winner,
+				player1: player1.name,
+				player2: player2.name,
+				game_type: "pong",
+				result: `${player1.score}x${player2.score}`,
+			})
+		});
+		//!Requires backend changes
+		//TODO: update user stats
+		/*
+		await fetch(`/api/users/${_user.id}/edit/`, {
+			method: 'PUT',
+			headers: {
+				'Content-Type': 'application/json',
+				'Authorization': `Bearer ${sessionStorage.getItem('jwt')}`
+			},
+			body: JSON.stringify({
+				pong_wins: winner === player1.name ? _user.pong_wins + 1 : _user.pong_wins,
+				pong_losses: winner === player2.name ? _user.pong_losses + 1 : _user.pong_losses,
+				pong_games_played: _user.pong_games_played + 1,
+			})
+		});*/
+		
+	}
+
 	function checkWinner() {
 		if (player1.score >= maxPoints) {
 			winnerMessage.innerText = `${player1.name} ${i18next.t("games.wins")}`;
 			winnerPopup.style.display = "block";
 			translateAll();
+			SaveStats(player1.name).then(() => {});
 			return 1;
 		}
 		if (player2.score >= maxPoints) {
 			winnerMessage.innerText = `${player2.name} ${i18next.t("games.wins")}`;
 			winnerPopup.style.display = "block";
 			translateAll();
+			SaveStats(player2.name).then(() => {});
 			return 1;
 		}
 		return 0;

@@ -60,7 +60,6 @@
           "removeFriend": "Eliminar amigo",
           "message": "Enviar mensaje",
           "stats": "Estadísticas",
-          "lastGames": "Últimos 5 juegos",
           "wonAgainst": "Ganaste contra",
           "lostAgainst": "Perdiste contra",
           "drawAgainst": "Empataste contra",
@@ -134,6 +133,11 @@
           "reset": "Reiniciar Juego",
           "tie": "Es un empate!",
           "player": "Jugador",
-          "pause": "Pausa"
+          "pause": "Pausa",
+          "player2": "Jugador 2",
+          "wonAgainst": "Ganaste contra",
+          "lostAgainst": "Perdiste contra",
+          "drawAgainst": "Empataste con",
+          "result": "Resultado"
      }
 }

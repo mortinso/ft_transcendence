@@ -153,3 +153,8 @@ html, body {
     width: 100%;
   }
 }
+
+.gameHistory-card{
+  max-height: 400px;
+  overflow-y: auto;
+}
