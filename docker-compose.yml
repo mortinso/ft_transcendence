@@ -114,7 +114,7 @@ services:
       - esdata01:/usr/share/elasticsearch/data
       - ./backend/srcs/elk/esbackup:/usr/share/elasticsearch/backup/my_backup
     ports:
-      # only access on localhost
+      # TODO: only access on localhost
       - 127.0.0.1:9200:9200
     environment:
       - node.name=es01
