@@ -48,6 +48,9 @@ services:
       - .env
     environment:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - ./backend/srcs/postgres/init.sh:/docker-entrypoint-initdb.d/init.sh
+      - ./backend/srcs/postgres/init.sql:/docker-entrypoint-initdb.d/init.template.sql.ignore
     logging:
       driver: "json-file"
       options:

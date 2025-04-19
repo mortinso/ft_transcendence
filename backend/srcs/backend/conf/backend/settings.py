@@ -203,9 +203,9 @@ DEBUG_TOOLBAR_CONFIG = {
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': env("POSTGRES_DB"),
-        'USER': env("POSTGRES_USER"),
-        'PASSWORD': env("POSTGRES_PASSWORD"),
+        'NAME': env("POSTGRES_DJANGO_DB"),
+        'USER': env("POSTGRES_DJANGO_USER"),
+        'PASSWORD': env("POSTGRES_DJANGO_PASSWORD"),
         'HOST': 'postgres',
         'PORT': '5432',
     }
