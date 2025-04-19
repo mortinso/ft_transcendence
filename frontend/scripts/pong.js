@@ -9,6 +9,7 @@
 	const winnerPopup = document.getElementById('winnerPopup');
 	const winnerMessage = document.getElementById('winnerMessage');
 	const pauseBtn = document.getElementById('PauseBtn');
+	const playButton = document.getElementById('playButton');
 
 	const PADDLE_SPEED = 2;
 	const BALL_SPEED = 2;
@@ -74,7 +75,7 @@
 	}
 
 	function update() {
-		if (checkWinner()) return;
+		if (checkWinner()) return 1;
 
 		// Ball movement
 		ball.x += ball.vx;
@@ -188,6 +189,7 @@
 		winnerPopup.style.display = "none";
 		ball.lastLoser = null;
 		resetBall();
+		startCountdown();
 	});
 
 	homeBtn.addEventListener('click', () => {
@@ -216,7 +218,9 @@
 
 	function gameLoop() {
 		if (_running === false) return;
-		if (!paused) update();
+		if (!paused)
+			if (update())
+				return;
 		draw();
 		requestAnimationFrame(gameLoop);
 	}
@@ -227,6 +231,9 @@
 		if (e.key === 'ArrowUp') player2.up = true;
 		if (e.key === 'ArrowDown') player2.down = true;
 		if (e.key.toLocaleLowerCase() == 'p') paused = !paused;
+		if (e.key.toLocaleLowerCase() == 'p' && playButton.style.display !== 'none') {
+			playButton.click();
+		} 
 	});
 
 	window.addEventListener('keyup', (e) => {
@@ -235,8 +242,36 @@
 		if (e.key === 'ArrowUp') player2.up = false;
 		if (e.key === 'ArrowDown') player2.down = false;
 	});
+	
+	playButton.addEventListener('click', () => {
+		playButton.style.display = 'none';
+		startCountdown();
+	});
 
-	if (_running) gameLoop();
-	else return;
+	var timer;
+	var timeLeft; // seconds
 
+	function updateTimer() {
+		timeLeft = timeLeft - 1;
+		if (timeLeft > 0)
+			document.getElementById('countdown').innerText = timeLeft;
+		else if (timeLeft == 0)
+			document.getElementById('countdown').innerText = 'Go!';
+		else {
+			document.getElementById('countdownBlock').style.display = 'none';
+			clearInterval(timer);
+			gameLoop();
+		}
+	}
+
+	function startCountdown() {
+		// every N milliseconds (1 second = 1000 ms)
+		timer = setInterval(updateTimer, 1000);
+		timeLeft = 4;
+
+		document.getElementById('countdownBlock').style.display = 'block';
+		updateTimer();
+	}
+
+	draw();
 })();

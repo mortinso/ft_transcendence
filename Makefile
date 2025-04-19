@@ -1,4 +1,3 @@
-# TODO: make all to include elk etc
 #in case of emergency: sudo systemctl restart docker.socket docker.service
 # sudo lsof -i :80; sudo kill -9 <PID>
 

@@ -57,6 +57,51 @@
 		margin-top: 20px;
 		margin-bottom: 0px;
 	}
+
+	/* #playButton {
+		position: fixed;
+		top: 50%;
+		left: 50%;
+		font-size: xx-large;
+	} */
+
+	.game-button {
+        width: 100px;
+        text-align: center;
+    }
+
+	#countdownBlock {
+		position: fixed;
+		width: 100%;
+		height: 100%;
+		display: none;
+	}
+
+	#countdown {
+		display: block;
+		position: fixed;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		font-weight: bolder;
+		font-size: 200px;
+		background-image: linear-gradient(90deg, #3d3d3d, #181818);
+		background-clip: text;
+		color: transparent;
+	}
+
+	[data-bs-theme="dark"] #countdown {
+		display: block;
+		position: fixed;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		font-weight: bolder;
+		font-size: 200px;
+		background-image: linear-gradient(90deg, #cacaca, #818181);
+		background-clip: text;
+		color: transparent;
+	}
 </style>
 
 <h2>Pong</h2>
@@ -64,9 +109,13 @@
 	<h4 class="m-5" data-i18n="common.mobileWarning">Sorry, this game is not available on mobile devices.</h4>
 </div>
 <div id="canvasWrapper" class="d-flex flex-column">
-	<button id="PauseBtn" class="btn btn-primary mb-3" data-i18n="games.pause" type="button">Pause</button>
+	<div class="d-flex justify-content-center mb-3">
+	  <button id="playButton" class="btn btn-primary me-2 game-button" data-i18n="games.play">Play</button>
+	  <button id="PauseBtn" class="btn btn-primary game-button" data-i18n="games.pause" type="button">Pause</button>
+	</div>
 	<canvas id="pong" width="1000" height="500"></canvas>
-</div>
+  </div>
+  <div id="countdownBlock"><span id="countdown">0</span></div>
 <div id="winnerPopup">
 	<p id="winnerMessage"></p>
 	<button id="restartGame" data-i18n="games.playAgain">Play Again</button>
