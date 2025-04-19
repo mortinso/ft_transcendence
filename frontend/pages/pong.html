@@ -63,16 +63,13 @@
 <div id="mobileWarning" class="w-100 h-100 d-none justify-content-center align-items-center">
 	<h4 class="m-5" data-i18n="common.mobileWarning">Sorry, this game is not available on mobile devices.</h4>
 </div>
-<div id="canvasWrapper">
+<div id="canvasWrapper" class="d-flex flex-column">
+	<button id="PauseBtn" class="btn btn-primary mb-3" data-i18n="games.pause" type="button">Pause</button>
 	<canvas id="pong" width="1000" height="500"></canvas>
-	<br>
-	<span>
-		<button id="PauseBtn" type="button">Pause</button>
-	</span>
 </div>
 <div id="winnerPopup">
 	<p id="winnerMessage"></p>
-	<button id="restartGame">Play Again</button>
-	<button id="goHome">Home</button>
+	<button id="restartGame" data-i18n="games.playAgain">Play Again</button>
+	<button id="goHome" data-i18n="games.home">Home</button>
 </div>
 <script src="/frontend/scripts/pong.js"></script>
