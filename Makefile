@@ -1,11 +1,10 @@
-# TODO: make all to include elk etc
 #in case of emergency: sudo systemctl restart docker.socket docker.service
 # sudo lsof -i :80; sudo kill -9 <PID>
 
 all:
 	sudo sysctl -w vm.max_map_count=262144
-	# docker compose up --build backend nginx postgres
-	docker compose up -d --build backend nginx postgres
+	docker compose up --build backend nginx postgres
+	# docker compose up -d --build backend nginx postgres
 
 up:
 	# docker compose up
