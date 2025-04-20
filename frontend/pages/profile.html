@@ -22,7 +22,6 @@
                 <div class="col-md-8 shadow-left">
                     <div class="card-body">
                         <h5 class="card-title">Pong</h5>
-                        <p class="card-text" data-i18n="profile.lastGames">Last 5 games</p>
                         <div id="pongGameList" class="list-group"></div>
                     </div>
                 </div>
@@ -36,8 +35,7 @@
                 <div class="col-md-8 shadow-left">
                     <div class="card-body">
                         <h5 class="card-title" data-i18n="common.tic-tac-toe">Tic-Tac-Toe</h5>
-                        <p class="card-text" data-i18n="profile.lastGames">Last 5 games</p>
-                        <div id="secondGameList" class="list-group"></div>
+                        <div id="secondGameList" class="list-group gameHistory-card"></div>
                     </div>
                 </div>
             </div>
@@ -47,12 +45,10 @@
 
 <template id="gameResultTemplate">
     <a class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
-        <img src="winner_profile_picture" alt="winner profile picture" width="32" height="32"
-            class="rounded-circle flex-shrink-0">
         <div class="d-flex gap-2 w-100 justify-content-between">
             <div>
                 <h6 class="mb-0">Winner</h6>
-                <p class="mb-0 opacity-75">Match results</p>
+                <p class="mb-0 opacity-75"></p>
             </div>
             <small class="opacity-50 text-nowrap tooltip">date</small>
         </div>
