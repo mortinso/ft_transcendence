@@ -24,6 +24,8 @@ from django.contrib.auth import logout
 from rest_framework.permissions import BasePermission
 from backend.permissions import IsGameOwner
 from backend.permissions import IsSelf
+from rest_framework.exceptions import ValidationError  # Use DRF's ValidationError
+from django.shortcuts import get_object_or_404
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
@@ -69,7 +71,21 @@ class CreateGameView(generics.CreateAPIView):
     def perform_create(self, serializer):
         from users.models import User
         user_pk = self.kwargs.get("user_pk")
-        user = User.objects.get(id=user_pk)
-        game = serializer.save(user=user)
-        add_game_to_user(user_pk, game) 
+        try:
+            # Fetch the user
+            user = get_object_or_404(User, id=user_pk)
+
+            # Save the game and associate it with the user
+            game = serializer.save(user=user)
+
+            # Add the game to the user's game list
+            add_game_to_user(user_pk, game)
+
+            logger.info(f"Game {game.game_id} successfully created for user {user_pk}.")
+        except ValidationError as e:
+            logger.error(f"Validation error while creating game: {e}")
+            raise ValidationError({"error": e.detail})
+        except Exception as e:
+            logger.error(f"Unexpected error while creating game: {e}")
+            raise ValidationError({"error": "An unexpected error occurred while creating the game."})
 
