@@ -60,7 +60,6 @@
         "removeFriend": "Remove friend",
         "message": "Message",
         "stats": "Stats",
-        "lastGames": "Last 5 games",
         "wonAgainst": "Won against",
         "lostAgainst": "Lost against",
         "drawAgainst": "Draw against",
@@ -134,7 +133,12 @@
         "reset": "Reset Game",
         "tie": "It's a tie!",
         "player": "Player",
-        "pause": "Pause"
+        "pause": "Pause",
+        "player2": "Guest",
+        "wonAgainst": "Won against",
+        "lostAgainst": "Lost against",
+        "drawAgainst": "Tied with",
+        "result": "Result"
     }
 
 }
