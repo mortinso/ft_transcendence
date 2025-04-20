@@ -28,7 +28,9 @@
         "42error": "Erro ao iniciar sessão com 42",
         "alreadyLoggedIn": "Já tens sessão iniciada noutro local",
         "deactivated": "Esta conta foi desativada",
-        "userTaken": "Nome de utilizador/Email já em uso"
+        "userTaken": "Nome de utilizador já em uso",
+        "emailTaken": "Email já em uso",
+        "passwordSimple": "A tua palavra-passe é demasiado simples."
     },
     "header":{
         "overview": "Visão Geral",
