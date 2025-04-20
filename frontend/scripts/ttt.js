@@ -44,27 +44,14 @@
 			},
 			body: JSON.stringify({
 				winner: winnerName,
+				draw: winnerName === 'tie' ? true : false,
+				owner_won: winnerName === _user.username ? true : false,
 				player1: _user.username,
 				player2: i18next.t('games.player2'),
-				game_type: "ttt",
+				result: "1x0",
+				game_type: "TTT",
 			})
 		});
-		//!Requires backend changes
-		//TODO: update user stats
-		/*
-		await fetch(`/api/users/${_user.id}/edit/`, {
-			method: 'PUT',
-			headers: {
-				'Content-Type': 'application/json',
-				'Authorization': `Bearer ${sessionStorage.getItem('jwt')}`
-			},
-			body: JSON.stringify({
-				ttt_wins: winner === player1.name ? _user.ttt_wins + 1 : _user.ttt_wins,
-				ttt_losses: winner === player2.name ? _user.ttt_losses + 1 : _user.ttt_losses,
-				ttt_games_played: _user.ttt_games_played + 1,
-			})
-		});*/
-		
 	}
 
 	function handleClick(e) {

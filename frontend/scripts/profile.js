@@ -88,7 +88,7 @@ async function getGameData() {
 async function createPongGameList() {
     let pongGames = await getGameData().then(data => {
         if (data === null) return null;
-        let games = data.filter(game => game.game_type === "pong");
+        let games = data.filter(game => game.game_type === "PONG");
         games.sort((a, b) => new Date(b.date) - new Date(a.date));
         return games;
     });
@@ -119,7 +119,7 @@ async function createPongGameList() {
 async function createSecondGameList() {
     let tttGames = await getGameData().then(data => {
         if (data === null) return null;
-        let games = data.filter(game => game.game_type === "ttt");
+        let games = data.filter(game => game.game_type === "TTT");
         games.sort((a, b) => new Date(b.date) - new Date(a.date));
         return games;
     });
