@@ -1,6 +1,5 @@
 async function updateOverviewPage() {
-    if (_user === null)
-        _user = await getUserData();
+    _user = await getUserData();
     document.getElementById('username').innerText = `${i18next.t('overview.greeting')} ${_user?.username}`;
     document.getElementById('user-avatar').src = _avatar;
     document.getElementById('games-played').innerText = `${i18next.t('overview.gamesPlayed')}: ${_user?.pong_games_played + _user?.ttt_games_played}`;
