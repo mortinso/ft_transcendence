@@ -36,7 +36,7 @@ class ListUsersSerializer(serializers.ModelSerializer):
             "ttt_losses",
             "ttt_draws",
             "ttt_games_played",
-            "is_playing",
+            # "is_playing",
             "tfa",
             "idiom",
             "intra42_id",

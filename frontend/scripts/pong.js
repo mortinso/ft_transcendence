@@ -166,26 +166,12 @@
 				winner: winner,
 				player1: player1.name,
 				player2: player2.name,
-				game_type: "pong",
+				owner_won: winner === _user.username ? true : false,
+				game_type: "PONG",
+				draw: false,
 				result: `${player1.score}x${player2.score}`,
 			})
 		});
-		//!Requires backend changes
-		//TODO: update user stats
-		/*
-		await fetch(`/api/users/${_user.id}/edit/`, {
-			method: 'PUT',
-			headers: {
-				'Content-Type': 'application/json',
-				'Authorization': `Bearer ${sessionStorage.getItem('jwt')}`
-			},
-			body: JSON.stringify({
-				pong_wins: winner === player1.name ? _user.pong_wins + 1 : _user.pong_wins,
-				pong_losses: winner === player2.name ? _user.pong_losses + 1 : _user.pong_losses,
-				pong_games_played: _user.pong_games_played + 1,
-			})
-		});*/
-		
 	}
 
 	function checkWinner() {
