@@ -81,11 +81,13 @@
 
 		if (winner) {
 			gameActive = false;
-			message.textContent = winner === 'Tie' ? i18next.t('games.tie') : `${i18next.t('games.player')} ${winner} ${i18next.t('games.wins')}`;
+			let winnerName = winner === 'X' ? _user.username : i18next.t('games.player2');
+			message.textContent = winner === 'Tie' ? i18next.t('games.tie') : `${i18next.t('games.player')} ${winnerName} ${i18next.t('games.wins')}`;
 			SaveTTTStats(winner === 'Tie' ? 'tie' : currentPlayer).then(() => {});
 		} else {
 			currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
-			message.textContent = `${i18next.t('games.playerTurn')}: ${currentPlayer}`;
+			let currentPlayerName = currentPlayer === 'X' ? _user.username : i18next.t('games.player2');
+			message.textContent = `${i18next.t('games.playerTurn')}: ${currentPlayerName}`;
 		}
 	}
 
@@ -93,7 +95,8 @@
 		gameState.fill(null);
 		currentPlayer = 'X';
 		gameActive = true;
-		message.textContent = `${i18next.t('games.playerTurn')}: ${currentPlayer}`;
+		let currentPlayerName = currentPlayer === 'X' ? _user.username : i18next.t('games.player2');
+		message.textContent = `${i18next.t('games.playerTurn')}: ${currentPlayerName}`;
 		board.innerHTML = '';
 		createBoard();
 	}
