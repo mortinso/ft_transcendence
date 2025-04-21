@@ -98,7 +98,7 @@ class UpdateUserSerializer(serializers.ModelSerializer):
         validated_data.pop("old_password", "confirm_password")
         for attr, value in validated_data.items():
             if attr == "password":
-                validate_password(self, value)
+                validate_password(value)
                 instance.set_password(value)
             else:
                 setattr(instance, attr, value)
