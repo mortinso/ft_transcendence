@@ -1,6 +1,8 @@
 <style>
 	#canvasWrapper {
+		position: relative;
 		display: flex;
+		flex-direction: column;
 		justify-content: center;
 		align-items: center;
 		height: 100%;
@@ -8,13 +10,11 @@
 
 	canvas {
 		border: 2px solid black;
-		width: 55%;
+		width: 60%;
 		height: auto;
 	}
 
-	[data-bs-theme="dark"] canvas {
-		border: 2px solid white;
-	}
+	[data-bs-theme="dark"] canvas { border: 2px solid white; }
 
 	#winnerPopup {
 		position: fixed;
@@ -28,28 +28,20 @@
 		text-align: center;
 		display: none;
 		box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.5);
+
+		button {
+			margin: 10px;
+			padding: 10px;
+			border: none;
+			cursor: pointer;
+			font-size: 16px;
+		}
 	}
 
 	[data-bs-theme="dark"] #winnerPopup {
-		position: fixed;
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -50%);
 		background: white;
 		color: black;
-		padding: 20px;
-		border-radius: 10px;
-		text-align: center;
-		display: none;
 		box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.5);
-	}
-
-	#winnerPopup button {
-		margin: 10px;
-		padding: 10px;
-		border: none;
-		cursor: pointer;
-		font-size: 16px;
 	}
 
 	h2 {
@@ -57,11 +49,14 @@
 		margin-top: 20px;
 		margin-bottom: 0px;
 	}
-
+	
 	.game-button {
-        width: 100px;
-        text-align: center;
-    }
+		width: 100px;
+		text-align: center;
+		margin-right: 0px !important;
+	}
+	
+	#PauseBtn { display: none; }
 
 	#countdownBlock {
 		position: fixed;
@@ -72,7 +67,7 @@
 
 	#countdown {
 		display: block;
-		position: fixed;
+		position: absolute;
 		top: 50%;
 		left: 50%;
 		transform: translate(-50%, -50%);
@@ -83,32 +78,53 @@
 		color: transparent;
 	}
 
-	[data-bs-theme="dark"] #countdown {
-		display: block;
-		position: fixed;
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -50%);
-		font-weight: bolder;
-		font-size: 200px;
-		background-image: linear-gradient(90deg, #cacaca, #818181);
-		background-clip: text;
-		color: transparent;
+	[data-bs-theme="dark"] #countdown { background-image: linear-gradient(90deg, #cacaca, #818181); }
+
+	.player-title, .game-button {
+		height: 30px;
+		box-sizing: border-box;
+		align-items: center;
+		justify-content: center;
+		border-radius: 15px;
+		font-family: monospace;
+		font-weight: bold;
+		color: #fff;
+		font-size: auto;
+		display: inline-flex;
+		padding: 20px;
+	}
+
+	.player-title {
+		min-width: 130px;
+		position: absolute;
+		transform: translate(-50%);
+	}
+
+	#player1-title {
+		background: var(--bs-primary);
+		left: 25%;
+	}
+	
+	#player2-title {
+		background: #e03a3a;
+		left: 75%;
 	}
 </style>
 
-<h2>Pong</h2>
+<h2 class="mb-0">Pong</h2>
 <div id="mobileWarning" class="w-100 h-100 d-none justify-content-center align-items-center">
 	<h4 class="m-5" data-i18n="common.mobileWarning">Sorry, this game is not available on mobile devices.</h4>
 </div>
 <div id="canvasWrapper" class="d-flex flex-column">
-	<div class="d-flex justify-content-center mb-3">
-	  <button id="playButton" class="btn btn-primary me-2 game-button" data-i18n="games.play">Play</button>
-	  <button id="PauseBtn" class="btn btn-primary game-button" data-i18n="games.pause" type="button">Pause</button>
+	<div id="countdownBlock"><span id="countdown">0</span></div>
+	<div id="canvas-buttons" class="d-flex justify-content-center mb-3">
+		<div id="player1-title" class="player-title">Player 1</div>
+		<button id="playButton" class="btn btn-primary me-2 game-button" data-i18n="games.play">Play</button>
+		<button id="PauseBtn" class="btn btn-primary game-button" data-i18n="games.pause" type="button">Pause</button>
+		<div id="player2-title" class="player-title">Player 2</div>
 	</div>
 	<canvas id="pong" width="1000" height="500"></canvas>
-  </div>
-  <div id="countdownBlock"><span id="countdown">0</span></div>
+</div>
 <div id="winnerPopup">
 	<p id="winnerMessage"></p>
 	<button id="restartGame" data-i18n="games.playAgain">Play Again</button>

@@ -16,7 +16,8 @@
           "otp": "Código de Confirmación",
           "invalidOTP": "Código de confirmación inválido",
           "tic-tac-toe": "Tres en Raya",
-          "mobileWarning": "Lo sentimos, este juego no está disponible en dispositivos móviles."
+          "mobileWarning": "Lo sentimos, este juego no está disponible en dispositivos móviles.",
+          "tournament": "Torneo"
      },
      "login":{
           "rememberMe": "Recuérdame",
@@ -55,7 +56,8 @@
           "playPong": "Jugar Pong",
           "playTicTacToe": "Jugar Tres en Raya",
           "playersPlaying": "personas jugando",
-          "tournament": "Torneo"
+          "tournament": "Torneo",
+          "newTournament": "Crear un nuevo torneo"
      },
      "profile":{
           "addAsFriend": "Añadir como amigo",
@@ -126,6 +128,18 @@
           "send": "Enviar",
           "profile": "Mostrar Perfil"
      },
+     "tournament": {
+        "newTournament": "Nuevo Torneo",
+        "chooseOption": "Elige una opción:",
+        "4Players": "4 Jugadores",
+        "8Players": "8 Jugadores",
+        "16Players": "16 Jugadores",
+        "back": "Volver",
+        "createTournament": "Crear Torneo",
+        "nextMatch": "Próximo partido",
+        "wonTournament": "ganó el torneo!",
+        "exit": "Salir"
+    },
      "games":{
           "wins": "ganó!",
           "playAgain": "Jugar de nuevo",

@@ -182,7 +182,11 @@ function changeContent(page, pushState = true, params=null) {
             case 'signup':
                 document.getElementById('signupForm').addEventListener('submit', signup, true);
                 translateAll();
+                break;
             case 'pong':
+                translateAll();
+                break;
+            case 'tournament':
                 translateAll();
             default:
                 break;
@@ -201,11 +205,13 @@ function updateHeaderButton(page) {
     let overviewButton = document.getElementById('header-overview');
     let pongButton = document.getElementById('header-pong');
     let game2Button = document.getElementById('header-game2');
+    let tournamentButton = document.getElementById('header-tournament');
     let friendsButton = document.getElementById('header-friends');
     let buttons = {
         'overview': overviewButton,
         'pong': pongButton,
         'game2': game2Button,
+        'tournament': tournamentButton,
         'friends': friendsButton
     };
     for (let key in buttons) {
