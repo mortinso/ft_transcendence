@@ -246,6 +246,7 @@ async function update2FA(f2aSwitch) {
 
 //Update password
 async function updateSecurityDetails() {
+    document.getElementById('InputPassword').classList.remove('is-invalid');
     let newPassword = getUpdatedSecuriyDetails();
     if (newPassword === undefined)
         return;
@@ -259,8 +260,18 @@ async function updateSecurityDetails() {
         if (this.readyState !== 4)
             return;
         if (this.status === 400) {
-            document.getElementById('InputCurrentPassword').classList.remove('is-valid');
-            document.getElementById('InputCurrentPassword').classList.add('is-invalid');
+            let error = JSON.parse(this.responseText);
+            console.log(error);
+            if (error.non_field_errors.some(element => element.includes('Old password doesn\'t match')))
+            {
+                document.getElementById('InputCurrentPassword').classList.remove('is-valid');
+                document.getElementById('InputCurrentPassword').classList.add('is-invalid');
+                translateAll();
+            }
+            else
+            {
+                document.getElementById('InputPassword').classList.add('is-invalid');
+            }
             return;
         }
         else if (this.status !== 200) {
