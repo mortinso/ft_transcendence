@@ -98,11 +98,6 @@ if ip_host:
 
 print(f'ALLOWED_HOSTS: {ALLOWED_HOSTS}')
 
-ALLOWED_REFERERS = [
-    "https://192.168.20.111/",
-]
-
-
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
     'oauth.auth.OauthAuthenticationBackend',
@@ -290,23 +285,61 @@ if not DEBUG:
 # Security
 
 SECURE_CONTENT_TYPE_NOSNIFF = True
+
+# Enables the XSS (Cross-Site Scripting) filter in supported browsers.
+# This helps prevent malicious scripts from being executed in the browser.
 SECURE_BROWSER_XSS_FILTER = True
+# Enforces the use of HTTPS by setting the HTTP Strict Transport Security (HSTS) header.
 SECURE_HSTS_SECONDS = True
+# Prevents the website from being embedded in an iframe, which helps mitigate clickjacking attacks.
 X_FRAME_OPTIONS = 'DENY'
+# Ensures that session cookies are only sent over HTTPS connections.
 SESSION_COOKIE_SECURE = True
+# Ensures that CSRF cookies are only sent over HTTPS connections.
 CSRF_COOKIE_SECURE = True
+# Redirects all HTTP traffic to HTTPS.
 SECURE_SSL_REDIRECT = True
+# Specifies the header that identifies the protocol used by the client (HTTP or HTTPS).
+# This is useful when the application is behind a proxy or load balancer.
 SECURE_PROXY_SSL_HEADER = True
 
+
+# How JWT Authentication Works
+# User Logs In:
+
+# The user sends their credentials (e.g., username and password) to the server.
+# The server validates the credentials and generates a JWT containing user information (claims).
+#
+# Server Sends the JWT:
+# The server sends the JWT back to the client.
+# The client stores the JWT (e.g., in local storage, session storage, or a secure cookie).
+#
+# Client Makes Requests:
+# For subsequent requests, the client includes the JWT in the Authorization header:
+#
+# The server validates the JWT by:
+# Verifying the signature to ensure the token has not been tampered with.
+# Checking the expiration time (exp) and other claims.
+# If the JWT is valid, the server processes the request and grants access to the protected resource.
+# Token Expiration and Refresh:
+#
+# If the access token expires, the client can use a refresh token (if implemented) to obtain a new access token without logging in again.
+# If the refresh token also expires, the user must log in again to obtain new tokens.
+
+
 SIMPLE_JWT = {
+    # The lifetime of the access token. After this time, the token will expire, and the user will need to refresh it.
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=180),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
+    # The lifetime of the refresh token in sliding mode. This determines how long the refresh token is valid.
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
+    # The lifetime of the sliding token itself. This determines how long the sliding token can be used before requiring a refresh.
     'SLIDING_TOKEN_LIFETIME': timedelta(days=30),
     'SLIDING_TOKEN_REFRESH_LIFETIME_LATE_USER': timedelta(days=1),
     'SLIDING_TOKEN_LIFETIME_LATE_USER': timedelta(days=30),
     'UPDATE_LAST_LOGIN': True,
 }
-
+# Specifies the header that identifies the protocol used by the client (HTTP or HTTPS)
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 

@@ -161,6 +161,8 @@ curl -X PUT --cacert /usr/share/logstash/certs/ca/ca.crt "https://es01:9200/_sna
        }
      }'
 
+     
+
 # Schedule snapshots
 
 curl -X PUT --cacert /usr/share/logstash/certs/ca/ca.crt "https://es01:9200/_slm/policy/snapshots" \
