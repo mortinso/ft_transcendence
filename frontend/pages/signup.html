@@ -5,6 +5,9 @@
         <div class="form-floating">
             <input type="email" class="form-control" id="signupEmail" placeholder="Email Address" required>
             <label for="signupEmail" data-i18n="common.email">Email Address</label>
+            <div id="emailTakenFeedback" class="invalid-feedback" data-i18n="login.emailTaken">
+                Email already taken
+            </div>
         </div>
         <div class="input-group has-validation my-2">
             <div class=" form-floating">
@@ -24,7 +27,7 @@
             <div class=" form-floating">
                 <input type="password" class="form-control" id="signupConfirmPassword" placeholder="Password" required>
                 <label for="signupConfirmPassword" data-i18n="settings.confirmPassword">Confirm Password</label>
-                <div id="passwordMatchFeedback" data-i18n="settings.passwordsDoNotMatch" class="invalid-feedback">
+                <div id="passwordMatchFeedback" class="invalid-feedback">
                     Passwords do not match
                 </div>
             </div>

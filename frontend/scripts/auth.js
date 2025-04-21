@@ -339,6 +339,8 @@ function signup(event) {
         return;
     if (password.value !== confirmPassword.value) {
         document.getElementById('signupConfirmPassword').classList.add('is-invalid');
+        document.getElementById('passwordMatchFeedback').innerText = i18next.t('settings.passwordsDoNotMatch');
+        translateAll();
         return;
     }
     else
@@ -356,9 +358,23 @@ function signup(event) {
             'Content-Type': 'application/json; charset=utf-8'
         }
     }).then(response => {
+        document.getElementById('signupEmail').classList.remove('is-invalid');
+        document.getElementById('signupUsername').classList.remove('is-invalid');
+        document.getElementById('signupConfirmPassword').classList.remove('is-invalid');
         if (response.status === 400) {
-            document.getElementById('signupEmail').classList.add('is-invalid');
-            document.getElementById('signupUsername').classList.add('is-invalid');
+            response.json().then(data => {
+                if (data?.email !== undefined) {
+                    document.getElementById('signupEmail').classList.add('is-invalid');
+                }
+                if (data?.username !== undefined) {
+                    document.getElementById('signupUsername').classList.add('is-invalid');
+                }
+                if (data.non_field_errors?.some(element => element.includes('This password'))) {
+                    document.getElementById('signupConfirmPassword').classList.add('is-invalid');
+                    document.getElementById('passwordMatchFeedback').innerText = i18next.t('login.passwordSimple');
+                }
+                translateAll();
+            });
             return;
         }
         else if (response.status === 201 || response.status === 200) {

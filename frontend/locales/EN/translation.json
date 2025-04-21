@@ -28,7 +28,9 @@
         "42error": "Error logging in with 42",
         "alreadyLoggedIn": "You are already logged in somewhere else",
         "deactivated": "This account has been deactivated",
-        "userTaken": "Username/Email already taken"
+        "userTaken": "Username already taken",
+        "emailTaken": "Email already taken",
+        "passwordSimple": "Your password is too simple."
     },
     "header":{
         "overview": "Overview",
