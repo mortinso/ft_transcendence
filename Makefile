@@ -29,7 +29,7 @@ fclean: clean
 	docker image rm transcendence-backend
 	# docker image rm postgres:17.2
 	docker image rm transcendence-nginx
-	rm -rf .backend/srcs/elk/esbackup/*
+	rm -rf backend/srcs/elk/my_backup/*
 	# docker image prune
 
 re: fclean all
