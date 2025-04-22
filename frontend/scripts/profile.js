@@ -43,9 +43,9 @@ function createPongChart() {
     new Chart("pongChart", {
         type: 'doughnut',
         data: {
-            labels: [i18next.t('overview.wins'), i18next.t('overview.losses'), i18next.t('overview.draws')],
+            labels: [i18next.t('overview.wins'), i18next.t('overview.losses')],
             datasets: [{
-                data: [user?.pong_wins, user?.pong_losses, user?.pong_draws],
+                data: [user?.pong_wins, user?.pong_losses],
                 backgroundColor: ['green', 'red', 'grey']
             }]
         }
