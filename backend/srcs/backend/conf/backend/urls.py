@@ -32,16 +32,3 @@ if settings.DEBUG:
         path('admin/', admin.site.urls),
         path('__debug__/', include(debug_toolbar.urls)),
     ]
-
-
-# test view for debugging
-from django.http import HttpResponse
-
-
-def debug_test_view(request):
-    return HttpResponse("<html><body>Debug Test Page</body></html>", content_type="text/html")
-
-
-urlpatterns += [
-    path('__debug_test__/', debug_test_view, name='debug-test'),
-]
