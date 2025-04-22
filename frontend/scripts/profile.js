@@ -78,7 +78,6 @@ async function getGameData() {
         }
     });
     if (gameData.status !== 200) {
-        console.error("Error fetching game data");
         return null;
     }
     return await gameData.json();

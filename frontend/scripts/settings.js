@@ -261,7 +261,6 @@ async function updateSecurityDetails() {
             return;
         if (this.status === 400) {
             let error = JSON.parse(this.responseText);
-            console.log(error);
             if (error.non_field_errors.some(element => element.includes('Old password doesn\'t match')))
             {
                 document.getElementById('InputCurrentPassword').classList.remove('is-valid');
