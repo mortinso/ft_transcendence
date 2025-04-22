@@ -16,7 +16,8 @@
         "otp": "Código de Confirmação",
         "invalidOTP": "Código de confirmação inválido",
         "tic-tac-toe": "Jogo do Galo",
-        "mobileWarning": "Desculpa, este jogo não está disponível em dispositivos móveis."
+        "mobileWarning": "Desculpa, este jogo não está disponível em dispositivos móveis.",
+        "tournament": "Torneio"
     },
     "login":{
         "rememberMe": "Lembrar-me",
@@ -38,7 +39,8 @@
         "notifications": "Notificações",
         "profile": "Perfil",
         "settings": "Definições",
-        "logout": "Sair"
+        "logout": "Sair",
+        "tournament": "Torneio"
     },
     "notifications":{
         "empty": "Sem notificações",
@@ -55,7 +57,8 @@
         "playPong": "Jogar Pong",
         "playTicTacToe": "Jogar Jogo do Galo",
         "playersPlaying": "pessoas a jogar",
-        "tournament": "Torneio"
+        "tournament": "Torneio",
+        "newTournament": "Criar um novo torneio"
     },
     "profile":{
         "addAsFriend": "Adicionar como amigo",
@@ -126,7 +129,19 @@
         "send": "Enviar",
         "profile": "Mostrar Perfil"
     },
-    "games":{
+    "tournament": {
+        "newTournament": "Novo Torneio",
+        "chooseOption": "Escolhe uma opção:",
+        "4Players": "4 Jogadores",
+        "8Players": "8 Jogadores",
+        "16Players": "16 Jogadores",
+        "back": "Voltar",
+        "createTournament": "Criar Torneio",
+        "nextMatch": "Próxima Partida:",
+        "wonTournament": "ganhou o torneio!",
+        "exit": "Sair"
+    },
+    "games": {
         "wins": "ganhou!",
         "playAgain": "Jogar novamente",
         "play": "Jogar",

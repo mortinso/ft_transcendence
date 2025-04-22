@@ -1,0 +1,439 @@
+<style>
+	.page { padding: 2vh; }
+
+	.tournament-creation { margin: 60px 180px; }
+
+	h1 {
+		color: #555;
+		text-align: center;
+		font-size: 400%;
+		margin-bottom: 10vh;
+	}
+
+	#chooseOption {
+		display: flex;
+		justify-content: center;
+		margin-bottom: 5vh;
+		font-size: 22px;
+		color: #00000081;
+		font-family: monospace;
+	}
+
+	#player-buttons {
+		padding-left: 15%;
+		padding-right: 15%;
+		display: flex;
+		font-size: 200%;
+		justify-content: center;
+		font-family: monospace;
+		
+		button {
+			font-weight: bold;
+			padding: 8%;
+			border: none;
+			border-radius: 8%;
+			cursor: pointer;
+			color: white ;
+		}
+	}
+
+	.PButton4 {
+		&:enabled { background-color: #f59055; }
+		&:hover { background-color: #da7236; }
+	}
+
+	.PButton8 {
+		margin-left: 3vw;
+		margin-right: 3vw;
+		&:enabled { background-color: #f379df; }
+		&:hover { background-color: #e65bce; }
+	}
+
+	.PButton16 {
+		&:enabled { background-color: #6ed165; }
+		&:hover { background-color: #40c234; }
+	}
+	
+	#player-section { display: none; }
+
+	#playerList {
+		display: flex-wrap;
+		justify-content: center;
+	}
+
+	.player-name {
+		margin: 8px;
+		border: 2px solid;
+		border-radius: 10px;
+		padding: 6px;
+		padding-left: 8px;
+		font-weight: 500;
+		color: #333;
+		font-size: larger;
+		background-color: #f7f7f7;
+
+		&::placeholder { color: #777; }
+	}
+
+	.button-section {
+		margin-top: 10%;
+		display: flex;
+		justify-content: center;
+
+		button {
+			border-width: 0px;
+			border-radius: 40px;
+			padding: 20px;
+			box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.3);
+			background-color: #979797;
+			color: #f1f1f1;
+			font-weight: 500;
+		}
+
+		.tournament\.back {
+			width: 120px;
+			margin-right: 20px;
+		}
+	}
+
+
+	#createButton { width: 180px; }
+
+	#bracket {
+		display: flex;
+		flex-direction: row;
+		font-size: large;
+		padding: 10px;
+		justify-content: center;
+		margin: auto;
+	}
+
+	.round{
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		width: 200px;
+		list-style: none;
+		padding: 0;
+
+		.spacer { flex-grow: 1; }
+		.spacer:first-child, .spacer:last-child { flex-grow: .5; }
+		.match-spacer { flex-grow: 1; }
+	}
+
+	li {
+		&.match {
+			padding-left:20px;
+			
+			&.winner {
+				font-weight: bold;
+				background-color: #1ca11c;
+				color: white;
+			}
+			
+			&.decided {
+				pointer-events: none;
+				opacity: 0.6;
+			}
+		}
+
+		&.spacer {
+			min-height: 30px;
+		}
+
+		&.player1 {
+			border-image: linear-gradient(90deg, #7696ff, #aaa);
+			border-image-slice: 1;
+			border-bottom: 2px solid;
+		}
+
+		&.match-spacer {
+			border-right: 2px solid #aaa;
+			min-height: 60px;
+		}
+
+		&.player2 {
+			border-image: linear-gradient(90deg, #ff7e7e, #aaa);
+			border-image-slice: 1;
+			border-top: 2px solid;
+		}
+
+		&.finalist {
+			height: 60px;
+			align-content: center;
+			border-bottom: 2px solid #aaa;
+		}
+
+		&.final-winner {
+			font-weight: bolder;
+			background: linear-gradient(90deg, #983eff, #fe3afe) border-box;
+			animation: hue 5s infinite linear;
+			color: white;
+			border: 5px solid transparent;
+		}
+	}
+
+	@keyframes hue {
+		from { filter: hue-rotate(0deg); }
+		to { filter: hue-rotate(360deg); }
+	}
+
+	#nextMatchPopup {
+		padding: 30px;
+		display: none;
+		position: fixed;
+		bottom: 10%;
+		right: 5%;
+		background-color: rgba(0, 0, 0, 0.8);
+		border-radius: 20px;
+	}
+
+	#nextMatch {
+		font-weight: bold;
+		color: #aaa;
+	}
+
+	#versusMessage {
+		font-size: x-large;
+		color: whitesmoke;
+	}
+
+	#playButton {
+		position: relative;
+		margin-top: 20px;
+		left: 50%;
+		-ms-transform: translate(-50%);
+		transform: translate(-50%);
+	}
+
+	#game { display: none; }
+
+	#canvasWrapper {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		height: 100%;
+	}
+
+	#countdownBlock { 
+		position: fixed;
+		width: 100%;
+		height: 100%;
+		display: none;
+	}
+
+	#countdown {
+		display: block;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		font-weight: bolder;
+		font-size: 200px;
+		background-image: linear-gradient(90deg, #868686, #4e4e4e);
+		background-clip: text;
+		color: transparent;
+	}
+	
+	.game-button {
+		width: 100px;
+		text-align: center;
+		margin-right: 0px !important;
+		left: 50%
+	}
+
+	#pauseButton { display: none; }
+
+	.player-title, .game-button {
+		top:-50px;
+		position: absolute;
+		height: 30px;
+		box-sizing: border-box;
+		align-items: center;
+		justify-content: center;
+		border-radius: 15px;
+		font-family: monospace;
+		font-weight: bold;
+		color: #fff;
+		font-size: auto;
+		display: inline-flex;
+		padding: 20px;
+		transform: translate(-50%);
+	}
+
+	.player-title { min-width: 130px; }
+	
+	#player1-title {
+		background: var(--bs-primary);
+		left: 25%;
+	}
+	
+	#player2-title {
+		background: #e03a3a;
+		left: 75%;
+	}
+
+	canvas {
+		border: 2px solid black;
+		width: 60%;
+		height: auto;
+	}
+
+	#matchWinnerPopup {
+		position: fixed;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		background: #6B6B6B;
+		color: white;
+		padding: 20px;
+		border-radius: 10px;
+		text-align: center;
+		display: none;
+		box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.5);
+		font-weight: 500;
+
+		button {
+			color: #3f3f3f;
+			margin: 10px;
+			padding: 10px;
+			border: none;
+			cursor: pointer;
+			font-size: 16px;
+			border-radius: 15px;
+		}
+	}
+
+	#tournamentWinnerPopup {
+		padding: 30px;
+		display: none;
+		position: fixed;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		color: whitesmoke;
+		background-color: rgba(68, 68, 68);
+		border-radius: 20px;
+
+		button {
+			position: relative;
+			margin-top: 20px;
+			left: 50%;
+			-ms-transform: translate(-50%);
+			transform: translate(-50%);
+		}
+	}
+
+	#tournamentWinner {
+		font-weight: bold;
+	}
+
+	[data-bs-theme="dark"] {
+		h1 { color: #ddd; }
+
+		#chooseOption { color: #ffffff83; }
+
+		.player-name {
+			background-color: #000;
+			color: #e2e2e2;
+
+			&::placeholder { color: #969696; }
+		}
+
+		.button-section button {
+			box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.5);
+			background-color: #757575;
+			color: #ddd;
+		}
+
+		li {
+			&.player1 {
+				border-image: linear-gradient(90deg, #2e55d6, white);
+				border-image-slice: 1;
+			}
+			
+			&.match-spacer { border-right: 2px solid white; }
+			
+			&.player2 {
+				border-image: linear-gradient(90deg, #d62e2e, white);
+				border-image-slice: 1;
+			}
+			
+			&.finalist { border-bottom: 2px solid white; }
+		}
+
+		#nextMatch { color:#ffffff80; }
+
+		#countdown { background-image: linear-gradient(90deg, #dddddd, #868686); }
+
+		canvas { border: 2px solid white; }
+
+		#matchWinnerPopup {
+			background: white;
+			color: black;
+			box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.5);
+
+			button { color: white; }
+		}
+	}
+
+	@media (max-width: 900px) {
+		#newTournament {
+			font-size: 200%;
+		}
+	}
+</style>
+
+<div id="mobileWarning" class="w-100 h-100 d-none justify-content-center align-items-center">
+	<h4 class="m-5" data-i18n="common.mobileWarning">Sorry, this game is not available on mobile devices.</h4>
+</div>
+<div id="tournamentPage" class="page">
+	<div class="tournament-creation">
+		<h1 id="newTournament" data-i18n="tournament.newTournament">New Tournament</h1>
+		<div id="option-section">
+			<label id="chooseOption" data-i18n="tournament.chooseOption">Choose an option:</label>
+			<div id="player-buttons">
+				<button class="PButton4" data-i18n="tournament.4Players" onClick="initTournament(4)">4 Players</button>
+				<button class="PButton8" data-i18n="tournament.8Players" onClick="initTournament(8)">8 Players</button>
+				<button class="PButton16" data-i18n="tournament.16Players" onClick="initTournament(16)">16 Players</button>
+			</div>
+		</div>
+		<div id="player-section">
+			<div id="playerList"></div>
+			<div class="button-section">
+				<button class="tournament.back" onclick="changeContent('tournament')">Back</button>
+				<button id="createButton" data-i18n="tournament.createTournament">Create Tournament</button>
+			</div>
+		</div>
+	</div>
+	<div id="bracket"> </div>
+	<div id="game">
+		<div id="canvasWrapper">
+			<div id="countdownBlock"><span id="countdown">0</span></div>
+			<div class="canvas-buttons">
+				<div id="player1-title" class="player-title">Player 1</div>
+			    <button id="gamePlayButton" class="btn btn-primary me-2 game-button" data-i18n="games.play">Play</button>
+			    <button id="pauseButton" class="btn btn-primary me-2 game-button" data-i18n="games.pause"></button>
+				<div id="player2-title" class="player-title">Player 2</div>
+			</div>
+			<canvas id="pong" width="1000" height="500"></canvas>
+		</div>
+		<div id="matchWinnerPopup">
+			<p><span id="matchWinner"></span><span data-i18n="games.wins"></span></p>
+			<button id="goBracket" data-i18n="common.tournament">Tournament</button>
+		</div>
+	</div>
+</div>
+<div id="nextMatchPopup">
+	<p id="nextMatch" data-i18n="tournament.nextMatch">Next match:</p>
+	<p id="versusMessage"></p>
+	<button id="playButton" class="btn btn-secondary" data-i18n="games.play"></button>
+</div>
+<div id="tournamentWinnerPopup">
+	<p><span id="tournamentWinner"></span><span data-i18n="tournament.wonTournament"></span></p>
+	<button id="exitTournament" class="btn btn-secondary" data-i18n="tournament.exit" onclick="changeContent('tournament')"></button>
+</div>
+<script src="/frontend/scripts/tournament.js"></script>
+<script src="/frontend/scripts/pong_tournament.js"></script>

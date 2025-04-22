@@ -1,15 +1,12 @@
-(function () {
-
-	_running = true;
-
+function playPong( player1_elem, player2_elem ) {
 	let paused = false;
 
 	const canvas = document.getElementById('pong');
 	const ctx = canvas.getContext('2d');
-	const winnerPopup = document.getElementById('winnerPopup');
-	const winnerMessage = document.getElementById('winnerMessage');
-	const pauseBtn = document.getElementById('PauseBtn');
-	const playButton = document.getElementById('playButton');
+	const winnerPopup = document.getElementById('matchWinnerPopup');
+	const matchWinner = document.getElementById('matchWinner');
+	const pauseButton = document.getElementById('pauseButton');
+	let playButton = document.getElementById('gamePlayButton');
 
 	const PADDLE_SPEED = 4;
 	const BALL_SPEED = 4;
@@ -21,23 +18,16 @@
 	const maxPoints = 5;
 
 	const paddle1Color = getComputedStyle(document.documentElement).getPropertyValue('--bs-primary').trim();
-	let paddle2Color = '#e03a3a';
+	let paddle2Color = '#d62e2e';
 	let ballColor = getColorScheme();
 	let fontText = getColorScheme();
 
 	let ball = { x: canvas.width / 2, y: canvas.height / 2, vx: BALL_SPEED || 4, vy: BALL_SPEED || 4, hits: 0, lastLoser: null };
 
-	let player1 = { x: 0, y: canvas.height / 2 - paddleHeight / 2, score: 0, up: false, down: false, name: _user.username };
-	let player2 = { x: canvas.width - paddleWidth, y: canvas.height / 2 - paddleHeight / 2, score: 0, up: false, down: false, name: i18next.t('games.player2') };
+	let player1 = { x: 0, y: canvas.height / 2 - paddleHeight / 2, score: 0, up: false, down: false };
+	let player2 = { x: canvas.width - paddleWidth, y: canvas.height / 2 - paddleHeight / 2, score: 0, up: false, down: false };
 
 	let collisionCooldown = 0;
-
-	if(window.matchMedia("(pointer: coarse)").matches){
-		document.getElementById('mobileWarning').classList.remove('d-none');
-		document.getElementById('canvasWrapper').classList.add('d-none');
-		translateAll();
-		return;
-	}
 
 	window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
 		ballColor = e.matches ? 'white' : 'black';
@@ -145,6 +135,7 @@
 		ball.y = canvas.height / 2;
 		ball.vy = BALL_SPEED || 4;
 		ball.hits = 0;
+		ballColor = getColorScheme();
 	}
 
 	function checkSpeedIncrease() {
@@ -154,83 +145,59 @@
 		}
 	}
 
-	async function SaveStats(winner){
-		await fetch(`/api/users/${_user.id}/games/create/`, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-				'Authorization': `Bearer ${sessionStorage.getItem('jwt')}`
-			},
-			body: JSON.stringify({
-				winner: winner,
-				player1: player1.name,
-				player2: player2.name,
-				owner_won: winner === _user.username ? true : false,
-				game_type: "PONG",
-				draw: false,
-				result: `${player1.score}x${player2.score}`,
-			})
-		});
-	}
-
 	function checkWinner() {
 		if (player1.score >= maxPoints) {
-			winnerMessage.innerText = `${player1.name} ${i18next.t("games.wins")}`;
+			matchWinner.innerHTML = `${player1_elem.innerText} `;
 			winnerPopup.style.display = "block";
-			translateAll();
-			SaveStats(player1.name).then(() => {});
 			return 1;
 		}
-		if (player2.score >= maxPoints) {
-			winnerMessage.innerText = `${player2.name} ${i18next.t("games.wins")}`;
+		else if (player2.score >= maxPoints) {
+			matchWinner.innerHTML = `${player2_elem.innerText} `;
 			winnerPopup.style.display = "block";
-			translateAll();
-			SaveStats(player2.name).then(() => {});
 			return 1;
 		}
 		return 0;
 	}
 
-	const rrBtn = document.getElementById('restartGame');
-	const homeBtn = document.getElementById('goHome');
+	const bracketBtn = document.getElementById('goBracket');
 
-	rrBtn.addEventListener('click', () => {
+	bracketBtn.addEventListener('click', () => {
+		if (player1.score >= maxPoints)
+			selectWinner(player1_elem);
+		else if (player2.score >= maxPoints)
+			selectWinner(player2_elem);
+
 		player1.score = 0;
 		player2.score = 0;
 
 		// move player1 paddle to the middle again
 		player1.x = 0;
 		player1.y = canvas.height / 2 - paddleHeight / 2;
-
+		
 		// move player2 paddle to the middle again
 		player2.x = canvas.width - paddleWidth;
 		player2.y = canvas.height / 2 - paddleHeight / 2;
 
-		winnerPopup.style.display = "none";
 		ball.lastLoser = null;
-		paused = false;
-		pauseBtn.dataset.i18n = 'games.pause';
-		translateAll();
 		resetBall();
-		draw();
-		startCountdown();
+		
+		winnerPopup.style.display = "none";
+		bracket.style.display = 'flex';
+		document.getElementById('game').style.display = 'none';
+		playButton.style.display = 'flex';
+		pauseButton.style.display = 'none';
+		pauseButton.dataset.i18n = 'games.pause';
+		translateAll();
 	});
 
-	homeBtn.addEventListener('click', () => {
-		changeContent('overview', 0);
-	});
-
-	pauseBtn.addEventListener('click', () => {
+	pauseButton.addEventListener('click', () => {
 		paused = !paused;
 		if (paused)
-			pauseBtn.dataset.i18n = 'games.play';
+			pauseButton.dataset.i18n = 'games.play';
 		else
-			pauseBtn.dataset.i18n = 'games.pause';
+			pauseButton.dataset.i18n = 'games.pause';
 		translateAll();
 	});
-
-	document.getElementById('player1-title').innerText = player1.name;
-	document.getElementById('player2-title').innerText = player2.name;
 
 	function draw() {
 		// Clear the canvas
@@ -249,7 +216,6 @@
 	}
 
 	function gameLoop() {
-		if (_running === false) return;
 		if (!paused)
 			if (update())
 				return;
@@ -270,7 +236,6 @@
 				pauseButton.dataset.i18n = 'games.pause';
 			translateAll();
 		}
-		if (e.key == 'Enter' && playButton.style.display !== 'none') playButton.click();
 	});
 
 	window.addEventListener('keyup', (e) => {
@@ -280,14 +245,17 @@
 		if (e.key === 'ArrowDown') player2.down = false;
 	});
 	
+	// Make sure there's only one event listener on gamePlayButton at a time
+	playButton.replaceWith(playButton.cloneNode(true));
+	playButton = document.getElementById("gamePlayButton");
 	playButton.addEventListener('click', () => {
 		playButton.style.display = 'none';
-		pauseBtn.style.display = 'flex';
+		pauseButton.style.display = 'flex';
 		startCountdown();
 	});
-
+	
 	var timer;
-	var timeLeft; // seconds
+	var timeLeft;
 
 	function updateTimer() {
 		timeLeft = timeLeft - 1;
@@ -303,13 +271,12 @@
 	}
 
 	function startCountdown() {
+		timeLeft = 4;
 		// every N milliseconds (1 second = 1000 ms)
 		timer = setInterval(updateTimer, 1000);
-		timeLeft = 4;
 
 		document.getElementById('countdownBlock').style.display = 'block';
 		updateTimer();
 	}
-
 	draw();
-})();
+}
