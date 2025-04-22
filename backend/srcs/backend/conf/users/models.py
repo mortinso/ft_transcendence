@@ -42,7 +42,6 @@ class User(AbstractUser):
     game_list = models.ManyToManyField(Game, related_name="players")
     pong_wins = models.IntegerField(default=0, editable=False)
     pong_losses = models.IntegerField(default=0, editable=False)
-    pong_draws = models.IntegerField(default=0, editable=False)
     pong_games_played = models.IntegerField(default=0, editable=False)
     ttt_wins = models.IntegerField(default=0, editable=False)
     ttt_losses = models.IntegerField(default=0, editable=False)

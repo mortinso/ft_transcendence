@@ -30,7 +30,6 @@ class ListUsersSerializer(serializers.ModelSerializer):
             "game_list",
             "pong_wins",
             "pong_losses",
-            "pong_draws",
             "pong_games_played",
             "ttt_wins",
             "ttt_losses",
