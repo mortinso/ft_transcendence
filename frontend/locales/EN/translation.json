@@ -17,7 +17,8 @@
         "invalidOTP": "Invalid confirmation code",
         "tic-tac-toe": "Tic Tac Toe",
         "mobileWarning": "Sorry, this game is not available on mobile devices.",
-        "tournament": "Tournament"
+        "tournament": "Tournament",
+        "back": "Back"
     },
     "login":{
         "rememberMe": "Remember me",
@@ -135,7 +136,6 @@
         "4Players": "4 Players",
         "8Players": "8 Players",
         "16Players": "16 Players",
-        "back": "Back",
         "createTournament": "Create Tournament",
         "nextMatch": "Next Match:",
         "wonTournament": "won the tournament!",

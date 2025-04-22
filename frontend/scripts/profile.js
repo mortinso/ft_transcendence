@@ -25,7 +25,7 @@ async function updateProfilePage(user=null) {
         if (_user.friends.includes(userProfile.id))
         {
             let btn = document.getElementById('add-friend-btn');
-            btn.setAttribute('data-i18n', i18next.t('profile.removeFriend'));
+            btn.setAttribute('data-i18n', i18next.t('common.back'));
             btn.classList.add('btn-danger');
             btn.onclick = () => changeContent('livechat');
         }

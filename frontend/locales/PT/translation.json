@@ -17,7 +17,8 @@
         "invalidOTP": "Código de confirmação inválido",
         "tic-tac-toe": "Jogo do Galo",
         "mobileWarning": "Desculpa, este jogo não está disponível em dispositivos móveis.",
-        "tournament": "Torneio"
+        "tournament": "Torneio",
+        "back": "Voltar"
     },
     "login":{
         "rememberMe": "Lembrar-me",
@@ -135,7 +136,6 @@
         "4Players": "4 Jogadores",
         "8Players": "8 Jogadores",
         "16Players": "16 Jogadores",
-        "back": "Voltar",
         "createTournament": "Criar Torneio",
         "nextMatch": "Próxima Partida:",
         "wonTournament": "ganhou o torneio!",

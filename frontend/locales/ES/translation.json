@@ -17,7 +17,8 @@
           "invalidOTP": "Código de confirmación inválido",
           "tic-tac-toe": "Tres en Raya",
           "mobileWarning": "Lo sentimos, este juego no está disponible en dispositivos móviles.",
-          "tournament": "Torneo"
+          "tournament": "Torneo",
+          "back": "Volver"
      },
      "login":{
           "rememberMe": "Recuérdame",
@@ -134,7 +135,6 @@
         "4Players": "4 Jugadores",
         "8Players": "8 Jugadores",
         "16Players": "16 Jugadores",
-        "back": "Volver",
         "createTournament": "Crear Torneo",
         "nextMatch": "Próximo partido",
         "wonTournament": "ganó el torneo!",
