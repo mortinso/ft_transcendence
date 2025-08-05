@@ -1,127 +1,293 @@
-# Instruções
+<h1>
+	<p align="center">ft_transcendence</p>
+	<img align="right" alt="Final Grade: 100/ 100%" src="https://img.shields.io/badge/-%20115%20%2F%20100-success">
+</h1>
+<p align="center">
+	<b><i>Surprise.</b></i>
+</p>
+<p align="center">
+	<img alt="GitHub code size in bytes" src="https://img.shields.io/github/languages/code-size/mortinso/ft_transcendence">
+	<img alt="GitHub top language" src="https://img.shields.io/github/languages/top/mortinso/ft_transcendence">
+	<img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/mortinso/ft_transcendence">
+</p>
 
-1.  Define passwords in a .env file
+<details>
+	<summary><h2>Table of Contents</h2></summary>
+<table>
+<tr>
+<td>
 
-2.  to build and run the containers use: `make`
+1. [Overview](https://github.com/mortinso/ft_transcendence/#overview)
 
-3.  Browser: <HOST_IP>
+	1.1. [Mandatory Part](https://github.com/mortinso/ft_transcendence/#mandatory-part)
 
-# Endpoints
+	1.2. [Selected Modules](https://github.com/mortinso/ft_transcendence/#selected-modules)
+2. [Installation](https://github.com/mortinso/ft_transcendence/#installation)
 
-## Users
+   2.1. [Requirements](https://github.com/ft_transcendence/#requirements)
 
-### Listing and updating
-- `/api/users` (list users except current user)
+   2.2. [Build Instructions](https://github.com/mortinso/ft_transcendence/#build-instructions)
+3. [API Endpoints](https://github.com/mortinso/ft_transcendence/#api-endpoints)
+4. [Possible Improvements](https://github.com/mortinso/ft_transcendence/#possible-improvements)
+</td>
+</tr>
+</table>
+</details>
 
-- `/api/users/<uuid>` (retrieve user <uuid>, if it exists)
+## Overview
+This project is the development of a website where users will be able to play Pong with eachother in a nice user interface. The project is divided into two parts: the [mandatory part](https://github.com/mortinso/ft_transcendence/#mandatory-part) (worth about 25% of the grade); and multiple elective supplementary [modules](https://github.com/mortinso/ft_transcendence/#selected-modules) that can replace or complete the mandatory rules.
 
-- `/api/users/whoami` (retrieves current user)
+<details><summary><h3>Mandatory Part</h3></summary>
+<table>
+<tr><td><b>Minimal Technical Requirements</b></td></tr>
+<tr><td>
 
-- `/api/users/<uuid>/edit` (update/destroy user1, if user 1 is current user, else show 404) - 'username', 'email', 'old_password', 'password', 'confirm_password', 'first_name', 'last_name'
+- If a backend is included, it must be written in pure Ruby (Overwritten by the Framework Module).
+- Frontend developed using pure vanilla Javascript (Overwritten by the Frontend Module).
+- Single-page application.
+- Compatible with the latest stable up-to-date version of Google Chrome.
+- The user should encounter no unhandled errors and no warnings.
+- Launched with a single command line to run an autonomous Docker container.</td></tr>
+<tr><td><b>Game</b></td></tr>
+<tr><td>
 
-- `/api/users/<uuid>/add_avatar` (add or update avatar) - 'avatar'
+- Users must be able to play a live Pong game against another player directly on the website, using the same keyboard.
+- Users must be able to create a tournament consisting of multiple players who take turns playing against each other. It must clearly display the matchups and order of the players.
+- At tournament creation, each player must input their alias. Aliases will be reset when a new tournament is started (Overwritten by the Standard User Management module).
+- The tournament system organizes the participants matchmaking, and announces the next fight.
+- All players must adhere to the same rules (E.g., same paddle speed), including the single-player AI (AI Opponent Module).
+- Must capture the essence of the original Pong (1972).</td></tr>
+<tr><td><b>Security Concerns</b></td></tr>
+<tr><td>
 
-### Friends
-- `/api/users/<uuid>/invite_friend` (send friend request from user 1)
+- Any password stored in the database must be hashed.
+- The website must be protected against SQL injections/XSS.
+- An HTTPS connection must be enabled for all aspects related to the backend (if one is included).
+- Any forms and user input must be validated, either within the base page if no backend is used or on the server side if a backend is used.</td></tr>
+</table>
+</details>
 
-- `/api/users/<uuid>/accept_friend` (accept friend requests)
+<details><summary><h3>Selected Modules</h3></summary>
+<table>
+	<tr><td colspan="2" align="center"><b>Web</b></td></tr>
+	<tr><td>Framework</td>
+	<td>Use the Django web framework for backend development.</td></tr>
+	<tr><td>Frontend</td>
+	<td>Use the Bootstrap toolkit for frontend development.</td></tr>
+	<tr><td>Database</td>
+	<td>The designated database for all DB instances is PostgreSQL. This choice guarantees data consistency and compatibility across all project components.</td></tr>
+	<tr><td colspan="2" align="center"><b>User Management</b></td></tr>
+	<tr><td>Standard User Management</td>
+	<td>
 
-- `/api/users/<uuid>/remove_friend` (remove friend)
+- Enable a secure way for user registration and subsequent subsequent logins.
+- Users can set a unique display name.
+- Users can update their information, including uploading custom avatars.
+- Users can add others as friends and view their online status.
+- User profiles display stats (wins and losses) and a match History, accessible to logged in users.
+	</td></tr>
+	<tr><td>Remote Authentication</td>
+	<td>Enable remote user authentication (OAuth 2.0 with 42), providing users with a secure and convenient way to access the web application.
+	</td></tr>
+	<tr><td colspan="2" align="center"><b>Gameplay and User Experience</b></td></tr>
+	<tr><td>Second Game</td>
+	<td>Expand the platform by introducing a new game, enhancing user engagement with gameplay history.</td></tr>
+	<tr><td colspan="2" align="center"><b>AI-Algo</b></td></tr>
+	<tr><td>AI Opponent</td>
+	<td>Enhance the game by introducing an AI opponent that adds excitement and competitiveness without relying on the A* algorithm.</td></tr>
+	<tr><td colspan="2" align="center"><b>Cybersecurity</b></td></tr>
+	<tr><td>Two-Factor Authentication and JWT</td>
+	<td>Strengthen user account security by offering Two-Factor Authentication (2FA) and enhance authentication and authorization through the use of JSON Web Tokens (JWT).</td></tr>
+	<tr><td colspan="2" align="center"><b>DevOps</b></td></tr>
+	<tr><td>Infrastructure Setup for Log Management</td>
+	<td>Establish a powerful log management and analysis system using the ELK stack (Elasticsearch, Logstash, Kibana), enabling effective troubleshooting, monitoring, and insights into the system’s operation and performance.</td></tr>
+	<tr><td colspan="2" align="center"><b>Acessibility</b></td></tr>
+	<tr><td>Support All Devices</td>
+	<td>Provide a consistent and user-friendly experience on all devices, maximizing accessibility and user satisfaction.</td></tr>
+	<tr><td>Expanding Browser Compatibility</td>
+	<td>Broaden the accessibility of the web application by supporting an additional web browser, providing users with more choices for their browsing experience.</td></tr>
+	<tr><td>Multiple Languages</td>
+	<td>Enhance the accessibility and inclusivity of the website by offering content in multiple languages, making it more user-friendly for a diverse international audience.</td></tr>
+</table>
+</details>
 
-- `/api/users/<uuid>/remove_friend_request` (remove friend request)
+## Installation
+### Requirements
+- make
+- Docker
 
-- `/api/users/<uuid>/block` (block user)
+### Build Instructions
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/mortinso/ft_transcendence.git
+   ```
+2. Create the `.env` file:
+	```bash
+	cd ft_transcendence
+	touch .env
+	```
+3. Populate the `.env` file with the following variables and set them:
+	```
+	# Django
+	DJANGO_SECRET_KEY=
+	DJANGO_SUPERUSER_PASSWORD=
 
-- `/api/users/<uuid>/unblock` (unblock user)
+	# Postgres
+	POSTGRES_USER=
+	POSTGRES_DB=
+	POSTGRES_PASSWORD=
 
-### Invite to games
+	# 42 API
+	INTRA42_CLIENT_ID=
+	INTRA42_CLIENT_SECRET=
 
-Invite or accept user requests to play games by using the following endpoints and the variables: `user_to_invite` (to invite a user to play) or `user_to_accept` (to accept a user's request to play a game)
+	# DevOps
+	EMAIL_PASSWORD=
 
-- `/api/users/<uuid>/invite_to_pong` (send request to play pong)
+	# ELK
+	# Password for the 'elastic' user (at least 6 characters)
+	ELASTIC_PASSWORD=
 
-- `/api/users/<uuid>/invite_to_ttt` (send request to play tic-tac-toe)
+	# Kibana
+	KIBANA_REPORTING_KEY=
+	KIBANA_ENCRYPTION_KEY=
+	KIBANA_SECURITY_KEY=
 
-- `/api/users/<uuid>/accept_pong_invite` (accept pong invite)
+	# Password for the 'kibana_system' user (at least 6 characters)
+	KIBANA_PASSWORD=
 
-- `/api/users/<uuid>/accept_ttt_invite` (accept tic-tac-toe invite)
+	# SAMPLE Predefined Key only to be used in POC environments
+	ENCRYPTION_KEY=
+	```
+4. Start the webapp:
+	```bash
+	make
+	```
+5. Open it in the browser at: `<HOST_IP>`
 
-### Images
-- `/api/users/<uuid:pk>/add_avatar/` (add user avatar)
+## API Endpoints
+### Users
+<table><tr><td colspan="3" align="center"><b>Listing and Updating</b></td></tr>
+<tr><td>
 
-- `/api/users/<uuid:pk>/get_avatar/` (get user avatar)
+`/api/users`</td>
+<td>Lists users, except the current user.</td><td></td></tr>
+<tr><td>
 
-### Auth
-- `/api/login/` (login)
+`/api/users/<uuid>`</td>
+<td>
 
-- `/api/auth/logout/` (logout)
+Retrieves user `<uuid>`, if it exists.</td><td></td></tr>
+<tr><td>
 
-- `/api/auth/signup/` (signup)
+`/api/users/whoami`</td>
+<td>Retrieves the current user.</td><td></td></tr>
+<tr><td>
 
-- `/api/auth/check_otp/` (confirm user's one-time password)
+`/api/users/<uuid>/edit`</td>
+<td>
 
-### Oauth
-- `/api/oauth/login` (oauth2 authentication)
-- `/api/oauth/logout` (oauth2 logout)
+Update/destroy `<uuid>` if `<uuid>` is the current user, otherwise error 404.</td>
+<td>
 
-### Signup instructions
+`username`, `email`, `old_password`, `password`, `confirm_password`, `first_name`, `last_name`</td></tr>
+<tr><td>
 
-On signup, a 6-digit one time password is sent to the user email. That password must be then sent to /api/auth/check_otp/ as 'otp'. If the OTP is valid, the page will return 200: OTP OK and the user is created.
+`/api/users/<uuid>/add_avatar`</td>
+<td>Add or update the avatar.</td>
+<td>
 
-### TFA instructions
+`avatar`
+</td></tr>
+<tr><td colspan="3" align="center"><b>Friends</b></td></tr>
+<tr><td>
 
-If the user's tfa option is active, when the user logs in, a 6-digit one time password is sent to the user email. That password must be then sent to /api/auth/check_otp/ as 'otp'. If the OTP is valid, the page will return the JWT tokens.
+`/api/users/<uuid>/invite_friend`</td>
+<td>
 
+Send friend request from `<uuid>`.</td><td></td></tr>
+<tr><td>
 
-## Games
+`/api/users/<uuid>/accept_friend`</td>
+<td>Accept friend request.</td><td></td></tr>
+<tr><td>
 
-- `/api/<uuid:user_pk>/games/create/` (create game - returns game info, including game_id number)
-- `/api/<uuid:user_pk>/games/` (list user's game history)
-- `<uuid:pk>/games/<uuid:game_pk>/edit/` (edit specific game using game_id number)
+`/api/users/<uuid>/remove_friend`</td>
+<td>Remove friend.</td><td></td></tr>
+<tr><td>
 
+`/api/users/<uuid>/remove_friend_request`</td>
+<td>Remove friend request.</td><td></td></tr>
+<tr><td>
 
+`/api/users/<uuid>/block`</td>
+<td>Block user.</td><td></td></tr>
+<tr><td>
 
+`/api/users/<uuid>/unblock`</td>
+<td>Unblock user.</td><td></td></tr>
+<tr><td colspan="3" align="center"><b>Images</b></td></tr>
+<tr><td>
 
-# ELK
+`/api/users/<uuid:pk>/add_avatar/`</td>
+<td>Add user avatar.</td><td></td></tr>
+<tr><td>
 
-## Import dashboard to Kibana:
+`/api/users/<uuid:pk>/get_avatar/`</td>
+<td>Get user avatar.</td><td></td></tr>
+<tr><td colspan="3" align="center"><b>Auth</b></td></tr>
+<tr><td>
 
-`curl -X POST kibana:5601/api/saved_objects/_import?createNewCopies=true -H "kbn-xsrf: true" -u "${ELASTIC_USER}:$(cat $ELASTIC_PASSWORD_FILE)" --form file=@dashboard.ndjson`
+`/api/login/`</td>
+<td>Log in.</td><td></td></tr>
+<tr><td>
 
-## Export dashboard from Kibana:
+`/api/auth/logout/`</td>
+<td>Log out.</td><td></td></tr>
+<tr><td>
 
-`curl --request POST "https://kibana:5601/api/saved_objects/_export" --header "Content-Type: application/json; Elastic-Api-Version=2023-10-31" --header "kbn-xsrf: string" -u "${ELASTIC_USER}:${ELASTIC_PASSWORD}" -d '{ "objects": [ { "type": "dashboard", "id": "c9c34bef-c32f-4870-95d3-288c00170cea" } ] }' -o /usr/share/kibana/config/dashboards/dashboard.ndjson`
+`/api/auth/signup/`</td>
+<td>Sign up.</td><td></td></tr>
+<tr><td>
 
-## Keys on env-file
+`/api/auth/check_otp/`</td>
+<td>Confirm users one-time password.</td><td></td></tr>
+<tr><td colspan="3" align="center"><b>OAuth</b></td></tr>
+<tr><td>
 
-### Django settings
-- DJANGO_SECRET_KEY
-- DJANGO_SUPERUSER_PASSWORD
+`/api/oauth/login`</td>
+<td>OAuth2 authentication.</td><td></td></tr>
+<tr><td>
 
-### Postgres settings
-- POSTGRES_USER
-- POSTGRES_DB
-- POSTGRES_PASSWORD
+`/api/oauth/logout`</td>
+<td>OAuth2 log out.</td><td></td></tr>
+</table>
 
-### 42 API settings
-- INTRA42_CLIENT_ID
-- INTRA42_CLIENT_SECRET
+> [!IMPORTANT]
+> On signup, a 6-digit one time password is sent to the users email. That password must be then sent to `/api/auth/check_otp/` as `otp`. If the OTP is valid, the page will return `200: OTP OK` and the user is created.
 
-### DevOps settings
-- EMAIL_PASSWORD
+> [!IMPORTANT]
+> If the user has 2FA enabled, when the user logs in, a 6-digit one time password is sent to the their email. That password must be then sent to `/api/auth/check_otp/` as `otp`. If the OTP is valid, the page will return the JWT.
 
-### ELK
+<table>
+<tr><td colspan="2" align="center"><b>OAuth</b></td></tr>
+<tr><td>
 
-#### Password for the 'elastic' user (at least 6 characters)
-- ELASTIC_PASSWORD
+`/api/<uuid:user_pk>/games/create/`</td>
+<td>Creates a game and returns its info.</td></tr>
+<tr><td>
 
-### Kibana settings
-- KIBANA_REPORTING_KEY
-- KIBANA_ENCRYPTION_KEY
-- KIBANA_SECURITY_KEY
+`/api/<uuid:user_pk>/games/`</td>
+<td>List the users game history.</td></tr>
+<tr><td>
 
-#### Password for the 'kibana_system' user (at least 6 characters)
-- KIBANA_PASSWORD
+`<uuid:pk>/games/<uuid:game_pk>/edit/`</td>
+<td>
 
-#### SAMPLE Predefined Key only to be used in POC environments
-- ENCRYPTION_KEY
+Edit a specific game using its `game_id`.</td></tr>
+</table>
+
+## Possible Improvements
+These are improvements that could be done without adding new Modules.
+- Responsive URL subpaths (E.g., `https://www.transcendence.com/tictactoe` to open the tictactoe subpage). Currently no subpaths are supported.
+- Real time notifications: This could be done using a webhook, currently the notifications are only updated when the page is refreshed.
