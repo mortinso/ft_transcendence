@@ -270,7 +270,7 @@ Send friend request from `<uuid>`.</td><td></td></tr>
 > If the user has 2FA enabled, when the user logs in, a 6-digit one time password is sent to the their email. That password must be then sent to `/api/auth/check_otp/` as `otp`. If the OTP is valid, the page will return the JWT.
 
 <table>
-<tr><td colspan="2" align="center"><b>OAuth</b></td></tr>
+<tr><td colspan="2" align="center"><b>Games</b></td></tr>
 <tr><td>
 
 `/api/<uuid:user_pk>/games/create/`</td>
