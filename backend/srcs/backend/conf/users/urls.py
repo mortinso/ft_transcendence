@@ -1,7 +1,6 @@
 from django.urls import path, include
 from games.views import (
     ListGamesView,
-    # GameDetailsView,
     RetrieveUpdateGameView,
     CreateGameView,
 )
@@ -18,10 +17,6 @@ from .views import (
     UnblockUserView,
     AddAvatarView,
     GetImageView,
-    # InvitePongView,
-    # AcceptPongView,
-    # InviteTTTView,
-    # AcceptTTTView,
 )
 
 urlpatterns = [
@@ -39,10 +34,5 @@ urlpatterns = [
     path("", ListUsersView.as_view(), name="user_list"),
     path("<uuid:user_pk>/games/", ListGamesView.as_view(), name="games_list"),
     path("<uuid:user_pk>/games/create/", CreateGameView.as_view(), name="create_game"),
-    # path("<uuid:user_pk>/games/<uuid:game_pk>", GameDetailsView.as_view(), name="game_details"),
     path("<uuid:user_pk>/games/<uuid:game_pk>/edit/", RetrieveUpdateGameView.as_view(), name="game_update"),
-    # path("<uuid:pk>/invite_to_pong/", InvitePongView.as_view(), name="invite_pong"),
-    # path("<uuid:pk>/accept_pong_invite/", AcceptPongView.as_view(), name="accept_pong"),
-    # path("<uuid:pk>/invite_to_ttt/", InviteTTTView.as_view(), name="invite_ttt"),
-    # path("<uuid:pk>/accept_ttt_invite/", AcceptTTTView.as_view(), name="accept_ttt"),
 ]

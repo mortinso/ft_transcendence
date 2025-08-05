@@ -37,8 +37,6 @@ class User(AbstractUser):
     friends = models.ManyToManyField("self", symmetrical=False, related_name="friends_set")
     friend_requests = models.ManyToManyField("self", symmetrical=False, related_name="friend_requests_set")
     blocked = models.ManyToManyField("self", symmetrical=False, related_name="blocked_set")
-    # pong_requests = models.ManyToManyField("self", symmetrical=False, related_name="pong_requests_set")
-    # ttt_requests = models.ManyToManyField("self", symmetrical=False, related_name="ttt_requests_set")
     game_list = models.ManyToManyField(Game, related_name="players")
     pong_wins = models.IntegerField(default=0, editable=False)
     pong_losses = models.IntegerField(default=0, editable=False)
@@ -49,7 +47,6 @@ class User(AbstractUser):
     ttt_games_played = models.IntegerField(default=0, editable=False)
     tfa = models.BooleanField(default=False)
     is_online = models.BooleanField(default=False, editable=True)
-    # is_playing = models.BooleanField(default=False, editable=True)
     last_seen = models.DateTimeField(blank=True, null=True)
     idiom = models.CharField(max_length=10, choices=IDIOMS, default="EN")
     otp = models.CharField(default=None, max_length=64, blank=True, null=True)
@@ -63,11 +60,6 @@ class User(AbstractUser):
     def update_last_seen(self):
         self.last_seen = timezone.now()
         self.save(update_fields=["last_seen"])
-        # last_seen = cache.get('seen_%s' % self.username)
-        # if last_seen:
-        #     self.last_seen = last_seen
-        #     self.save()
-        # return last_seen
 
     def update_is_online(self):
         if self.last_seen:
@@ -83,21 +75,3 @@ class User(AbstractUser):
     def get_is_online(self):
         self.update_is_online()
         return self.is_online
-    
-    # MAX_PONG_REQUESTS = 10
-
-    # def add_pong_request(self, user):
-    #     """
-    #     Adds a pong request to the user, enforcing the maximum size.
-    #     """
-    #     if self.pong_requests.count() >= self.MAX_PONG_REQUESTS:
-    #         raise ValueError(f"Cannot add more than {self.MAX_PONG_REQUESTS} pong requests.")
-    #     self.pong_requests.add(user)
-
-    # def add_ttt_request(self, user):
-    #     """
-    #     Adds a ttt request to the user, enforcing the maximum size.
-    #     """
-    #     if self.ttt_requests.count() >= self.MAX_PONG_REQUESTS:
-    #         raise ValueError(f"Cannot add more than {self.MAX_PONG_REQUESTS} pong requests.")
-    #     self.ttt_requests.add(user)

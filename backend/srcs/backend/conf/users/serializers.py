@@ -35,7 +35,6 @@ class ListUsersSerializer(serializers.ModelSerializer):
             "ttt_losses",
             "ttt_draws",
             "ttt_games_played",
-            # "is_playing",
             "tfa",
             "idiom",
             "intra42_id",
@@ -256,78 +255,3 @@ class UnblockUserSerializer(serializers.ModelSerializer):
         else:
             raise serializers.ValidationError("User not found.")
         return instance
-
-# class InviteToPongSerializer(serializers.ModelSerializer):
-#     user_to_invite = serializers.CharField(max_length=126, write_only=True)
-
-#     class Meta:
-#         model = User
-#         fields = ("id", "username", "user_to_invite")
-#         extra_kwargs = {
-#             "username": {"read_only": True},
-#         }
-
-#     def update(self, instance, validated_data):
-#         user = get_object_or_404(User, username=validated_data.get("user_to_invite"))
-
-#         if user != instance:
-#             user.pong_requests.add(instance)
-#             user.save()
-#         return instance
-
-
-# class AcceptPongSerializer(serializers.ModelSerializer):
-#     user_to_accept = serializers.CharField(max_length=126, write_only=True)
-
-#     class Meta:
-#         model = User
-#         fields = ("id", "username", "user_to_accept")
-#         extra_kwargs = {
-#             "username": {"read_only": True},
-#         }
-
-#     def update(self, instance, validated_data):
-#         user = get_object_or_404(User, username=validated_data.get("user_to_accept"))
-
-#         if user != instance:
-#             instance.pong_requests.add(user)
-#             instance.save()
-#         return instance
-    
-
-# class InviteToTTTSerializer(serializers.ModelSerializer):
-#     user_to_invite = serializers.CharField(max_length=126, write_only=True)
-
-#     class Meta:
-#         model = User
-#         fields = ("id", "username", "user_to_invite")
-#         extra_kwargs = {
-#             "username": {"read_only": True},
-#         }
-
-#     def update(self, instance, validated_data):
-#         user = get_object_or_404(User, username=validated_data.get("user_to_invite"))
-
-#         if user != instance:
-#             user.pong_requests.add(instance)
-#             user.save()
-#         return instance
-
-
-# class AcceptTTTSerializer(serializers.ModelSerializer):
-#     user_to_accept = serializers.CharField(max_length=126, write_only=True)
-
-#     class Meta:
-#         model = User
-#         fields = ("id", "username", "user_to_accept")
-#         extra_kwargs = {
-#             "username": {"read_only": True},
-#         }
-
-#     def update(self, instance, validated_data):
-#         user = get_object_or_404(User, username=validated_data.get("user_to_accept"))
-
-#         if user != instance:
-#             instance.pong_requests.add(user)
-#             instance.save()
-#         return instance
