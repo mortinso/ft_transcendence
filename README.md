@@ -24,7 +24,7 @@
 	1.2. [Selected Modules](https://github.com/mortinso/ft_transcendence/#selected-modules)
 2. [Installation](https://github.com/mortinso/ft_transcendence/#installation)
 
-   2.1. [Requirements](https://github.com/ft_transcendence/#requirements)
+   2.1. [Requirements](https://github.com/mortinso/ft_transcendence/#requirements)
 
    2.2. [Build Instructions](https://github.com/mortinso/ft_transcendence/#build-instructions)
 3. [API Endpoints](https://github.com/mortinso/ft_transcendence/#api-endpoints)
