@@ -165,13 +165,11 @@ This project is the development of a website where users will be able to play Po
 	```
 5. Open it in the browser at: `<HOST_IP>`
 
-> ![NOTE]
+> [!NOTE]
 > To import the dashboard to Kibana run the following command inside the container:
 > ```
 > curl -X POST kibana:5601/api/saved_objects/_import?createNewCopies=true -H "kbn-xsrf: true" -u "${ELASTIC_USER}:$(cat $ELASTIC_PASSWORD_FILE)" --form file=@dashboard.ndjson
 > ```
-
-> ![NOTE]
 > To export the dashboard from Kibana run the following command inside the container:
 > ```
 > curl --request POST "https://kibana:5601/api/saved_objects/_export" --header "Content-Type: application/json; Elastic-Api-Version=2023-10-31" --header "kbn-xsrf: string" -u "${ELASTIC_USER}:${ELASTIC_PASSWORD}" -d '{ "objects": [ { "type": "dashboard", "id": "c9c34bef-c32f-4870-95d3-288c00170cea" } ] }' -o /usr/share/kibana/config/dashboards/dashboard.ndjson
