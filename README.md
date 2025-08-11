@@ -37,6 +37,8 @@
 ## Overview
 This project is the development of a website where users will be able to play Pong with eachother in a nice user interface. The project is divided into two parts: the [mandatory part](https://github.com/mortinso/ft_transcendence/#mandatory-part) (worth about 25% of the grade); and multiple elective supplementary [modules](https://github.com/mortinso/ft_transcendence/#selected-modules) that can replace or complete the mandatory rules.
 
+This project was developped by [me](https://github.com/mortinso), [Paulo Bastos](https://github.com/PauloBastos96), [Fabricio Leite](https://github.com/faleite), [Pedro Santos](https://github.com/apedrocsantos), and [Dinis Marques](https://github.com/JustShush).
+
 <details><summary><h3>Mandatory Part</h3></summary>
 <table>
 <tr><td><b>Minimal Technical Requirements</b></td></tr>
